@@ -305,6 +305,26 @@ void templeBase(
 
 void displayScene1()
 {
+	// variable declarations 
+	// array for trees 
+	struct tree trees[] = {
+		{3.70, 0.80, 0.10, 1.30, 1.30, texture_tree1}, 
+		{-2.70, 1.30, 0.10, 2.40, 1.90, texture_tree3}, 
+		{3.90, 0.70, 3.00, 1.60, 0.90, texture_tree1}, 
+		{6.90, 0.35, 3.00, 1.60, 0.90, texture_tree2}, 
+		{-3.90, 0.50, 6.30, 2.50f, 2.70f, texture_tree2}, 
+		{-1.20, -0.30, 8.50, 0.60, 0.90, texture_tree2}, 
+		{-5.20, 0.20, 8.50, 0.60, 0.90, texture_tree3}, 
+		{-0.80, 0.50, 10.70, 1.10, 1.50, texture_tree3}, 
+		{-4.80, 1.00, 10.70, 1.10, 1.50, texture_tree1}, 
+		{1.20, 0.20, 14.70, 1.4, 0.90, texture_tree1}, 
+		{-5.20, 2.10, 16.30, 2.80, 3.30, texture_tree3}, 
+		{2.00, 0.90, 17.60, 1.10, 1.50, texture_tree3}, 
+		{2.10, 0.50, 20.20, 2.30, 2.70, texture_tree2}, 
+		{-1.50, 1.10, 25.90, 1.72, 2.04, texture_tree4}  
+	}; 
+
+	// code 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -357,75 +377,15 @@ void displayScene1()
 	//-------
 
 	// trees 
-	billboard(
-		3.70, 0.80, 0.10,
-		1.30, 1.30,
-		texture_tree1
-	); 
-	billboard(
-		-2.70, 1.30, 0.10,
-		2.40, 1.90,  
-		texture_tree3
-	); 
-	billboard(
-		3.90, 0.70, 3.00,
-		1.60, 0.90,
-		texture_tree1
-	); 
-	billboard(
-		6.90, 0.70, 3.00,
-		1.60, 0.90,
-		texture_tree2
-	); 
-	billboard(
-		-3.90, 0.50, 6.30, 
-		2.50f, 2.70f,  
-		texture_tree2
-	); 	
-	billboard(
-		-1.20, 0.20, 8.50,
-		0.60, 0.90,
-		texture_tree2
-	); 
-	billboard(
-		-5.20, 0.20, 8.50,
-		0.60, 0.90,
-		texture_tree3
-	); 
-	billboard(
-		-0.80, 1.00, 10.70,
-		1.10, 1.50,
-		texture_tree3
-	); 
-	billboard(
-		-4.80, 1.00, 10.70,
-		1.10, 1.50,
-		texture_tree1
-	); 
-	billboard(
-		1.200000, 0.200000, 14.700001, 
-		1.400000, 0.900000, 
-		texture_tree1
-	); 
-	billboard(
-		-5.20, 2.10, 16.30,
-		2.80, 3.30,
-		texture_tree3
-	); 
-	billboard(
-		2.00, 0.90, 17.60,
-		1.10, 1.50,  
-		texture_tree3
-	); 
-	billboard(
-		2.10, 1.10, 20.20,
-		2.30, 2.70, 
-		texture_tree2
-	); 
+	for(int i = 0; i < sizeof(trees)/sizeof(trees[0]); ++i) 
+	{
+		billboard(
+			trees[i].tx, trees[i].ty, trees[i].tz,
+			trees[i].width, trees[i].height, 
+			trees[i].texture 
+		);
+	}  
 
-	
-
-	// billboard(0.0f, 0.0f, 0.0f, 2.0f, 2.0f, texture_leaf);
 	glDisable(GL_BLEND);
 }
 

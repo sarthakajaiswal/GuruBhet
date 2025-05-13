@@ -482,6 +482,7 @@ int initialize(void)
 
     // initFog(); 
 
+    /*
     if(!initScene1()) 
     {
         fprintf(gpFile, "initScene1() failed\n"); 
@@ -492,12 +493,13 @@ int initialize(void)
         fprintf(gpFile, "initScene2() failed\n"); 
         return (FALSE); 
     }
-    /*
+    */
     if(!initScene3()) 
     {
         fprintf(gpFile, "initScene3() failed\n"); 
         return (FALSE); 
-    }
+        }
+    /*
     if(!initScene4()) 
     {
         fprintf(gpFile, "initScene4() failed\n"); 
@@ -575,8 +577,8 @@ void display(void)
     //     isFading = TRUE; 
 
     // displayScene1();
-    displayScene2(); 
-    // displayScene3(); 
+    // displayScene2(); 
+    displayScene3(); 
     // displayScene4(); 
     // displayFade(); 
 
@@ -588,8 +590,8 @@ void update(void)
 {
     // code 
     // updateScene1(); 
-    updateScene2();
-    // updateScene3();   
+    // updateScene2();
+    updateScene3();   
     // updateScene4(); 
     updateFade(); 
 

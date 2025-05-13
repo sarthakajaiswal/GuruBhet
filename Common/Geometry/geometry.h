@@ -20,6 +20,17 @@ typedef enum FaceType{
     FACE_ALL =      0x111111 
 }FaceType;  
 
+// structure to draw cube | to call drawTexturedCube() 
+struct Cube 
+{
+	float tx, ty, tz; 
+	float sx, sy, sz;  
+	float r, g, b; 
+	FaceType faces_to_be_textured;
+	GLuint textures[6];  
+};  
+
+
 // function declarations 
 extern void drawTexturedCube(
                 float x, float y, float z, 

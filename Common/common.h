@@ -13,6 +13,22 @@
 // custom headers 
 #include "../stb_image.h" 
 
+// placeholder structure for calling cubemap() for getting trees 
+struct tree 
+{
+	float tx, ty, tz; 
+	float height, width; 
+	GLuint texture; 
+}; 
+
+// structure storing texture_id, corrosponding texture image and texture info string 
+struct ImageTexture 
+{
+	GLuint texture; 
+	const char* file_path; 
+	const char* info_string;  
+};  
+
 // function declarations 
 extern BOOL loadGLPngTexture(GLuint* texture, char* file); 
 

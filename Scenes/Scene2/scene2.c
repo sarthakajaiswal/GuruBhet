@@ -26,32 +26,6 @@ GLuint texture_lsp;
 
 GLUquadric* quadric = NULL; 
 
-// placeholder structure for calling cubemap() for getting trees 
-struct tree 
-{
-	float tx, ty, tz; 
-	float height, width; 
-	GLuint texture; 
-}; 
-
-// structure storing texture_id, corrosponding texture image and texture info string 
-struct ImageTexture 
-{
-	GLuint texture; 
-	const char* file_path; 
-	const char* info_string;  
-};  
-
-// structure to draw classroom cube | to call drawTexturedCube() 
-struct Cube 
-{
-	float tx, ty, tz; 
-	float sx, sy, sz;  
-	float r, g, b; 
-	FaceType faces_to_be_textured;
-	GLuint textures[6];  
-};  
-
 /* 
 const char* faces[] = {
     "Resources/Cubemap/right.png",
@@ -203,7 +177,7 @@ void displayScene2()
 		{-5.20, 2.10, 16.30, 2.80, 3.30, texture_tree3}, 
 		{2.00, 0.90, 17.60, 1.10, 1.50, texture_tree3}, 
 		{2.10, 0.50, 20.20, 2.30, 2.70, texture_tree2}, 
-		{tx, ty, tz, sx, sy, texture_tree4}  
+		{-1.50, 1.10, 25.90, 1.72, 2.04, texture_tree4}  
 	}; 
 	
 	// array of cubes for drawing school 
@@ -235,244 +209,134 @@ void displayScene2()
     glVertex3f(-40.0f, -0.5f, -40.0f); 
     glTexCoord2f(0.0f, 0.0f); 
     glVertex3f(-40.0f, -0.5f, 40.0f); 
-# l i n e   1   " D : \ \ D e m o F o r S i r \ \ C o d e \ \ R C a 0 3 4 7 2 "  
- # l i n e   1   " O G L . r c "  
- # l i n e   1   " O G L . r c "  
-  
- # l i n e   1   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ u m \ \ W i n d o w s . h "  
- # l i n e   1   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n a p i f a m i l y . h "  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
- # l i n e   2 5   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n a p i f a m i l y . h "  
-  
- # l i n e   1   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n p a c k a g e f a m i l y . h "  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
- # l i n e   2 5   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n p a c k a g e f a m i l y . h "  
-  
-  
-  
- # l i n e   2 9   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n p a c k a g e f a m i l y . h "  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
- # l i n e   9 0   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n p a c k a g e f a m i l y . h "  
-  
- # l i n e   9 2   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n p a c k a g e f a m i l y . h "  
-  
- # l i n e   2 7   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n a p i f a m i l y . h "  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
- # l i n e   9 1   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i t s \ \ 1 0 \ \ \ \ i n c l u d e \ \ 1 0 . 0 . 2 2 6 2 1 . 0 \ \ \ \ s h a r e d \ \ w i n a p i f a m i l y . h "  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
- # l i n e   1 4 8   " C : \ \ P r o g r a m   F i l e s   ( x 8 6 ) \ \ W i n d o w s   K i
+    glTexCoord2f(40.0f, 0.0f); 
+    glVertex3f(40.0f, -0.5f, 40.0f); 
+    glEnd(); 
+    glBindTexture(GL_TEXTURE_2D, 0); 
+
+	// road upto class  
+	glBindTexture(GL_TEXTURE_2D, texture_road); 
+	glColor3f(1.0f, 1.0f, 1.0f); 
+	glBegin(GL_QUADS); 
+	glTexCoord2f(1.0f, 10.0f); 
+	glVertex3f(0.5f, -0.4f, -10.0f); 
+	glTexCoord2f(0.0f, 10.0f); 
+	glVertex3f(-0.5f, -0.4f, -10.0f); 
+	glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(-0.5f, -0.4f, 35.0f); 
+	glTexCoord2f(1.0f, 0.0f); 
+	glVertex3f(0.5f, -0.4f, 35.0f); 
+	glEnd(); 
+	glBindTexture(GL_TEXTURE_2D, 0); 
+
+	//-------
+
+	// school 
+	for(int i = 0; i < sizeof(CubesInSchool)/sizeof(CubesInSchool[0]); ++i) 
+	{
+		drawTexturedCube(
+				CubesInSchool[i].tx, CubesInSchool[i].ty, CubesInSchool[i].tz, 
+				CubesInSchool[i].sx, CubesInSchool[i].sy, CubesInSchool[i].sz, 
+				CubesInSchool[i].r, CubesInSchool[i].g, CubesInSchool[i].b, 
+				CubesInSchool[i].faces_to_be_textured, 
+				CubesInSchool[i].textures[0], 
+				CubesInSchool[i].textures[1], 
+				CubesInSchool[i].textures[2], 
+				CubesInSchool[i].textures[3], 
+				CubesInSchool[i].textures[4], 
+				CubesInSchool[i].textures[5]  
+		);
+	}
+
+	// logo at scool top 
+	glBindTexture(GL_TEXTURE_2D, texture_school_floor);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
+	glPushMatrix(); 
+	{
+		glTranslatef(0.0, 1.0, -2.60);  
+		gluCylinder(quadric, 0.20, 0.20, 0.10, 24, 24); 
+	}
+	glPopMatrix(); 
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glPushMatrix(); 
+    {
+        glTranslatef(0.00f, 1.00f, -3.50f); 
+        glScalef(0.20f, 0.20f, 1.0f);
+        
+        glBindTexture(GL_TEXTURE_2D, texture_logo); 
+        glBegin(GL_QUADS); 
+        glTexCoord2f(1.0f, 1.0f); 
+        glVertex3f(1.0f, 1.0f, 1.0f); 
+        glTexCoord2f(0.0f, 1.0f); 
+        glVertex3f(-1.0f, 1.0f, 1.0f);	 
+        glTexCoord2f(0.0f, 0.0f); 
+        glVertex3f(-1.0f, -1.0f, 1.0f);  
+        glTexCoord2f(1.0f, 0.0f); 
+        glVertex3f(1.0f, -1.0f, 1.0f); 
+        glEnd(); 
+        glBindTexture(GL_TEXTURE_2D, 0); 
+    } 
+    glPopMatrix();  
+
+	// trees 
+	for(int i = 0; i < sizeof(trees)/sizeof(trees[0]); ++i) 
+	{
+		billboard(
+			trees[i].tx, trees[i].ty, trees[i].tz,
+			trees[i].width, trees[i].height, 
+			trees[i].texture 
+		);
+	}  
+} 
+
+void updateScene2(void) 
+{
+	// code 
+}
+
+void uninitializeScene2(void) 
+{
+	// code 
+	if(texture_class_front_mstc)
+	{
+		glDeleteTextures(1, &texture_class_front_mstc); 
+		texture_class_front_mstc = 0; 
+	}
+	if(texture_class_front_dsa)
+	{
+		glDeleteTextures(1, &texture_class_front_dsa); 
+		texture_class_front_dsa = 0; 
+	}
+	if(texture_class_front_cpp)
+	{
+		glDeleteTextures(1, &texture_class_front_cpp); 
+		texture_class_front_cpp = 0; 
+	}
+	if(texture_class_front_python)
+	{
+		glDeleteTextures(1, &texture_class_front_python); 
+		texture_class_front_python = 0; 
+	}
+	if(texture_head_cabin)
+	{
+		glDeleteTextures(1, &texture_head_cabin); 
+		texture_head_cabin = 0; 
+	}
+	if(texture_logo)
+	{
+		glDeleteTextures(1, &texture_logo); 
+		texture_logo = 0; 
+	}
+	if(texture_lsp)
+	{
+		glDeleteTextures(1, &texture_lsp); 
+		texture_lsp = 0; 
+	}
+	if(texture_school_floor)
+	{
+		glDeleteTextures(1, &texture_school_floor); 
+		texture_school_floor = 0; 
+	}
+}
+
