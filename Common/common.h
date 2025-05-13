@@ -40,5 +40,11 @@ extern void billboard(
 
 extern unsigned int loadCubemap(const char* faces[]); 
 
+extern void textureOnQuad(
+	float tx, float ty, float tz, 
+	float sx, float sy, float sz, 
+	GLuint texture
+);   
+
 #endif /* _COMMON_H */
 

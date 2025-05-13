@@ -118,3 +118,24 @@ unsigned int loadCubemap(const char* faces[])
     return (textureID); 
 }
 
+void textureOnQuad(float tx, float ty, float tz, float sx, float sy, float sz, GLuint texture)  
+{
+    glPushMatrix(); 
+		glBindTexture(GL_TEXTURE_2D, texture); 
+		glTranslatef(tx, ty, tz); 
+		glScalef(sx, sy, sz);  
+
+        glColor3f(1.0f, 1.0f, 1.0f); 
+		glBegin(GL_QUADS);
+		glTexCoord2f(1.0f, 1.0f); 
+		glVertex3f(1.0f, 1.0f, 0.0f);  // right-top 
+		glTexCoord2f(0.0f, 1.0f); 
+		glVertex3f(-1.0f, 1.0f, 0.0f); // left-top 
+		glTexCoord2f(0.0f, 0.0f); 
+		glVertex3f(-1.0f, -1.0f, 0.0f);	// left-bottom 
+		glTexCoord2f(1.0f, 0.0f); 
+		glVertex3f(1.0f, -1.0f, 0.0f);	// right-bottom 
+		glEnd(); 
+		glBindTexture(GL_TEXTURE_2D, 0); 
+	glPopMatrix(); 
+}  
