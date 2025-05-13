@@ -33,51 +33,6 @@ BOOL loadGLPngTexture(GLuint* texture, char* file)
     return (TRUE); 
 }
 
-/*
-void billboard(float x, float y, float z, float width, float height, GLuint texture) 
-{
-    glPushMatrix(); 
-        glTranslatef(x, y, z); 
-        
-        float modelview[16]; 
-        glGetFloatv(GL_MODELVIEW_MATRIX, modelview); 
-
-        modelview[0] = 1.0f; 
-        modelview[1] = 0.0f; 
-        modelview[2] = 0.0f; 
-
-        modelview[4] = 0.0f; 
-        modelview[5] = 1.0f; 
-        modelview[6] = 0.0f; 
-
-        modelview[8] = 0.0f; 
-        modelview[9] = 0.0f; 
-        modelview[10] = 1.0f; 
-
-        glLoadMatrixf(modelview); 
-
-        float halfWidth = width / 2.0f; 
-        float halfHeight = height / 2.0f; 
-
-        glBindTexture(GL_TEXTURE_2D, texture); 
-
-        // billboard quad 
-        glBegin(GL_QUADS); 
-        glTexCoord2f(0.0f, 0.0f); 
-        glVertex3f(-halfWidth, -halfHeight, 0.0f); 
-        glTexCoord2f(1.0f, 0.0f); 
-        glVertex3f(halfWidth, -halfHeight, 0.0f); 
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex3f(halfWidth, halfHeight, 0.0f);  
-        glTexCoord2f(0.0f, 1.0f); 
-        glVertex3f(-halfWidth, halfHeight, 0.0f); 
-        glEnd(); 
-
-        glBindTexture(GL_TEXTURE_2D, 0); 
-    glPopMatrix(); 
-}
-*/
-
 void billboard(float x, float y, float z, float width, float height, GLuint texture) 
 {
     // code 
@@ -85,8 +40,8 @@ void billboard(float x, float y, float z, float width, float height, GLuint text
 		glBindTexture(GL_TEXTURE_2D, texture); 
 		glTranslatef(x, y, z); 
 		glScalef(width, height, 1.0f);  
-		glColor3f(1.0f, 1.0f, 1.0f); 
 		
+		glColor3f(1.0f, 1.0f, 1.0f); 
 		glBegin(GL_QUADS);
 		glTexCoord2f(1.0f, 1.0f); 
 		glVertex3f(1.0f, 1.0f, 0.0f);  // right-top 

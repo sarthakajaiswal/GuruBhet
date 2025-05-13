@@ -493,20 +493,17 @@ int initialize(void)
         fprintf(gpFile, "initScene2() failed\n"); 
         return (FALSE); 
     }
-    */
     if(!initScene3()) 
     {
         fprintf(gpFile, "initScene3() failed\n"); 
         return (FALSE); 
-        }
-    /*
+    }
+    */
     if(!initScene4()) 
     {
         fprintf(gpFile, "initScene4() failed\n"); 
         return (FALSE); 
     }
-     */ 
-    
 
     // warmup resize 
     resize(WIN_WIDTH, WIN_HEIGHT); 
@@ -573,14 +570,14 @@ void display(void)
     // apply camera rotation 
     glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
 
-    // if(main_timer >= 5.0f && main_timer <=  6.1f) 
-    //     isFading = TRUE; 
+    if(main_timer >= 5.0f && main_timer <=  5.9f) 
+        isFading = TRUE; 
 
     // displayScene1();
     // displayScene2(); 
-    displayScene3(); 
-    // displayScene4(); 
-    // displayFade(); 
+    // displayScene3(); 
+    displayScene4(); 
+    displayFade(); 
 
     // swap the buffers 
     SwapBuffers(ghdc); 
@@ -594,8 +591,6 @@ void update(void)
     updateScene3();   
     // updateScene4(); 
     updateFade(); 
-
-    // updateFading(); 
 }
 
 void uninitialize(void) 

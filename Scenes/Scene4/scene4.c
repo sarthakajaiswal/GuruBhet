@@ -103,6 +103,7 @@ void displayScene4(void)
         glTranslatef(-3.0f, 25.0f, -62.0f); 
         glScalef(17.36f, 8.24f, 2.08f);
         
+        glColor3f(1.0f, 1.0f, 1.0f); 
         glBindTexture(GL_TEXTURE_2D, texture_tv); 
         glBegin(GL_QUADS); 
         glTexCoord2f(1.0f, 1.0f); 
