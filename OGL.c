@@ -274,20 +274,28 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                     break; 
 
                 case '6': 
-                    cameraLookX += 0.5f; 
+                    cameraEyeX += 0.5f; 
                     break; 
 
                 case '4': 
-                    cameraLookX -= 0.5f; 
+                    cameraEyeX -= 0.5f; 
                     break; 
 
                 case '8': 
-                    cameraLookY += 0.5f; 
+                    cameraEyeY += 0.5f; 
                     break; 
 
                 case '2': 
-                    cameraLookY -= 0.5f; 
+                    cameraEyeY -= 0.5f; 
                     break; 
+
+                case '7': 
+                    cameraEyeZ -= 0.5f; 
+                    break; 
+
+                case '9': 
+                    cameraEyeZ += 0.5f; 
+                    break;  
 
                 // -------- size -------- 
 
