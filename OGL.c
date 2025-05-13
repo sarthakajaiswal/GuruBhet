@@ -1,11 +1,11 @@
 #include "OGL.h" 
 
-#define SCENE_ONE					1
-#define	SCENE_TWO					2
-#define SCENE_THREE					3
-#define SCENE_FOUR					4
+enum SceneNumber
+{
+    SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
+}; 
 
-int current_scene = SCENE_ONE; 
+enum SceneNumber currentSceneNumber = SCENE_ONE; 
 
 // global variable declarations 
 // variables related with full-screen  
@@ -41,9 +41,9 @@ BOOL gbFogEnabled = FALSE;
 extern BOOL isFading; 
 
 // camera variables 
-float cameraZ = 29.0f; 
-float cameraX = 0.0f; 
-float cameraY = 7.0f; 
+float cameraX = 0.0f,       cameraY = 5.0f,     cameraZ = 5.0f; 
+float cameraEyeX = 0.0f,    cameraEyeY = 5.0f,  cameraEyeZ = 0.0f; 
+float cameraUpX = 0.0f,     cameraUpY = 1.0f,   cameraUpZ = 0.0f; 
 float cameraAngle = 0.0f; 
 
 BOOL toggleCamera = FALSE; 
@@ -273,6 +273,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                     cameraX += 0.5f; 
                     break; 
 
+                case '6': 
+                    cameraLookX += 0.5f; 
+                    break; 
+
+                case '4': 
+                    cameraLookX -= 0.5f; 
+                    break; 
+
+                case '8': 
+                    cameraLookY += 0.5f; 
+                    break; 
+
+                case '2': 
+                    cameraLookY -= 0.5f; 
+                    break; 
+
                 // -------- size -------- 
 
                 case 'z': 
@@ -326,7 +342,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
                 // ------- Print the values ------ 
                 case 'm': 
-                    fprintf(gpFile, "\n\nglBindTexture(GL_TEXTURE_2D, texture_school_floor);\ndrawTexturedCube(%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, 1.0f, 1.0f, 1.0f);\nglBindTexture(GL_TEXTURE_2D, 0);\n\n", tx, ty, tz, sx, sy, sz); 
+                    fprintf(gpFile, "\n\n%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n\n", tx, ty, tz, sx, sy, sz); 
                     fclose(gpFile); 
                     gpFile = fopen("log.txt", "a"); 
                     break; 
@@ -482,27 +498,40 @@ int initialize(void)
 
     // initFog(); 
 
-    /*
-    if(!initScene1()) 
+    switch(currentSceneNumber) 
     {
-        fprintf(gpFile, "initScene1() failed\n"); 
-        return (FALSE); 
-    }
-    if(!initScene2()) 
-    {
-        fprintf(gpFile, "initScene2() failed\n"); 
-        return (FALSE); 
-    }
-    if(!initScene3()) 
-    {
-        fprintf(gpFile, "initScene3() failed\n"); 
-        return (FALSE); 
-    }
-    */
-    if(!initScene4()) 
-    {
-        fprintf(gpFile, "initScene4() failed\n"); 
-        return (FALSE); 
+        case SCENE_TWO: 
+            if(!initScene2()) 
+            {
+                fprintf(gpFile, "initScene2() failed\n"); 
+                return (FALSE); 
+            }
+        case SCENE_ONE: 
+            if(!initScene1()) 
+            {
+                fprintf(gpFile, "initScene1() failed\n"); 
+                return (FALSE); 
+            }
+            break; 
+            
+        case SCENE_THREE: 
+            if(!initScene3()) 
+            {
+                fprintf(gpFile, "initScene3() failed\n"); 
+                return (FALSE); 
+            }
+            break; 
+        
+        case SCENE_FOUR: 
+            if(!initScene4()) 
+            {
+                fprintf(gpFile, "initScene4() failed\n"); 
+                return (FALSE); 
+            }
+            break; 
+
+        default: 
+            break; 
     }
 
     // warmup resize 
@@ -532,7 +561,7 @@ void resize(int width, int height)
     // set the viewport 
     glViewport(0, 0, (GLsizei)width, (GLsizei)height);     
 
-    gluPerspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 1000.0f); 
+    gluPerspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 200.0f); 
 }
 
 void display(void) 
@@ -552,32 +581,37 @@ void display(void)
     glLoadIdentity(); 
 
     // Position the camera 
-    if(toggleCamera == FALSE) 
-    {
-        gluLookAt(
-            cameraX, cameraY, cameraZ, // eye position 
-            0.0f, 0.0f, -30.0f, 
-            0.0f, 1.0f, 0.0f        // up vector 
-        ); 
-    } 
-    else 
-    {
-        // gluLookAt(
-        //     cx, cy, cz+5.0f, ex, ey, ez, 0.0f, 1.0f, 0.0f          // up vector 
-        // ); 
-    }
+    gluLookAt(
+        cameraX, cameraY, cameraZ, 
+        cameraEyeX, cameraEyeY, cameraEyeZ, 
+        cameraUpX, cameraUpY, cameraUpZ
+    ); 
 
     // apply camera rotation 
-    glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
+    // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
 
     if(main_timer >= 5.0f && main_timer <=  5.9f) 
         isFading = TRUE; 
 
-    // displayScene1();
-    // displayScene2(); 
-    // displayScene3(); 
-    displayScene4(); 
-    displayFade(); 
+    switch(currentSceneNumber) 
+    {
+        case SCENE_ONE: 
+            displayScene1(); 
+            break; 
+        case SCENE_TWO: 
+            displayScene2(); 
+            break; 
+        case SCENE_THREE: 
+            displayScene3(); 
+            break; 
+        case SCENE_FOUR: 
+            displayScene4(); 
+            break; 
+        default: 
+            break; 
+    }
+
+    // displayFade(); 
 
     // swap the buffers 
     SwapBuffers(ghdc); 
@@ -586,10 +620,23 @@ void display(void)
 void update(void) 
 {
     // code 
-    // updateScene1(); 
-    // updateScene2();
-    updateScene3();   
-    // updateScene4(); 
+    switch(currentSceneNumber) 
+    {
+        case SCENE_ONE: 
+            updateScene1(); 
+            break; 
+        case SCENE_TWO: 
+            updateScene2(); 
+            break; 
+        case SCENE_THREE: 
+            updateScene3(); 
+            break; 
+        case SCENE_FOUR: 
+            updateScene4(); 
+            break; 
+        default: 
+            break; 
+    }
     updateFade(); 
 }
 
@@ -600,9 +647,9 @@ void uninitialize(void)
 
     // code 
     uninitializeScene4(); 
-    // uninitializeScene3(); 
-    // uninitializeScene2(); 
-    // uninitializeScene1(); 
+    uninitializeScene3(); 
+    uninitializeScene2(); 
+    uninitializeScene1(); 
 
     // if user is exitting in fullscreen, restore fullscreen to nornal  
     if(gbFullScreen) 
