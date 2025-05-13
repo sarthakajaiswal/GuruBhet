@@ -1,0 +1,650 @@
+#include "OGL.h" 
+
+#define SCENE_ONE					1
+#define	SCENE_TWO					2
+#define SCENE_THREE					3
+#define SCENE_FOUR					4
+
+int current_scene = SCENE_ONE; 
+
+// global variable declarations 
+// variables related with full-screen  
+BOOL gbFullScreen = FALSE; 
+HWND ghWnd = NULL; 
+DWORD dwStyle; 
+WINDOWPLACEMENT wpPrev; 
+GLUquadric* quadric; 
+
+// variables related with file I/O 
+char gszLogFileName[] = "Log.txt"; 
+FILE* gpFile = NULL; 
+
+// active window related variable 
+BOOL gbActiveWindow = FALSE; 
+
+// exit key pressed related 
+BOOL gbEscapeKeyIsPressed = FALSE; 
+
+// openGL related global variables 
+HDC ghdc = NULL; 
+HGLRC ghrc = NULL; 
+
+// global variables for FOG configuration 
+GLfloat fogColor[4] = {0.8f, 0.8f, 0.8f, 1.0f}; 
+GLfloat fogDensity = 0.07f; 
+GLfloat fogMode = GL_EXP2; 
+GLfloat fogStart = 0.0f; 
+GLfloat fogEnd = 2000.0f; 
+BOOL gbFogEnabled = FALSE; 
+
+// fade related variables 
+extern BOOL isFading; 
+
+// camera variables 
+float cameraZ = 29.0f; 
+float cameraX = 0.0f; 
+float cameraY = 7.0f; 
+float cameraAngle = 0.0f; 
+
+BOOL toggleCamera = FALSE; 
+
+// translation try-out variables 
+float sx = 1.0f, sy = 1.0f, sz = 1.0f; 
+float tx, ty, tz; 
+
+// timer related variables 
+// struct timeval tv; 
+double start_time = 0.0; 
+double current_time = 0.0; 
+double main_timer = 0.0; 
+
+// entry-point function 
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
+{
+    // function declarations 
+    int initialize(void); 
+    void uninitialize(void); 
+    void display(void); 
+    void update(void); 
+
+    // local variable declarations 
+    WNDCLASSEX wndclass; 
+    HWND hwnd; 
+    MSG msg; 
+    TCHAR szAppName[] = TEXT("GuruBhet"); 
+
+    int screenWidth, screenHeight, windowWidth, windowHeight; 
+    float initialPositionOfY, initialPositionOfX; 
+    int iResult = 0; 
+    BOOL bDone = FALSE; 
+
+    gpFile = fopen("log.txt", "w"); 
+    if(gpFile == NULL) 
+    {
+        MessageBox(NULL, TEXT("Log file cannot be opened.."), TEXT("Error"), MB_OK | MB_ICONERROR); 
+        exit(0); 
+    }
+    fprintf(gpFile, "Program started successfully\n"); 
+
+    // code 
+    // WNDCLASSEX initialization 
+    wndclass.cbSize = sizeof(WNDCLASSEX); 
+    wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC; 
+    wndclass.cbClsExtra = 0; 
+    wndclass.cbWndExtra = 0; 
+    wndclass.lpfnWndProc = WndProc; 
+    wndclass.hInstance = hInstance; 
+    wndclass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH); 
+    wndclass.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(MYICON)); 
+    wndclass.hCursor = LoadCursor(NULL, IDC_ARROW); 
+    wndclass.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(MYICON)); 
+    wndclass.lpfnWndProc = WndProc; 
+    wndclass.lpszClassName = szAppName; 
+    wndclass.lpszMenuName = NULL; 
+
+    // register WNDCLASS 
+    RegisterClassEx(&wndclass); 
+
+    // declaring window size 
+    windowWidth = 800; 
+    windowHeight = 600; 
+
+    // getting value of screen height and width 
+    screenWidth = GetSystemMetrics(SM_CXSCREEN); 
+    screenHeight = GetSystemMetrics(SM_CYSCREEN); 
+
+    // calculations for fetching x, y value for createWindow() 
+    initialPositionOfX = (screenWidth / 2) - (windowWidth / 2); 
+    initialPositionOfY = (screenHeight / 2) - (windowHeight / 2); 
+
+    // create window 
+    hwnd = CreateWindowEx(
+        WS_EX_APPWINDOW, 
+        szAppName, 
+        TEXT("GuruBhet"),  
+        WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_VISIBLE, 
+        initialPositionOfX, 
+        initialPositionOfY, 
+        WIN_WIDTH, 
+        WIN_HEIGHT, 
+        NULL, 
+        NULL, 
+        hInstance, 
+        NULL 
+    ); 
+
+    ghWnd = hwnd; 
+
+    // initialization 
+    iResult = initialize(); 
+    if(iResult != 0) 
+    {
+        MessageBox(hwnd, TEXT("initialize() failed.."), TEXT("Error"), MB_OK | MB_ICONERROR); 
+        DestroyWindow(ghWnd); 
+    }
+
+    // show the window 
+    ShowWindow(hwnd, iCmdShow); 
+    SetForegroundWindow(hwnd); 
+    SetFocus(hwnd); 
+
+    // game loop 
+    while(bDone == FALSE) 
+    {
+        if(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
+        {
+            if(msg.message == WM_QUIT) 
+                bDone = TRUE; 
+
+            else 
+            {
+                TranslateMessage(&msg); 
+                DispatchMessage(&msg); 
+            }
+        }
+        else 
+        {
+            if(gbActiveWindow == TRUE) 
+            {
+                // render 
+                display(); 
+
+                // update 
+                update(); 
+            }
+        }
+    }
+
+    // uninitialize 
+    uninitialize(); 
+
+    return ((int)msg.wParam); 
+}
+
+// callback function 
+LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) 
+{
+    // local function declarations 
+    void toggleFullScreen(void); 
+    void resize(int, int); 
+
+    // code 
+    switch(iMsg) 
+    {
+        case WM_SETFOCUS: 
+            gbActiveWindow = TRUE; 
+            break; 
+        
+        case WM_KILLFOCUS: 
+            gbActiveWindow = FALSE; 
+            break; 
+
+        case WM_SIZE: 
+            resize(LOWORD(lParam), HIWORD(lParam)); 
+            break; 
+
+        case WM_ERASEBKGND: 
+            return (0); 
+
+        case WM_KEYDOWN: 
+            switch(LOWORD(wParam)) 
+            {
+                case VK_ESCAPE: 
+                    DestroyWindow(ghWnd); 
+                    break; 
+
+                // camera movement with arrow keys 
+                case VK_UP: 
+                    cameraZ -= 1.0f; 
+                    break; 
+
+                case VK_DOWN: 
+                    cameraZ += 1.0f; 
+                    break; 
+
+                case VK_LEFT: 
+                    cameraAngle -= 1.0f; 
+                    break; 
+
+                case VK_RIGHT: 
+                    cameraAngle += 1.0f; 
+                    break; 
+
+                default: 
+                    break; 
+            }
+            break; 
+
+        case WM_CHAR: 
+            switch(LOWORD(wParam)) 
+            {
+                case 'f': 
+                case 'F': 
+                    if(gbFullScreen == FALSE) 
+                    {
+                        toggleFullScreen(); 
+                        gbFullScreen = TRUE; 
+                    }
+                    else 
+                    {
+                        toggleFullScreen(); 
+                        gbFullScreen = FALSE; 
+                    }
+                    break; 
+
+                // camera position controls 
+                case 'w': 
+                case 'W': 
+                    cameraY += 1.0f; 
+                    break; 
+
+                case 's': 
+                case 'S': 
+                    cameraY -= 0.5f; 
+                    break; 
+
+                case 'a': 
+                case 'A': 
+                    cameraX -= 0.5f; 
+                    break; 
+
+                case 'd': 
+                case 'D': 
+                    cameraX += 0.5f; 
+                    break; 
+
+                // -------- size -------- 
+
+                case 'z': 
+                    sx += 0.04f; 
+                    break; 
+
+                case 'Z': 
+                    sx -= 0.04f; 
+                    break; 
+                
+                case 'x': 
+                    sy += 0.04f; 
+                    break; 
+
+                case 'X': 
+                    sy -= 0.04f; 
+                    break; 
+
+                case 'c': 
+                    sz += 0.04f; 
+                    break; 
+
+                case 'C': 
+                    sz -= 0.04f; 
+                    break; 
+
+                //----- translate ----- 
+                case 'v': 
+                    tx += 0.1f; 
+                    break; 
+
+                case 'V': 
+                    tx -= 0.1f; 
+                    break; 
+
+                case 'b': 
+                    ty += 0.1f; 
+                    break; 
+
+                case 'B': 
+                    ty -= 0.1f; 
+                    break; 
+
+                case 'n': 
+                    tz += 0.1f; 
+                    break; 
+
+                case 'N': 
+                    tz -= 0.1f; 
+                    break; 
+
+                // ------- Print the values ------ 
+                case 'm': 
+                    fprintf(gpFile, "\n\nglBindTexture(GL_TEXTURE_2D, texture_school_floor);\ndrawTexturedCube(%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, 1.0f, 1.0f, 1.0f);\nglBindTexture(GL_TEXTURE_2D, 0);\n\n", tx, ty, tz, sx, sy, sz); 
+                    fclose(gpFile); 
+                    gpFile = fopen("log.txt", "a"); 
+                    break; 
+
+                // case 'p': 
+                // case 'P': 
+                //     fprintf(gpFile, "\n\n%f  %f %f\n%f %f %f\n%f %f %f\n\n", 
+                //             cameraX, cameraY, cameraZ, 
+                //             cameraLookX, cameraLookY, cameraLookZ, 
+                //             cameraUpX, cameraLookY, cameraLookZ
+                //     ); 
+                //     fclose(gpFile); 
+                //     gpFile = fopen("log.txt", "a"); 
+                //     break; 
+
+                case '1': 
+                    toggleCamera = !toggleCamera; 
+                    break; 
+
+                default: 
+                    break; 
+            }
+            break; 
+
+        case WM_CLOSE: 
+            DestroyWindow(ghWnd); 
+            break; 
+
+        case WM_DESTROY: 
+            PostQuitMessage(0); 
+            break; 
+        
+        default: 
+            break; 
+    }
+    return (DefWindowProc(hwnd, iMsg, wParam, lParam)); 
+}
+
+void toggleFullScreen(void) 
+{
+    // variable declarations 
+    MONITORINFO mi; 
+
+    // code 
+    if(gbFullScreen == FALSE) 
+    {
+        dwStyle = GetWindowLong(ghWnd, GWL_STYLE); 
+        if(dwStyle & WS_OVERLAPPEDWINDOW) 
+        {
+            ZeroMemory((void*)&mi, sizeof(MONITORINFO)); 
+            mi.cbSize = sizeof(MONITORINFO); 
+            if (GetWindowPlacement(ghWnd, &wpPrev) && GetMonitorInfo(MonitorFromWindow(ghWnd, MONITORINFOF_PRIMARY), &mi)) 
+            {
+                SetWindowLong(ghWnd, GWL_STYLE, dwStyle & ~WS_OVERLAPPEDWINDOW); 
+                SetWindowPos(ghWnd, HWND_TOP, 
+                            mi.rcMonitor.left, 
+                            mi.rcMonitor.top, 
+                            mi.rcMonitor.right-mi.rcMonitor.left, 
+                            mi.rcMonitor.bottom-mi.rcMonitor.top, 
+                            SWP_NOZORDER | SWP_FRAMECHANGED
+                        ); 
+            }
+        }
+        ShowCursor(FALSE); 
+    }
+    else 
+    {
+        SetWindowPlacement(ghWnd, &wpPrev); 
+        SetWindowLong(ghWnd, GWL_STYLE, dwStyle | WS_OVERLAPPEDWINDOW); 
+        SetWindowPos(ghWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER | SWP_FRAMECHANGED); 
+        ShowCursor(TRUE); 
+    }
+}
+
+int initialize(void) 
+{
+    // function declarations 
+    void resize(int, int); 
+
+    quadric = gluNewQuadric(); 
+	if(quadric == NULL) 
+		return (FALSE); 
+
+    // variable declarations 
+    PIXELFORMATDESCRIPTOR pfd; 
+    int iPixelFormatIndex = 0; 
+
+    // code 
+    // pixel formal descriptor initialization 
+    ZeroMemory((void*)&pfd, sizeof(PIXELFORMATDESCRIPTOR)); 
+    
+    pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR); 
+    pfd.nVersion = 1; 
+    pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER; 
+    pfd.iPixelType = PFD_TYPE_RGBA; 
+    pfd.cColorBits = 32; 
+    pfd.cRedBits = 8; 
+    pfd.cGreenBits = 8; 
+    pfd.cBlueBits = 8; 
+    pfd.cAlphaBits = 8; 
+    pfd.cDepthBits = 32; 
+
+    // get dc 
+    ghdc = GetDC(ghWnd); 
+    if(ghdc == NULL) 
+    {
+        fprintf(gpFile, "GetDC() failed.\n"); 
+        return (-1); 
+    }
+
+    // get matching pixel format index using hdc and pfd 
+    iPixelFormatIndex = ChoosePixelFormat(ghdc, &pfd); 
+    if(iPixelFormatIndex == 0) 
+    {
+        fprintf(gpFile, "ChoosePixrlFormat() failed\n"); 
+        return (-2); 
+    }
+    
+    // selext the pixel format og gound index 
+    if(SetPixelFormat(ghdc, iPixelFormatIndex, &pfd) == FALSE) 
+    {
+        fprintf(gpFile, "SetPixelFormat() failed\n"); 
+        return (-3); 
+    } 
+
+    // create rendering context using hdc, pfd and chosen pixel format index 
+    ghrc = wglCreateContext(ghdc); 
+    if(ghrc == NULL) 
+    {
+        fprintf(gpFile, "wglCreateContext() failed\n"); 
+        return (-4); 
+    }
+    
+    // make this rendering context as current context 
+    if(wglMakeCurrent(ghdc, ghrc) == FALSE) 
+    {
+        fprintf(gpFile, "wglMakeCurrent() failed\n"); 
+        return (-5); 
+    }
+
+    // ***** FROM HERE ONWARDS OPENGL CODE STARTS ***** 
+    // tell openGL to choose the color to clear the screen 
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0); 
+
+    // enabling depth 
+    glShadeModel(GL_SMOOTH); 
+    glClearDepth(1.0f); 
+    glEnable(GL_DEPTH_TEST); 
+    glDepthFunc(GL_LEQUAL); 
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); 
+
+    glEnable(GL_TEXTURE_2D); 
+
+    // initFog(); 
+
+    if(!initScene1()) 
+    {
+        fprintf(gpFile, "initScene1() failed\n"); 
+        return (FALSE); 
+    }
+    if(!initScene2()) 
+    {
+        fprintf(gpFile, "initScene2() failed\n"); 
+        return (FALSE); 
+    }
+    /*
+    if(!initScene3()) 
+    {
+        fprintf(gpFile, "initScene3() failed\n"); 
+        return (FALSE); 
+    }
+    if(!initScene4()) 
+    {
+        fprintf(gpFile, "initScene4() failed\n"); 
+        return (FALSE); 
+    }
+     */ 
+    
+
+    // warmup resize 
+    resize(WIN_WIDTH, WIN_HEIGHT); 
+
+    // initialize timer value 
+    // gettimeofday(&tv, NULL); 
+    // start_time = tv.tv_sec*1000000 + tv.tv_usec; 
+    fprintf(gpFile, "Here"); 
+    start_time = time(0); 
+
+    return (0); 
+}
+
+void resize(int width, int height) 
+{
+    // code 
+    // if height accidently is <= 0.0, make height 1
+    if(height <= 0) 
+    {
+        height = 1; 
+    }
+
+    glMatrixMode(GL_PROJECTION); 
+    glLoadIdentity(); 
+
+    // set the viewport 
+    glViewport(0, 0, (GLsizei)width, (GLsizei)height);     
+
+    gluPerspective(45.0f, (GLfloat)width/(GLfloat)height, 0.1f, 1000.0f); 
+}
+
+void display(void) 
+{
+    // code 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+
+    char str[128]; 
+    sprintf(str, "%lf", main_timer); 
+    SetWindowText(ghWnd, str); 
+
+    // update timer 
+    current_time = time(0); 
+    main_timer = current_time - start_time; 
+
+    glMatrixMode(GL_MODELVIEW); 
+    glLoadIdentity(); 
+
+    // Position the camera 
+    if(toggleCamera == FALSE) 
+    {
+        gluLookAt(
+            cameraX, cameraY, cameraZ, // eye position 
+            0.0f, 0.0f, -30.0f, 
+            0.0f, 1.0f, 0.0f        // up vector 
+        ); 
+    } 
+    else 
+    {
+        // gluLookAt(
+        //     cx, cy, cz+5.0f, ex, ey, ez, 0.0f, 1.0f, 0.0f          // up vector 
+        // ); 
+    }
+
+    // apply camera rotation 
+    glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
+
+    // if(main_timer >= 5.0f && main_timer <=  6.1f) 
+    //     isFading = TRUE; 
+
+    // displayScene1();
+    displayScene2(); 
+    // displayScene3(); 
+    // displayScene4(); 
+    // displayFade(); 
+
+    // swap the buffers 
+    SwapBuffers(ghdc); 
+}
+
+void update(void) 
+{
+    // code 
+    // updateScene1(); 
+    updateScene2();
+    // updateScene3();   
+    // updateScene4(); 
+    updateFade(); 
+
+    // updateFading(); 
+}
+
+void uninitialize(void) 
+{
+    // function declarations 
+    void toggleFullScreen(void); 
+
+    // code 
+    uninitializeScene4(); 
+    // uninitializeScene3(); 
+    // uninitializeScene2(); 
+    // uninitializeScene1(); 
+
+    // if user is exitting in fullscreen, restore fullscreen to nornal  
+    if(gbFullScreen) 
+    {
+        toggleFullScreen(); 
+        gbFullScreen = FALSE; 
+    }
+
+    // make hdc as cuurent context by releasing rendering context as current context 
+    if(wglGetCurrentContext() == ghrc) 
+    {
+        wglMakeCurrent(NULL, NULL); 
+    }
+
+    // delete the rendering context 
+    if(ghrc) 
+    {
+        wglDeleteContext(ghrc); 
+        ghrc = NULL; 
+    }
+
+    // release the dc 
+    if(ghdc) 
+    {
+        ReleaseDC(ghWnd, ghdc); 
+        ghdc = NULL; 
+    }
+
+    if(ghWnd) 
+    {
+        DestroyWindow(ghWnd); 
+        ghWnd = NULL; 
+    }
+
+    // close the file 
+    if(gpFile) 
+    {
+        fprintf(gpFile, "Program terminated successfully"); 
+        fclose(gpFile); 
+        gpFile = NULL; 
+    } 
+}

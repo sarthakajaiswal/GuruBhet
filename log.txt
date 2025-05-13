@@ -1,0 +1,19 @@
+Program started successfully
+Image loaded successfully: resources/ganpati.png (512X512)
+Image loaded successfully: resources/title.png (3434X1080)
+Image loaded successfully: resources/temple_front_wall.png (799X230)
+Image loaded successfully: resources/temple_back_and_side_walls.png (402X329)
+Image loaded successfully: resources/temple_top.png (451X553)
+Image loaded successfully: resources/ground.png (6000X4002)
+Image loaded successfully: resources/road.png (512X512)
+Image loaded successfully: resources/tree1.png (512X487)
+Image loaded successfully: resources/tree2.png (500X500)
+Image loaded successfully: resources/tree3.png (3072X3072)
+Image loaded successfully: resources/tree4.png (529X471)
+Image loaded successfully: resources/vitthal.png (8640X5181)
+Image loaded successfully: resources/temple_floor.png (626X417)
+Image loaded successfully: resources/temple_floor.png (626X417)
+Failed to load image : resources/classroom_front_mstc.png
+texture for mstc classroom failed to load
+initScene2() failed
+Program terminated successfully
