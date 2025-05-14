@@ -264,23 +264,26 @@ void displayScene2()
 		-0.10  0.10 -3.00
 		0.00 2.00 -20.00
 
-	Position 3 
-		-0.06  0.11 -1.99
+	Position 2 
+		-0.06  0.11 -2.0
 		0.03 2.19 -20.96
 
-	Position4
+	Position3
 		-4.15  -0.09 -1.79
 		3.43 5.89 -20.96
+	Position4 
+		2.45  -0.09 -1.79
+		12.33 5.89 -20.96
 	Position5 
-		3.15  0.01 -1.59
-		16.43 1.79 -6.36
+		2.66  -0.09 -1.79
+		58.04 5.89 -20.96
 
-	Position 6 
+	Position 6
 		0.20  0.20 4.50
 		0.20 3.30 -26.40
 	final
-		-0.06  0.91 -1.89
-		1.43 3.49 -20.96
+		-0.02  0.89 -1.91
+		0.72 4.46 -20.96
 */
 
 static void loadCameraPosition4(void) 
@@ -295,6 +298,17 @@ static void loadCameraPosition4(void)
 	cameraEyeZ = -20.96;
 } 
 
+static void loadCameraPosition6(void) 
+{
+	cameraX = 0.20;
+	cameraY = 0.20;
+	cameraZ = 4.50;
+
+	cameraEyeX = 0.20; 
+	cameraEyeY = 3.30; 
+	cameraEyeZ = -26.40; 
+}
+
 void updateScene2(void) 
 {
 	// variable declarations 
@@ -303,18 +317,19 @@ void updateScene2(void)
 	static BOOL isUpdate3 = FALSE; 
 	static BOOL isUpdate4 = FALSE; 
 	static BOOL isUpdate5 = FALSE; 
-	static BOOL isUpdate6 = FALSE; 
 
-	static float inverse_constant_for_camera_speed1 = 100; 
-	static float inverse_constant_for_camera_speed2 = 100; 
-	static float inverse_constant_for_camera_speed3 = 100; 
-	static float inverse_constant_for_camera_speed4 = 100; 
-	static float inverse_constant_for_camera_speed5 = 100; 
-	static float inverse_constant_for_camera_speed6 = 100; 
+	static float inverse_constant_for_camera_speed1 = 1000; 
+	static float inverse_constant_for_camera_speed2 = 1000; 
+	static float inverse_constant_for_camera_speed3 = 2000; 
+	static float inverse_constant_for_camera_speed4 = 1000; 
+	static float inverse_constant_for_camera_speed5 = 1000; 
 
-	static BOOL isCameraPosition4Loaded = FALSE; 
+	static BOOL isCameraPosition3Loaded = FALSE; 
+	static BOOL isCameraPosition6Loaded = FALSE; 
+	static float update3WaitTimer = 200; 
 
 	// code 
+	// initial -> position1 
 	if(isUpdate1 == TRUE) 
 	{
 		cameraX = cameraX - 0.30/inverse_constant_for_camera_speed1; 
@@ -331,15 +346,17 @@ void updateScene2(void)
 			isUpdate2 = TRUE; 
 		} 
 	} 
+
+	// position1 -> position2 
 	if(isUpdate2 == TRUE) 
 	{
 		cameraX = cameraX + 0.04/inverse_constant_for_camera_speed2; 
 		cameraY = cameraY + 0.01/inverse_constant_for_camera_speed2; 
-		cameraZ = cameraZ + 0.1/inverse_constant_for_camera_speed2; 
+		cameraZ = cameraZ + 1.0/inverse_constant_for_camera_speed2; 
 
-		cameraEyeX = cameraEyeX + 0.03/inverse_constant_for_camera_speed1; 
-		cameraEyeY = cameraEyeY + 0.19/inverse_constant_for_camera_speed1; 
-		cameraEyeZ = cameraEyeZ - 0.96/inverse_constant_for_camera_speed1; 
+		cameraEyeX = cameraEyeX + 0.03/inverse_constant_for_camera_speed2; 
+		cameraEyeY = cameraEyeY + 0.19/inverse_constant_for_camera_speed2; 
+		cameraEyeZ = cameraEyeZ - 0.96/inverse_constant_for_camera_speed2; 
 
 		if(cameraZ >= -2.0f) 
 		{
@@ -347,44 +364,67 @@ void updateScene2(void)
 			isUpdate3 = TRUE; 
 		} 
 	} 
-	// if(isUpdate3 == TRUE) 
-	// {
-	// 	cameraX = cameraX + 0.04/inverse_constant_for_camera_speed2; 
-	// 	cameraY = cameraY + 0.01/inverse_constant_for_camera_speed2; 
-	// 	cameraZ = cameraZ + 0.2/inverse_constant_for_camera_speed2; 
 
-	// 	cameraEyeX = cameraEyeX + 13.0/inverse_constant_for_camera_speed2; 
-	// 	cameraEyeY = cameraEyeY - 4.10/inverse_constant_for_camera_speed2; 
-	// 	cameraEyeZ = cameraEyeZ - 14.60/inverse_constant_for_camera_speed2; 
-
-	// 	if(cameraZ <= -20.96f) 
-	// 	{
-	// 		isUpdate3 = FALSE; 
-	// 		isUpdate4 = TRUE; 
-	// 	} 
-	// }
+	// position3 -> position4 
 	if(isUpdate3 == TRUE) 
 	{
-		if(isCameraPosition4Loaded == FALSE) 
+		if(isCameraPosition3Loaded == FALSE) 
 		{
 			loadCameraPosition4(); 
-			isCameraPosition4Loaded = TRUE; 
+			isCameraPosition3Loaded = TRUE; 
 		} 
+		if(update3WaitTimer <= 0) 
+		{ 
+			cameraX = cameraX + 7.0/inverse_constant_for_camera_speed3; 
+			cameraEyeX = cameraEyeX + 8.90/inverse_constant_for_camera_speed3; 
 
-		cameraX = cameraX + 7.0/inverse_constant_for_camera_speed2; 
-		cameraY = cameraY + 1.0/inverse_constant_for_camera_speed2; 
-		cameraZ = cameraZ + 0.20/inverse_constant_for_camera_speed2; 
-
-		cameraEyeX = cameraEyeX + 13.0/inverse_constant_for_camera_speed2; 
-		cameraEyeY = cameraEyeY - 4.10/inverse_constant_for_camera_speed2; 
-		cameraEyeZ = cameraEyeZ - 14.60/inverse_constant_for_camera_speed2;  
-
-		if(cameraEyeZ >= -6.96f) 
+			if(cameraEyeX >= 12.33f) 
+			{
+				isUpdate3 = FALSE; 
+				isUpdate4 = TRUE; 
+			}
+		} 
+		else 
 		{
-			isUpdate3 = FALSE; 
-			isUpdate4 = TRUE; 
+			update3WaitTimer = update3WaitTimer - 1; 
 		} 
 	}
+
+	// position4 -> position5 
+	if(isUpdate4 == TRUE) 
+	{ 
+		cameraX = cameraX + 0.21/inverse_constant_for_camera_speed4; 
+		cameraEyeX = cameraEyeX + 46.71/inverse_constant_for_camera_speed4; 
+
+		if(cameraEyeX >= 58.04f) 
+		{
+			isUpdate4 = FALSE; 
+			isUpdate5 = TRUE; 
+		}
+	}
+
+	// position6 -> final 
+	if(isUpdate5 == TRUE) 
+	{
+		if(isCameraPosition6Loaded == FALSE)
+		{
+			loadCameraPosition6(); 
+			isCameraPosition6Loaded = TRUE; 
+		}
+
+		cameraX = cameraX - 0.22/inverse_constant_for_camera_speed5; 
+		cameraY = cameraY + 0.69/inverse_constant_for_camera_speed5; 
+		cameraZ = cameraZ - 6.41/inverse_constant_for_camera_speed5; 
+
+		cameraEyeX = cameraEyeX + 0.52/inverse_constant_for_camera_speed5; 
+		cameraEyeY = cameraEyeY + 1.16/inverse_constant_for_camera_speed5; 
+		cameraEyeZ = cameraEyeZ + 5.44/inverse_constant_for_camera_speed5; 
+
+		if(cameraEyeZ >= -20.96f) 
+		{
+			isUpdate5 = FALSE; 
+		} 
+	} 
 }
 
 void uninitializeScene2(void) 
