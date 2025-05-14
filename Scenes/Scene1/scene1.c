@@ -15,6 +15,11 @@ GLuint texture_tree4;
 GLuint texture_god_image; 
 GLuint texture_temple_floor; 
 
+// camera related variables 
+extern float cameraX, cameraY, cameraZ; 
+extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
+extern float cameraUpX, cameraUpY, cameraUpZ; 
+
 const char* faces[] = {
     "Resources/Cubemap/right.png",
 	"Resources/Cubemap/left.png",
@@ -306,18 +311,19 @@ void templeBase(
 void displayScene1()
 {
 	// variable declarations 
+	static BOOL isThisFirstCall = TRUE; 
+
 	// array for trees 
 	struct tree trees[] = {
 		{3.70, 0.80, 0.10, 1.30, 1.30, texture_tree1}, 
 		{-2.70, 1.30, 0.10, 2.40, 1.90, texture_tree3}, 
 		{3.90, 0.70, 3.00, 1.60, 0.90, texture_tree1}, 
-		{6.90, 0.35, 3.00, 1.60, 0.90, texture_tree2}, 
+		{7.10, 0.65, 3.40, 2.04, 2.10, texture_tree2}, 
 		{-3.90, 0.50, 6.30, 2.50f, 2.70f, texture_tree2}, 
-		{-1.20, -0.30, 8.50, 0.60, 0.90, texture_tree2}, 
 		{-5.20, 0.20, 8.50, 0.60, 0.90, texture_tree3}, 
 		{-0.80, 0.50, 10.70, 1.10, 1.50, texture_tree3}, 
-		{-4.80, 1.00, 10.70, 1.10, 1.50, texture_tree1}, 
-		{1.20, 0.20, 14.70, 1.4, 0.90, texture_tree1}, 
+		{-4.80, 0.50, 10.70, 1.10, 1.50, texture_tree1}, 
+		{1.20, 0.80, 14.70, 1.4, 0.90, texture_tree1}, 
 		{-5.20, 2.10, 16.30, 2.80, 3.30, texture_tree3}, 
 		{2.00, 0.90, 17.60, 1.10, 1.50, texture_tree3}, 
 		{2.10, 0.50, 20.20, 2.30, 2.70, texture_tree2}, 
@@ -325,6 +331,19 @@ void displayScene1()
 	}; 
 
 	// code 
+	if(isThisFirstCall == TRUE) 
+	{
+		cameraX = -1.50f; 
+		cameraY = 4.50f;
+		cameraZ = 30.0f; 
+
+		cameraEyeX = 0.0f; 
+		cameraEyeY = -22.0f; 
+		cameraEyeZ = -20.0f; 
+
+		isThisFirstCall = FALSE; 
+	}
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -389,9 +408,84 @@ void displayScene1()
 	glDisable(GL_BLEND);
 }
 
+/*
+	initial position 
+		-1.50 4.50 30.0
+		0.0, -22.0, 0.0 
+
+	Position 1 
+		0.0, 0.0 28.0 
+		0.0 0.04 -15.0 
+
+	Position 2 
+		0.0 0.2 -6.0 
+		0.0 0.04 -15.0 
+
+	Position 3 
+		0.0 1.5 -9.0 
+		0.0 2.11 -15.0 
+*/
+
 void updateScene1()
 {
+	// variable declarations 
+	static BOOL isUpdate1 = TRUE; 
+	static BOOL isUpdate2 = FALSE; 
+	static BOOL isUpdate3 = FALSE; 
+
+	unsigned int inverse_constant_for_speed1 = 500.0f; // incresing this constant decreases camera speed 
+	unsigned int inverse_constant_for_speed2 = 2000.0f; 
+	unsigned int inverse_constant_for_speed3 = 1000.0f; 
+
 	// code 
+	if(isUpdate1 == TRUE) 
+	{
+		cameraX += 1.50/inverse_constant_for_speed1; 
+		cameraY -= 4.50/inverse_constant_for_speed1; 
+		cameraZ -= 2.0/inverse_constant_for_speed1; 
+
+		cameraEyeY = 23.50/inverse_constant_for_speed1; 
+
+		if(cameraY < 0.0f) 
+		{
+			isUpdate1 = FALSE; 
+			isUpdate2 = TRUE; 
+
+			fprintf(gpFile, "\n\n%f  %f %f\n%f %f %f\n%f %f %f\n\n", 
+                            cameraX, cameraY, cameraZ, 
+                            cameraEyeX, cameraEyeY, cameraEyeZ, 
+                            cameraUpX, cameraUpY, cameraUpZ 
+                    ); 
+                    fclose(gpFile); 
+                    gpFile = fopen("log.txt", "a"); 
+		} 
+	}
+
+	else if(isUpdate2 == TRUE) 
+	{ 
+		if(cameraY < 0.2f)
+			cameraY = cameraY + 0.001; 
+		cameraZ -= 34.0f/inverse_constant_for_speed2; 
+
+		if(cameraZ <= -6.0f) 
+		{
+			isUpdate2 = FALSE;
+			isUpdate3 = TRUE;  
+		}
+	}
+
+	else if(isUpdate3 == TRUE)
+	{
+		if(cameraY < 1.5f) 
+			cameraY = cameraY + 0.002f; 
+		cameraZ = cameraZ - 4.0/inverse_constant_for_speed3; 
+		if(cameraEyeY < 4.0) 
+			cameraEyeY = cameraEyeY + 0.005f; 
+		cameraEyeZ = cameraEyeZ - 0.05f;
+
+		if(cameraZ < -9.0f) 
+			isUpdate3 = FALSE; 
+	}
 }
 
 void uninitializeScene1(void) 

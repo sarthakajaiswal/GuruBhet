@@ -14,8 +14,4 @@ Image loaded successfully: resources/vitthal.png (8640X5181)
 Image loaded successfully: resources/temple_floor.png (626X417)
 Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
 Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
-
-0) timer = 5435
-
-0) timer = 12009
 Program terminated successfully

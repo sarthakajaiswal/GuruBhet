@@ -350,23 +350,23 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                     tz -= 0.1f; 
                     break; 
 
-                // ------- Print the values ------ 
+                // // ------- Print the values ------ 
                 case 'm': 
                     fprintf(gpFile, "\n\n%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n\n", tx, ty, tz, sx, sy, sz); 
                     fclose(gpFile); 
                     gpFile = fopen("log.txt", "a"); 
                     break; 
 
-                // case 'p': 
-                // case 'P': 
-                //     fprintf(gpFile, "\n\n%f  %f %f\n%f %f %f\n%f %f %f\n\n", 
-                //             cameraX, cameraY, cameraZ, 
-                //             cameraLookX, cameraLookY, cameraLookZ, 
-                //             cameraUpX, cameraLookY, cameraLookZ
-                //     ); 
-                //     fclose(gpFile); 
-                //     gpFile = fopen("log.txt", "a"); 
-                //     break; 
+                case 'p': 
+                case 'P': 
+                    fprintf(gpFile, "\n\n%f  %f %f\n%f %f %f\n%f %f %f\n\n", 
+                            cameraX, cameraY, cameraZ, 
+                            cameraEyeX, cameraEyeY, cameraEyeZ, 
+                            cameraUpX, cameraUpY, cameraUpZ 
+                    ); 
+                    fclose(gpFile); 
+                    gpFile = fopen("log.txt", "a"); 
+                    break; 
 
                 case '1': 
                     toggleCamera = !toggleCamera; 
@@ -605,36 +605,41 @@ void display(void)
     // apply camera rotation 
     // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
 
-    // switch(currentSceneNumber) 
-    // {
-    //     case SCENE_ONE: 
-    //         displayScene1(); 
-    //         break; 
-    //     case SCENE_TWO: 
-    //         displayScene2(); 
-    //         break; 
-    //     case SCENE_THREE: 
-    //         displayScene3(); 
-    //         break; 
-    //     case SCENE_FOUR: 
-    //         displayScene4(); 
-    //         break; 
-    //     default: 
-    //         break; 
-    // }
+    switch(currentSceneNumber) 
+    {
+        case SCENE_TWO: 
+            displayScene2(); 
+        case SCENE_ONE: 
+            displayScene1(); 
+            break; 
+        case SCENE_THREE: 
+            displayScene3(); 
+            break; 
+        case SCENE_FOUR: 
+            displayScene4(); 
+            break; 
+        default: 
+            break; 
+    }
 
     
-    if(main_timer_microsec < 500) 
-        isFading = TRUE; 
+    // if(main_timer_microsec < 500) 
+    //     isFading = TRUE; 
     
-    if(main_timer_microsec > 2000 && main_timer_microsec <= 9426) 
-        displaySlide1();    
+    // if(main_timer_microsec > 2000 && main_timer_microsec <= 9426) 
+    //     displaySlide1();    
 
-    if(main_timer_microsec > 5500 && main_timer_microsec < 5520) 
-        isFading = TRUE; 
+    // if(main_timer_microsec > 5500 && main_timer_microsec < 5520) 
+    //     isFading = TRUE; 
 
-    if(main_timer_microsec > 8500 && main_timer_microsec <= 12000) 
-        displaySlide2(); 
+    // if(main_timer_microsec > 8500 && main_timer_microsec <= 12000) 
+    //     displaySlide2(); 
+
+    // if(main_timer_microsec > 11000 && main_timer_microsec < 11010) 
+    //     isFading = TRUE; 
+
+    // if(main_timer_microsec > 12000 && main_timer_microsec <= 18000) 
+    //     displayScene1(); 
 
     displayFade(); 
     
@@ -663,7 +668,7 @@ void update(void)
     switch(currentSceneNumber) 
     {
         case SCENE_ONE: 
-            updateScene1(); 
+            // updateScene1(); 
             break; 
         case SCENE_TWO: 
             updateScene2(); 
