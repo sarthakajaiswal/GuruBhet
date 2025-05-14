@@ -1,4 +1,14 @@
 Program started successfully
+Image loaded successfully: resources/temple_floor.png (626X417)
+Image loaded successfully: resources/classroom_front_mstc.png (664X411)
+Image loaded successfully: resources/classroom_front_dsa.png (664X411)
+Image loaded successfully: resources/classroom_front_cpp.png (664X411)
+Image loaded successfully: resources/classroom_front_python.png (664X411)
+Image loaded successfully: resources/headmaster_cabin.png (656X414)
+Image loaded successfully: resources/lsp.png (5289X2083)
+Image loaded successfully: resources/logo.png (500X500)
+Image loaded successfully: resources/headmaster_front_wall.png (614X501)
+Image loaded successfully: resources/headmaster_side_wall.png (4000X2813)
 Image loaded successfully: resources/ganpati.png (512X512)
 Image loaded successfully: resources/title.png (3434X1080)
 Image loaded successfully: resources/temple_front_wall.png (799X230)
@@ -14,10 +24,4 @@ Image loaded successfully: resources/vitthal.png (8640X5181)
 Image loaded successfully: resources/temple_floor.png (626X417)
 Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
 Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
-
-
-0.003006  -0.008998 27.996145
-0.000000 0.047000 -20.000000
-0.000000 1.000000 0.000000
-
 Program terminated successfully

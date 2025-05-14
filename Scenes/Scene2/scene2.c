@@ -23,8 +23,14 @@ GLuint texture_class_front_python;
 GLuint texture_head_cabin; 
 GLuint texture_logo; 
 GLuint texture_lsp; 
+GLuint texture_headmaster_front_wall; 
+GLuint texture_headmaster_side_wall; 
 
 GLUquadric* quadric = NULL; 
+
+// camera related variables 
+extern float cameraX, cameraY, cameraZ; 
+extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
 
 /* 
 const char* faces[] = {
@@ -48,72 +54,7 @@ extern float sx, sy, sz;
 
 BOOL initScene2()
 {
-	// if (!loadGLPngTexture(&texture_leaf, "resources/ganpati.png"))
-	// {
-	// 	fprintf(gpFile, "title.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_tree, "resources/title.png"))
-	// {
-	// 	fprintf(gpFile, "title.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_temple_front_wall, "resources/temple_front_wall.png")) 
-	// {
-	// 	fprintf(gpFile, "temple_front_wall.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_temple_side_and_back_walls, "resources/temple_back_and_side_walls.png")) 
-	// {
-	// 	fprintf(gpFile, "temple_side_and_back_wall.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_temple_top, "resources/temple_top.png")) 
-	// {
-	// 	fprintf(gpFile, "temple_top.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_ground, "resources/ground.png"))
-	// {
-	// 	fprintf(gpFile, "ground.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_road, "resources/road.png"))
-	// {
-	// 	fprintf(gpFile, "road.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_tree1, "resources/tree1.png"))
-	// {
-	// 	fprintf(gpFile, "tree1.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_tree2, "resources/tree2.png"))
-	// {
-	// 	fprintf(gpFile, "tree2.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_tree3, "resources/tree3.png"))
-	// {
-	// 	fprintf(gpFile, "tree3.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_tree4, "resources/tree4.png"))
-	// {
-	// 	fprintf(gpFile, "tree4.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_god_image, "resources/vitthal.png"))
-	// {
-	// 	fprintf(gpFile, "vitthal.png Texture failed \n");
-	// 	return FALSE;
-	// }
-	// if (!loadGLPngTexture(&texture_temple_floor, "resources/temple_floor.png"))
-	// {
-	// 	fprintf(gpFile, "vitthal.png Texture failed \n");
-	// 	return FALSE;
-	// }
-    if (!loadGLPngTexture(&texture_school_floor, "resources/temple_floor.png"))
+	if (!loadGLPngTexture(&texture_school_floor, "resources/temple_floor.png"))
 	{
 		fprintf(gpFile, "texture for school floor failed to load\n");
 		return FALSE;
@@ -153,6 +94,16 @@ BOOL initScene2()
 		fprintf(gpFile, "logo texture failed to load\n");
 		return FALSE;
 	}
+	if (!loadGLPngTexture(&texture_headmaster_front_wall, "resources/headmaster_front_wall.png"))
+	{
+		fprintf(gpFile, "headmaster_front_wall texture failed to load\n");
+		return FALSE;
+	}
+	if (!loadGLPngTexture(&texture_headmaster_side_wall, "resources/headmaster_side_wall.png"))
+	{
+		fprintf(gpFile, "headmaster_side_wall texture failed to load\n");
+		return FALSE;
+	}
 
 	// cubemapTexture = loadCubemap(faces);
 
@@ -162,6 +113,8 @@ BOOL initScene2()
 void displayScene2()
 {
 	// variable declarations 
+	static BOOL isThisFirstCall = TRUE; 
+	
 	// array for trees 
 	struct tree trees[] = {
 		{3.70, 0.80, 0.10, 1.30, 1.30, texture_tree1}, 
@@ -187,13 +140,26 @@ void displayScene2()
 		{0.20, 0.90, -3.40, 4.60, 0.10, 0.80, 1.0f, 1.0f, 1.0f, FACE_ALL, {texture_school_floor, texture_school_floor, texture_school_floor, texture_school_floor, texture_school_floor, texture_school_floor}}, 	// building top 
 		{-3.35, 0.30, -3.70, 0.849, 0.50, 0.70, 1.0f, 1.0f, 1.0f, FACE_FRONT, {texture_class_front_mstc, 0, 0, 0, 0, 0}}, // classroom 1 
 		{-1.65, 0.30, -3.70, 0.849, 0.50, 0.70, 1.0f, 1.0f, 1.0f, FACE_FRONT, texture_class_front_dsa, 0, 0, 0, 0, 0}, // classroom 2 
-		{0.05, 0.30, -3.70, 0.849, 0.50, 0.70, 1.0f, 1.0f, 1.0f, FACE_FRONT, texture_head_cabin, 0, 0, 0, 0, 0}, 	// headmaster cabin  
+		{0.05, 0.30, -3.70, 0.849, 0.50, 0.70, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_head_cabin, texture_headmaster_side_wall, texture_headmaster_front_wall, texture_headmaster_side_wall, texture_school_floor, texture_school_floor}, 	// headmaster cabin  
 		{1.75, 0.30, -3.70, 0.849, 0.50, 0.70, 1.0f, 1.0f, 1.0f, FACE_FRONT, texture_class_front_cpp, 0, 0, 0, 0, 0}, 	// classroom 3 
 		{3.45, 0.30, -3.70, 0.849, 0.50, 0.70, 1.0f, 1.0f, 1.0f, FACE_FRONT, texture_class_front_python, 0, 0, 0, 0, 0}, 	// classroom 4 
 		{5.10, 0.20, -1.50, 0.40, 0.40, 1.20, 1.0f, 1.0f, 1.0f, FACE_FRONT | FACE_RIGHT | FACE_LEFT, texture_lsp, texture_lsp, 0, texture_lsp, 0, 0}  // classroom 5 - lsp 
 	}; 
 	
 	// code 
+	if(isThisFirstCall == TRUE) 
+	{
+		cameraX = 0.20f; 
+		cameraY = 0.20f;
+		cameraZ = -4.20f; 
+
+		cameraEyeX = 0.20f; 
+		cameraEyeY = 3.30f; 
+		cameraEyeZ = -26.40f; 
+
+		isThisFirstCall = FALSE; 
+	}
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -290,14 +256,150 @@ void displayScene2()
 	}  
 } 
 
-void updateScene2(void) 
+/*
+	Initial 
+		0.20  0.20 -4.24
+		0.20 3.30 -26.40
+	Position 1 
+		-0.10  0.10 -3.00
+		0.00 2.00 -20.00
+
+	Position 3 
+		-0.06  0.11 -1.99
+		0.03 2.19 -20.96
+
+	Position4
+		-4.15  -0.09 -1.79
+		3.43 5.89 -20.96
+	Position5 
+		3.15  0.01 -1.59
+		16.43 1.79 -6.36
+
+	Position 6 
+		0.20  0.20 4.50
+		0.20 3.30 -26.40
+	final
+		-0.06  0.91 -1.89
+		1.43 3.49 -20.96
+*/
+
+static void loadCameraPosition4(void) 
 {
 	// code 
+	cameraX = -4.15;
+	cameraY = -0.09;
+	cameraZ = -1.79;
+
+	cameraEyeX = 3.43;
+	cameraEyeY = 5.89;
+	cameraEyeZ = -20.96;
+} 
+
+void updateScene2(void) 
+{
+	// variable declarations 
+	static BOOL isUpdate1 = TRUE; 
+	static BOOL isUpdate2 = FALSE; 
+	static BOOL isUpdate3 = FALSE; 
+	static BOOL isUpdate4 = FALSE; 
+	static BOOL isUpdate5 = FALSE; 
+	static BOOL isUpdate6 = FALSE; 
+
+	static float inverse_constant_for_camera_speed1 = 100; 
+	static float inverse_constant_for_camera_speed2 = 100; 
+	static float inverse_constant_for_camera_speed3 = 100; 
+	static float inverse_constant_for_camera_speed4 = 100; 
+	static float inverse_constant_for_camera_speed5 = 100; 
+	static float inverse_constant_for_camera_speed6 = 100; 
+
+	static BOOL isCameraPosition4Loaded = FALSE; 
+
+	// code 
+	if(isUpdate1 == TRUE) 
+	{
+		cameraX = cameraX - 0.30/inverse_constant_for_camera_speed1; 
+		cameraY = cameraY - 0.10/inverse_constant_for_camera_speed1; 
+		cameraZ = cameraZ + 1.42/inverse_constant_for_camera_speed1; 
+
+		cameraEyeX = cameraEyeX - 0.20/inverse_constant_for_camera_speed1; 
+		cameraEyeY = cameraEyeY - 1.30/inverse_constant_for_camera_speed1; 
+		cameraEyeZ = cameraEyeZ + 6.40/inverse_constant_for_camera_speed1; 
+
+		if(cameraZ >= -3.0f) 
+		{
+			isUpdate1 = FALSE; 
+			isUpdate2 = TRUE; 
+		} 
+	} 
+	if(isUpdate2 == TRUE) 
+	{
+		cameraX = cameraX + 0.04/inverse_constant_for_camera_speed2; 
+		cameraY = cameraY + 0.01/inverse_constant_for_camera_speed2; 
+		cameraZ = cameraZ + 0.1/inverse_constant_for_camera_speed2; 
+
+		cameraEyeX = cameraEyeX + 0.03/inverse_constant_for_camera_speed1; 
+		cameraEyeY = cameraEyeY + 0.19/inverse_constant_for_camera_speed1; 
+		cameraEyeZ = cameraEyeZ - 0.96/inverse_constant_for_camera_speed1; 
+
+		if(cameraZ >= -2.0f) 
+		{
+			isUpdate2 = FALSE; 
+			isUpdate3 = TRUE; 
+		} 
+	} 
+	// if(isUpdate3 == TRUE) 
+	// {
+	// 	cameraX = cameraX + 0.04/inverse_constant_for_camera_speed2; 
+	// 	cameraY = cameraY + 0.01/inverse_constant_for_camera_speed2; 
+	// 	cameraZ = cameraZ + 0.2/inverse_constant_for_camera_speed2; 
+
+	// 	cameraEyeX = cameraEyeX + 13.0/inverse_constant_for_camera_speed2; 
+	// 	cameraEyeY = cameraEyeY - 4.10/inverse_constant_for_camera_speed2; 
+	// 	cameraEyeZ = cameraEyeZ - 14.60/inverse_constant_for_camera_speed2; 
+
+	// 	if(cameraZ <= -20.96f) 
+	// 	{
+	// 		isUpdate3 = FALSE; 
+	// 		isUpdate4 = TRUE; 
+	// 	} 
+	// }
+	if(isUpdate3 == TRUE) 
+	{
+		if(isCameraPosition4Loaded == FALSE) 
+		{
+			loadCameraPosition4(); 
+			isCameraPosition4Loaded = TRUE; 
+		} 
+
+		cameraX = cameraX + 7.0/inverse_constant_for_camera_speed2; 
+		cameraY = cameraY + 1.0/inverse_constant_for_camera_speed2; 
+		cameraZ = cameraZ + 0.20/inverse_constant_for_camera_speed2; 
+
+		cameraEyeX = cameraEyeX + 13.0/inverse_constant_for_camera_speed2; 
+		cameraEyeY = cameraEyeY - 4.10/inverse_constant_for_camera_speed2; 
+		cameraEyeZ = cameraEyeZ - 14.60/inverse_constant_for_camera_speed2;  
+
+		if(cameraEyeZ >= -6.96f) 
+		{
+			isUpdate3 = FALSE; 
+			isUpdate4 = TRUE; 
+		} 
+	}
 }
 
 void uninitializeScene2(void) 
 {
 	// code 
+	if(texture_headmaster_side_wall)
+	{
+		glDeleteTextures(1, &texture_headmaster_side_wall); 
+		texture_headmaster_side_wall = 0; 
+	}
+	if(texture_headmaster_front_wall)
+	{
+		glDeleteTextures(1, &texture_headmaster_front_wall); 
+		texture_headmaster_front_wall = 0; 
+	}
 	if(texture_class_front_mstc)
 	{
 		glDeleteTextures(1, &texture_class_front_mstc); 

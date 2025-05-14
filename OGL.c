@@ -5,7 +5,7 @@ enum SceneNumber
     SLIDE1, SLIDE2, SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
 }; 
 
-enum SceneNumber currentSceneNumber = SCENE_ONE; 
+enum SceneNumber currentSceneNumber = SCENE_TWO; 
 
 // global variable declarations 
 // variables related with full-screen  
@@ -230,19 +230,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
                 // camera movement with arrow keys 
                 case VK_UP: 
-                    cameraZ -= 1.0f; 
+                    cameraZ -= 0.1f; 
                     break; 
 
                 case VK_DOWN: 
-                    cameraZ += 1.0f; 
+                    cameraZ += 0.1f; 
                     break; 
 
                 case VK_LEFT: 
-                    cameraAngle -= 1.0f; 
+                    cameraAngle -= 0.1f; 
                     break; 
 
                 case VK_RIGHT: 
-                    cameraAngle += 1.0f; 
+                    cameraAngle += 0.1f; 
                     break; 
 
                 default: 
@@ -270,46 +270,46 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                 // camera position controls 
                 case 'w': 
                 case 'W': 
-                    cameraY += 1.0f; 
+                    cameraY += 0.1f; 
                     break; 
 
                 case 's': 
                 case 'S': 
-                    cameraY -= 0.5f; 
+                    cameraY -= 0.1f; 
                     break; 
 
                 case 'a': 
                 case 'A': 
-                    cameraX -= 0.5f; 
+                    cameraX -= 0.1f; 
                     break; 
 
                 case 'd': 
                 case 'D': 
-                    cameraX += 0.5f; 
+                    cameraX += 0.1f; 
                     break; 
 
                 case '6': 
-                    cameraEyeX += 0.5f; 
+                    cameraEyeX += 0.1f; 
                     break; 
 
                 case '4': 
-                    cameraEyeX -= 0.5f; 
+                    cameraEyeX -= 0.1f; 
                     break; 
 
                 case '8': 
-                    cameraEyeY += 0.5f; 
+                    cameraEyeY += 0.1f; 
                     break; 
 
                 case '2': 
-                    cameraEyeY -= 0.5f; 
+                    cameraEyeY -= 0.1f; 
                     break; 
 
                 case '7': 
-                    cameraEyeZ -= 0.5f; 
+                    cameraEyeZ -= 0.1f; 
                     break; 
 
                 case '9': 
-                    cameraEyeZ += 0.5f; 
+                    cameraEyeZ += 0.1f; 
                     break;  
 
                 // -------- size -------- 
@@ -372,7 +372,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
                 case 'p': 
                 case 'P': 
-                    fprintf(gpFile, "\n\n%f  %f %f\n%f %f %f\n%f %f %f\n\n", 
+                    fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
                             cameraX, cameraY, cameraZ, 
                             cameraEyeX, cameraEyeY, cameraEyeZ, 
                             cameraUpX, cameraUpY, cameraUpZ 
@@ -529,6 +529,12 @@ int initialize(void)
                 fprintf(gpFile, "initScene2() failed\n"); 
                 return (FALSE); 
             }
+            if(!initScene1()) 
+            {
+                fprintf(gpFile, "initScene1() failed\n"); 
+                return (FALSE); 
+            }
+            break; 
         case SCENE_ONE: 
             if(!initScene1()) 
             {
@@ -622,6 +628,7 @@ void display(void)
     {
         case SCENE_TWO: 
             displayScene2(); 
+            break; 
         case SCENE_ONE: 
             displayScene1(); 
             break; 
@@ -677,26 +684,26 @@ void update(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    // switch(currentSceneNumber) 
-    // {
-    //     case SCENE_ONE: 
-    //         updateScene1(); 
-    //         break; 
-    //     case SCENE_TWO: 
-    //         updateScene2(); 
-    //         break; 
-    //     case SCENE_THREE: 
-    //         updateScene3(); 
-    //         break; 
-    //     case SCENE_FOUR: 
-    //         updateScene4(); 
-    //         break; 
-    //     default: 
-    //         break; 
-    // }
+    switch(currentSceneNumber) 
+    {
+        case SCENE_ONE: 
+            updateScene1(); 
+            break; 
+        case SCENE_TWO: 
+            updateScene2(); 
+            break; 
+        case SCENE_THREE: 
+            updateScene3(); 
+            break; 
+        case SCENE_FOUR: 
+            updateScene4(); 
+            break; 
+        default: 
+            break; 
+    }
 
     // if(shot_count == 3) 
-        updateScene1(); 
+        // updateScene1(); 
 
     updateFade(1.0f); 
 }
