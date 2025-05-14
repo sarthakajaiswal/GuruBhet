@@ -41,8 +41,8 @@ BOOL gbFogEnabled = FALSE;
 extern BOOL isFading; 
 
 // camera variables 
-float cameraX = 0.0f,       cameraY = 5.0f,     cameraZ = 5.0f; 
-float cameraEyeX = 0.0f,    cameraEyeY = 5.0f,  cameraEyeZ = 0.0f; 
+float cameraX = 0.0f,       cameraY = 0.0f,     cameraZ = 5.0f; 
+float cameraEyeX = 0.0f,    cameraEyeY = 0.0f,  cameraEyeZ = 0.0f; 
 float cameraUpX = 0.0f,     cameraUpY = 1.0f,   cameraUpZ = 0.0f; 
 float cameraAngle = 0.0f; 
 
@@ -543,6 +543,7 @@ int initialize(void)
         default: 
             break; 
     }
+    initSlideScenes(); 
 
     // warmup resize 
     resize(WIN_WIDTH, WIN_HEIGHT); 
@@ -602,23 +603,25 @@ void display(void)
     // apply camera rotation 
     // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
 
-    switch(currentSceneNumber) 
-    {
-        case SCENE_ONE: 
-            displayScene1(); 
-            break; 
-        case SCENE_TWO: 
-            displayScene2(); 
-            break; 
-        case SCENE_THREE: 
-            displayScene3(); 
-            break; 
-        case SCENE_FOUR: 
-            displayScene4(); 
-            break; 
-        default: 
-            break; 
-    }
+    // switch(currentSceneNumber) 
+    // {
+    //     case SCENE_ONE: 
+    //         displayScene1(); 
+    //         break; 
+    //     case SCENE_TWO: 
+    //         displayScene2(); 
+    //         break; 
+    //     case SCENE_THREE: 
+    //         displayScene3(); 
+    //         break; 
+    //     case SCENE_FOUR: 
+    //         displayScene4(); 
+    //         break; 
+    //     default: 
+    //         break; 
+    // }
+
+    displaySlide1(); 
 
     // displayFade(); 
 

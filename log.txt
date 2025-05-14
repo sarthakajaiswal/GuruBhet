@@ -12,4 +12,9 @@ Image loaded successfully: resources/tree3.png (3072X3072)
 Image loaded successfully: resources/tree4.png (529X471)
 Image loaded successfully: resources/vitthal.png (8640X5181)
 Image loaded successfully: resources/temple_floor.png (626X417)
-Program terminated successfully
+Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
+Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
+
+
+0.00, 0.00, 0.00, 3.68, 2.08, 1.00
+

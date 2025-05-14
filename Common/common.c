@@ -121,10 +121,10 @@ unsigned int loadCubemap(const char* faces[])
 void textureOnQuad(float tx, float ty, float tz, float sx, float sy, float sz, GLuint texture)  
 {
     glPushMatrix(); 
-		glBindTexture(GL_TEXTURE_2D, texture); 
-		glTranslatef(tx, ty, tz); 
-		glScalef(sx, sy, sz);  
-
+        glTranslatef(tx, ty, tz); 
+        glScalef(sx, sy, sz);  
+        
+        glBindTexture(GL_TEXTURE_2D, texture); 
         glColor3f(1.0f, 1.0f, 1.0f); 
 		glBegin(GL_QUADS);
 		glTexCoord2f(1.0f, 1.0f); 
