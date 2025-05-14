@@ -12,6 +12,6 @@
 
 // function declarations 
 extern void displayFade(void); 
-extern void updateFade(void); 
+extern void updateFade(float); 
 
 #endif /* _FADE_H */  

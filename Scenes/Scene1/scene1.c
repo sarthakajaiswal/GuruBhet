@@ -424,6 +424,10 @@ void displayScene1()
 	Position 3 
 		0.0 1.5 -9.0 
 		0.0 2.11 -15.0 
+
+	Position 4 
+		0.00  1.50 -16.00
+		0.000000 1.54 -34.94
 */
 
 void updateScene1()
@@ -432,10 +436,12 @@ void updateScene1()
 	static BOOL isUpdate1 = TRUE; 
 	static BOOL isUpdate2 = FALSE; 
 	static BOOL isUpdate3 = FALSE; 
+	static BOOL isUpdate4 = FALSE; 
 
 	unsigned int inverse_constant_for_speed1 = 500.0f; // incresing this constant decreases camera speed 
-	unsigned int inverse_constant_for_speed2 = 1500.0f; 
-	unsigned int inverse_constant_for_speed3 = 800.0f; 
+	unsigned int inverse_constant_for_speed2 = 800.0f; 
+	unsigned int inverse_constant_for_speed3 = 400.0f; 
+	unsigned int inverse_constant_for_speed4 = 100.0f; 
 
 	// code 
 	if(isUpdate1 == TRUE) 
@@ -484,7 +490,20 @@ void updateScene1()
 		cameraEyeZ = cameraEyeZ - 0.05f;
 
 		if(cameraZ < -9.0f) 
+		{
 			isUpdate3 = FALSE; 
+			isUpdate4 = TRUE; 
+		} 
+	}
+
+	else if(isUpdate4 == TRUE) 
+	{
+		cameraZ = cameraZ - 7.0/inverse_constant_for_speed4; 
+		cameraEyeY = cameraEyeY - 0.57/inverse_constant_for_speed4; 
+		cameraEyeZ = cameraEyeZ - 20.0/inverse_constant_for_speed4; 
+
+		if(cameraZ <= -16.0)
+			isUpdate4 = FALSE; 
 	}
 }
 

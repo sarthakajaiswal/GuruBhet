@@ -5,7 +5,7 @@ enum SceneNumber
     SLIDE1, SLIDE2, SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
 }; 
 
-enum SceneNumber currentSceneNumber = SCENE_FOUR; 
+enum SceneNumber currentSceneNumber = SCENE_ONE; 
 
 // global variable declarations 
 // variables related with full-screen  
@@ -59,6 +59,9 @@ SYSTEMTIME stStartTime;
 unsigned long long start_time_stamp_microsec; 
 unsigned long long current_time_stamp_microsec; 
 unsigned long long main_timer_microsec;      
+
+// scene shots related variables 
+int shot_count = 0; 
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -137,6 +140,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 
     ghWnd = hwnd; 
 
+    BOOL isInitialized = FALSE; 
+    static BOOL sound_played = FALSE; 
+
     // initialization 
     iResult = initialize(); 
     if(iResult != 0) 
@@ -149,6 +155,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     ShowWindow(hwnd, iCmdShow); 
     SetForegroundWindow(hwnd); 
     SetFocus(hwnd); 
+
+    isInitialized = TRUE; 
 
     // game loop 
     while(bDone == FALSE) 
@@ -168,6 +176,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
         {
             if(gbActiveWindow == TRUE) 
             {
+                if(!sound_played && isInitialized)  
+                {
+                    // PlayBackgroundMusic(); 
+                    sound_played = TRUE; 
+                }
                 // render 
                 display(); 
 
@@ -553,7 +566,7 @@ int initialize(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    PlayBackgroundMusic(); 
+    // PlayBackgroundMusic();  
 
     start_time_stamp_microsec = (stStartTime.wMinute * 60000) + (stStartTime.wSecond * 1000) + stStartTime.wMilliseconds; 
     current_time_stamp_microsec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
@@ -621,27 +634,26 @@ void display(void)
         default: 
             break; 
     }
-
     
-    // if(main_timer_microsec < 500) 
+    // if(main_timer_microsec < 100) 
     //     isFading = TRUE; 
-    
-    // if(main_timer_microsec > 2000 && main_timer_microsec <= 9426) 
+
+    // if(shot_count == 1)
     //     displaySlide1();    
 
-    // if(main_timer_microsec > 5500 && main_timer_microsec < 5520) 
+    // if(main_timer_microsec > 9000 && main_timer_microsec < 9100) 
     //     isFading = TRUE; 
 
-    // if(main_timer_microsec > 8500 && main_timer_microsec <= 12000) 
+    // if(shot_count == 2) 
     //     displaySlide2(); 
 
-    // if(main_timer_microsec > 11000 && main_timer_microsec < 11010) 
+    // if(main_timer_microsec > 22500 && main_timer_microsec < 22550) 
     //     isFading = TRUE; 
 
-    // if(main_timer_microsec > 12000 && main_timer_microsec <= 18000) 
+    // if(shot_count == 3) 
     //     displayScene1(); 
 
-    displayFade(); 
+    // displayFade(); 
     
     // swap the buffers 
     SwapBuffers(ghdc); 
@@ -665,24 +677,28 @@ void update(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    switch(currentSceneNumber) 
-    {
-        case SCENE_ONE: 
-            updateScene1(); 
-            break; 
-        case SCENE_TWO: 
-            updateScene2(); 
-            break; 
-        case SCENE_THREE: 
-            updateScene3(); 
-            break; 
-        case SCENE_FOUR: 
-            updateScene4(); 
-            break; 
-        default: 
-            break; 
-    }
-    updateFade(); 
+    // switch(currentSceneNumber) 
+    // {
+    //     case SCENE_ONE: 
+    //         updateScene1(); 
+    //         break; 
+    //     case SCENE_TWO: 
+    //         updateScene2(); 
+    //         break; 
+    //     case SCENE_THREE: 
+    //         updateScene3(); 
+    //         break; 
+    //     case SCENE_FOUR: 
+    //         updateScene4(); 
+    //         break; 
+    //     default: 
+    //         break; 
+    // }
+
+    // if(shot_count == 3) 
+        updateScene1(); 
+
+    updateFade(1.0f); 
 }
 
 void uninitialize(void) 
