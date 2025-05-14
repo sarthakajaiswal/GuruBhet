@@ -434,8 +434,8 @@ void updateScene1()
 	static BOOL isUpdate3 = FALSE; 
 
 	unsigned int inverse_constant_for_speed1 = 500.0f; // incresing this constant decreases camera speed 
-	unsigned int inverse_constant_for_speed2 = 2000.0f; 
-	unsigned int inverse_constant_for_speed3 = 1000.0f; 
+	unsigned int inverse_constant_for_speed2 = 1500.0f; 
+	unsigned int inverse_constant_for_speed3 = 800.0f; 
 
 	// code 
 	if(isUpdate1 == TRUE) 
@@ -477,7 +477,7 @@ void updateScene1()
 	else if(isUpdate3 == TRUE)
 	{
 		if(cameraY < 1.5f) 
-			cameraY = cameraY + 0.002f; 
+			cameraY = cameraY + 0.005f; 
 		cameraZ = cameraZ - 4.0/inverse_constant_for_speed3; 
 		if(cameraEyeY < 4.0) 
 			cameraEyeY = cameraEyeY + 0.005f; 

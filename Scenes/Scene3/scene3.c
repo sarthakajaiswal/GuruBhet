@@ -14,7 +14,12 @@ extern float tx, ty, tz;
 extern float sx, sy, sz; 
 
 float boxOpenAngle = 0.0f; 
-float boxRotateAngle = 0.0f; 
+float boxRotateAngle = 0.0f;
+
+// camera related variables 
+extern float cameraX, cameraY, cameraZ; 
+extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
+extern float cameraUpX, cameraUpY, cameraUpZ; 
 
 BOOL initScene3(void) 
 {
@@ -144,20 +149,40 @@ void drawGiftBox(
 
 void displayScene3(void) 
 {
+    // variable declarations 
+    static BOOL isThisFirstCall = TRUE; 
+
     // code 
-    glPushMatrix(); 
+    if(isThisFirstCall) 
     {
-        glTranslatef(0.0f, 0.0f, -6.0f); 
-        glScalef(11.20f, 6.30f, 0.0f); 
-        
-        background(); 
-    }   
-    glPopMatrix(); 
+        cameraX = -3.0; 
+        cameraY = 15.0f; 
+        cameraZ = 11.0f; 
+
+        cameraEyeX = 0.0f; 
+        cameraEyeY = 2.0f; 
+        cameraEyeZ = 0.0f; 
+
+        isThisFirstCall = FALSE;
+    }
+
+    // background 
+    drawTexturedCube(
+        0.0f, 0.0f, 0.0f, 
+        20.0f, 20.0f, 20.0f, 
+        1.0f, 1.0f, 1.0f, FACE_ALL, 
+        texture_gift_background, 
+        texture_gift_background, 
+        texture_gift_background, 
+        texture_gift_background, 
+        texture_gift_background, 
+        texture_gift_background
+    ); 
 
     // giftbox with gift (sunglass texture) inside 
     glPushMatrix(); 
     {
-        glRotatef(30, 0.0f, 1.0f, 0.0f);  
+        glRotatef(boxRotateAngle, 0.0f, 1.0f, 0.0f);  
         drawGiftBox(
             0.0f, 0.0f, 0.0f, 
             3.20f, 1.10f, 2.20f
@@ -168,14 +193,32 @@ void displayScene3(void)
 
 void updateScene3(void) 
 {
+    // variable declarations 
+    static float inverse_constant_for_camera_speed = 1000; 
+    static BOOL isCameraUpdating = TRUE; 
+
     // code 
     if(boxOpenAngle < 120.0f)
-        boxOpenAngle += 0.03f; 
+        boxOpenAngle += 1.0f; 
     
     if(boxRotateAngle <= 360.0f) 
     {
-        boxRotateAngle = boxRotateAngle + 0.1f;  
+        boxRotateAngle = boxRotateAngle + 1.0f;  
     } 
+
+    if(isCameraUpdating == TRUE) 
+    {
+        cameraX = cameraX + 6.0/inverse_constant_for_camera_speed; 
+        cameraY = cameraY - 7.0/inverse_constant_for_camera_speed; 
+        cameraZ = cameraZ - 8.0/inverse_constant_for_camera_speed; 
+
+        cameraEyeX = cameraEyeX - 2.0/inverse_constant_for_camera_speed; 
+        cameraEyeY = cameraEyeY - 5.0/inverse_constant_for_camera_speed; 
+        cameraEyeZ = cameraEyeZ - 4.0/inverse_constant_for_camera_speed; 
+    } 
+
+    if(cameraX >= 3.0f) 
+        isCameraUpdating = FALSE; 
 }
 
 void uninitializeScene3(void) 

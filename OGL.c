@@ -5,7 +5,7 @@ enum SceneNumber
     SLIDE1, SLIDE2, SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
 }; 
 
-enum SceneNumber currentSceneNumber = SCENE_ONE; 
+enum SceneNumber currentSceneNumber = SCENE_THREE; 
 
 // global variable declarations 
 // variables related with full-screen  
@@ -668,7 +668,7 @@ void update(void)
     switch(currentSceneNumber) 
     {
         case SCENE_ONE: 
-            // updateScene1(); 
+            updateScene1(); 
             break; 
         case SCENE_TWO: 
             updateScene2(); 
