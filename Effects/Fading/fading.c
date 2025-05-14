@@ -35,8 +35,6 @@ extern double main_timer;
 
 void updateFade(void) 
 {
-    static int times_called = 0; 
- 
     // code 
     if(isFading == TRUE) 
     {
@@ -45,7 +43,10 @@ void updateFade(void)
             fadeDensity = fadeDensity + 0.0005f; // increase darkness 
 
             if(fadeDensity >= 1.0f) 
+            {
+                fadeDensity = 1.0f; 
                 isFadingOut = FALSE; 
+            }
         }
         else // fading in 
         {
@@ -53,8 +54,8 @@ void updateFade(void)
 
             if(fadeDensity <= 0.0f) 
             {
+                fadeDensity = 0.0f; 
                 isFadingOut = TRUE; 
-                fprintf(gpFile, "\n%d) timer = %lld\n", times_called, main_timer_microsec); 
                 isFading = FALSE;   // stop fade effect when density restores to 0.0f; 
             }
         }

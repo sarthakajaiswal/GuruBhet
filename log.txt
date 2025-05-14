@@ -15,7 +15,7 @@ Image loaded successfully: resources/temple_floor.png (626X417)
 Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
 Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
 
-0) timer = 4538
+0) timer = 5435
 
-0) timer = 10872
+0) timer = 12009
 Program terminated successfully

@@ -2,7 +2,7 @@
 
 enum SceneNumber
 {
-    SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
+    SLIDE1, SLIDE2, SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
 }; 
 
 enum SceneNumber currentSceneNumber = SCENE_ONE; 
@@ -624,7 +624,20 @@ void display(void)
     // }
 
     
+    if(main_timer_microsec < 500) 
+        isFading = TRUE; 
+    
+    if(main_timer_microsec > 2000 && main_timer_microsec <= 9426) 
+        displaySlide1();    
 
+    if(main_timer_microsec > 5500 && main_timer_microsec < 5520) 
+        isFading = TRUE; 
+
+    if(main_timer_microsec > 8500 && main_timer_microsec <= 12000) 
+        displaySlide2(); 
+
+    displayFade(); 
+    
     // swap the buffers 
     SwapBuffers(ghdc); 
 }
