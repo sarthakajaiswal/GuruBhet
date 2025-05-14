@@ -56,9 +56,9 @@ float tx, ty, tz;
 FILETIME ft;  
 SYSTEMTIME stCurrentTime;
 SYSTEMTIME stStartTime;  
-unsigned long long start_time_stamp_milisec; 
-unsigned long long current_time_stamp_milisec; 
-unsigned long long main_timer_milisec;      
+unsigned long long start_time_stamp_microsec; 
+unsigned long long current_time_stamp_microsec; 
+unsigned long long main_timer_microsec;      
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -553,9 +553,11 @@ int initialize(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    start_time_stamp_milisec = (stStartTime.wMinute * 60000) + (stStartTime.wSecond * 1000) + stStartTime.wMilliseconds; 
-    current_time_stamp_milisec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
-    main_timer_milisec = current_time_stamp_milisec - start_time_stamp_milisec;  
+    PlayBackgroundMusic(); 
+
+    start_time_stamp_microsec = (stStartTime.wMinute * 60000) + (stStartTime.wSecond * 1000) + stStartTime.wMilliseconds; 
+    current_time_stamp_microsec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
+    main_timer_microsec = current_time_stamp_microsec - start_time_stamp_microsec;  
 
     return (0); 
 }
@@ -584,11 +586,11 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
     char str[128]; 
-    sprintf(str, "%llu", main_timer_milisec); 
+    sprintf(str, "%llu", main_timer_microsec); 
     SetWindowText(ghWnd, str); 
 
-    current_time_stamp_milisec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
-    main_timer_milisec = current_time_stamp_milisec - start_time_stamp_milisec;  
+    current_time_stamp_microsec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
+    main_timer_microsec = current_time_stamp_microsec - start_time_stamp_microsec;  
 
     glMatrixMode(GL_MODELVIEW); 
     glLoadIdentity(); 
@@ -621,12 +623,22 @@ void display(void)
     //         break; 
     // }
 
-    displaySlide1(); 
-
-    // displayFade(); 
+    
 
     // swap the buffers 
     SwapBuffers(ghdc); 
+}
+
+void PlayBackgroundMusic(void)
+{
+    char buffer[MAX_PATH] = {0};
+    GetModuleFileName(NULL, buffer, MAX_PATH);
+    char *LastSlash = strrchr(buffer, '\\');
+    if (LastSlash == NULL)
+        LastSlash = strrchr(buffer, '/');
+    buffer[LastSlash - buffer] = 0;
+    strcat(buffer, "\\Resources\\audio.wav");
+    PlaySound(buffer, NULL, SND_ASYNC | SND_LOOP);
 }
 
 void update(void) 

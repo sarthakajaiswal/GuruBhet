@@ -7,6 +7,7 @@
 #include <Windows.h> 
 #include <stdio.h> 
 #include <stdlib.h> 
+#include <mmsystem.h> 
 
 #define _CRT_NO_TIME_T
 #include <time.h> 
@@ -40,9 +41,11 @@
 
 #pragma comment(lib, "OpenGL32.lib")
 #pragma comment(lib, "glu32.lib") 
+#pragma comment(lib, "kernel32.lib") 
 
 // global function declarations 
 extern LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM); 
+extern void PlayBackgroundMusic(void); 
 
 #endif 
 
