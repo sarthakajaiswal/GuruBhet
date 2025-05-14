@@ -50,5 +50,5 @@ void displaySlide1(void)
 
 void displaySlide2(void) 
 {
-
+    textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide2); 
 } 
