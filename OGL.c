@@ -5,7 +5,7 @@ enum SceneNumber
     SLIDE1, SLIDE2, SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
 }; 
 
-enum SceneNumber currentSceneNumber = SCENE_THREE; 
+enum SceneNumber currentSceneNumber = SCENE_FOUR; 
 
 // global variable declarations 
 // variables related with full-screen  

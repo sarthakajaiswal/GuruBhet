@@ -130,6 +130,7 @@ void drawGiftBox(
             glBindTexture(GL_TEXTURE_2D, texture_sunglass);
             glScalef(0.75, 4.50, 0.84); 
 
+            glColor3f(1.0f, 1.0f, 1.0f); 
             glBegin(GL_QUADS); 
             glTexCoord2f(1.0f, 1.0f); 
             glVertex3f(1.0f, 0.0f, -1.0f); 	// right top 
@@ -182,7 +183,7 @@ void displayScene3(void)
     // giftbox with gift (sunglass texture) inside 
     glPushMatrix(); 
     {
-        glRotatef(boxRotateAngle, 0.0f, 1.0f, 0.0f);  
+        glRotatef(boxRotateAngle+30, 0.0f, 1.0f, 0.0f);  
         drawGiftBox(
             0.0f, 0.0f, 0.0f, 
             3.20f, 1.10f, 2.20f

@@ -19,6 +19,11 @@ extern GLUquadric* quadric;
 extern float tx, ty, tz; 
 extern float sx, sy, sz; 
 
+// camera related variables 
+extern float cameraX, cameraY, cameraZ; 
+extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
+extern float cameraUpX, cameraUpY, cameraUpZ; 
+
 BOOL initScene4(void) 
 {
     // code 
@@ -142,7 +147,7 @@ void displayScene4(void)
     // certificate  
     glPushMatrix(); 
     {
-        glTranslatef(-60.50, 45.0, 8.50); 
+        glTranslatef(-60.50, 50.0, 8.50); 
         glScalef(2.32, 3.64, 5.44);
         
         glBindTexture(GL_TEXTURE_2D, texture_certificate); 
@@ -220,7 +225,30 @@ void displayScene4(void)
 
     drawTexturedCube(
         55.30, 0.00, -33.30, 4.72, 6.40, 4.20,
+        1.0f, 1.0f, 1.0f, 
+        FACE_NONE, 
+        0, 0, 0, 0, 0, 0
+    );
+
+    // table 
+    drawTexturedCube(
+        56.0, 0.40, 48.70, 3.80, 12.16, 4.96, 
         1.0f, 0.0f, 0.0f, 
+        FACE_NONE, 
+        0, 0, 0, 0, 0, 0
+    );
+
+    // book on table 
+    drawTexturedCube(
+        55.40, 13.0, 48.10, 2.86, 0.32, 3.96, 
+        0.0f, 1.0f, 0.0f, 
+        FACE_NONE, 
+        0, 0, 0, 0, 0, 0
+    );
+
+    drawTexturedCube(
+        55.90, 11.70, 48.50, 3.80, 0.92, 5.12, 
+        0.0f, 0.0f, 1.0f, 
         FACE_NONE, 
         0, 0, 0, 0, 0, 0
     );
@@ -233,10 +261,62 @@ void displayScene4(void)
     gluSphere(quadric, 5.0, 16, 16); 
     glPopMatrix(); 
 
+    // ===================================== 
+
+    static BOOL isThisFirstCall = TRUE; 
+
+    if(isThisFirstCall) 
+    {
+        cameraX = -47.0f; 
+        cameraY = 51.0f; 
+        cameraZ = 9.0f; 
+
+        cameraEyeX = -181.0f; 
+        cameraEyeY = 41.0f; 
+        cameraEyeZ = 0.0f; 
+
+        isThisFirstCall = FALSE; 
+    }
 } 
+
+/*
+    Initial 
+       -47.000000  51.000000 9.000000
+        -181.500000 41.000000 0.000000
+        0.000000 1.000000 0.000000 
+
+    Postion 1 
+        -14.500000  50.000000 54.000000
+        -11.500000 50.500000 0.000000
+        0.000000 1.000000 0.000000
+
+    Psition 2 
+        -1.500000  26.500000 44.000000
+        -11.500000 27.000000 0.000000
+        0.000000 1.000000 0.000000
+
+    Position 3 
+        -20.500000  35.000000 9.000000
+        -0.500000 28.500000 0.000000
+        0.000000 1.000000 0.000000
+        
+    Position 4 
+        -37.000000  32.000000 -21.000000
+        -26.000000 26.500000 0.000000
+        0.000000 1.000000 0.000000
+
+    Position 5 
+        -19.000000  29.000000 -1.000000
+        14.000000 33.500000 0.000000
+        0.000000 1.000000 0.000000
+*/
 
 void updateScene4(void) 
 {
+    // variable declarations 
+    static BOOL isUpdate1 = TRUE; 
+    static BOOL isUpdate2 = FALSE; 
+    static BOOL isUpdate3 = FALSE; 
     // code 
 }  
 

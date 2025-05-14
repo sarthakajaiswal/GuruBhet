@@ -1,8 +1,13 @@
 Program started successfully
-Image loaded successfully: resources/boom.png (1380X920)
-Image loaded successfully: resources/giftbox.png (5000X2904)
-Image loaded successfully: resources/giftbox_topface.png (5000X2904)
-Image loaded successfully: resources/sunglass.png (529X380)
+Image loaded successfully: resources/room1.png (626X368)
+Image loaded successfully: resources/room2.png (626X450)
+Image loaded successfully: resources/room_floor.png (968X333)
+Image loaded successfully: resources/hometheater.png (271X454)
+Image loaded successfully: resources/ball.png (568X440)
+Image loaded successfully: resources/tv.png (499X311)
+Image loaded successfully: resources/sofa_back.png (1716X436)
+Image loaded successfully: resources/clock.png (500X500)
+Image loaded successfully: Resources/certificate.png (4766X3827)
 Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
 Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
 Program terminated successfully
