@@ -53,10 +53,12 @@ float sx = 1.0f, sy = 1.0f, sz = 1.0f;
 float tx, ty, tz; 
 
 // timer related variables 
-// struct timeval tv; 
-double start_time = 0.0; 
-double current_time = 0.0; 
-double main_timer = 0.0; 
+FILETIME ft;  
+SYSTEMTIME stCurrentTime;
+SYSTEMTIME stStartTime;  
+unsigned long long start_time_stamp_milisec; 
+unsigned long long current_time_stamp_milisec; 
+unsigned long long main_timer_milisec;      
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -545,11 +547,14 @@ int initialize(void)
     // warmup resize 
     resize(WIN_WIDTH, WIN_HEIGHT); 
 
-    // initialize timer value 
-    // gettimeofday(&tv, NULL); 
-    // start_time = tv.tv_sec*1000000 + tv.tv_usec; 
-    fprintf(gpFile, "Here"); 
-    start_time = time(0); 
+    GetSystemTimePreciseAsFileTime(&ft); 
+    FileTimeToSystemTime(&ft, &stStartTime); 
+    GetSystemTimePreciseAsFileTime(&ft); 
+    FileTimeToSystemTime(&ft, &stCurrentTime); 
+
+    start_time_stamp_milisec = (stStartTime.wMinute * 60000) + (stStartTime.wSecond * 1000) + stStartTime.wMilliseconds; 
+    current_time_stamp_milisec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
+    main_timer_milisec = current_time_stamp_milisec - start_time_stamp_milisec;  
 
     return (0); 
 }
@@ -578,12 +583,11 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
 
     char str[128]; 
-    sprintf(str, "%lf", main_timer); 
+    sprintf(str, "%llu", main_timer_milisec); 
     SetWindowText(ghWnd, str); 
 
-    // update timer 
-    current_time = time(0); 
-    main_timer = current_time - start_time; 
+    current_time_stamp_milisec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
+    main_timer_milisec = current_time_stamp_milisec - start_time_stamp_milisec;  
 
     glMatrixMode(GL_MODELVIEW); 
     glLoadIdentity(); 
@@ -597,9 +601,6 @@ void display(void)
 
     // apply camera rotation 
     // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
-
-    if(main_timer >= 5.0f && main_timer <=  5.9f) 
-        isFading = TRUE; 
 
     switch(currentSceneNumber) 
     {
@@ -628,6 +629,9 @@ void display(void)
 void update(void) 
 {
     // code 
+    GetSystemTimePreciseAsFileTime(&ft); 
+    FileTimeToSystemTime(&ft, &stCurrentTime); 
+
     switch(currentSceneNumber) 
     {
         case SCENE_ONE: 

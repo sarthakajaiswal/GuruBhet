@@ -8,7 +8,7 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 
-#define _ALL_SOURCE
+#define _CRT_NO_TIME_T
 #include <time.h> 
 
 // OpenGL related files 
