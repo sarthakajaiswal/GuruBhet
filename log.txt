@@ -1,27 +1,49 @@
 Program started successfully
-Image loaded successfully: resources/temple_floor.png (626X417)
-Image loaded successfully: resources/classroom_front_mstc.png (664X411)
-Image loaded successfully: resources/classroom_front_dsa.png (664X411)
-Image loaded successfully: resources/classroom_front_cpp.png (664X411)
-Image loaded successfully: resources/classroom_front_python.png (664X411)
-Image loaded successfully: resources/headmaster_cabin.png (656X414)
-Image loaded successfully: resources/lsp.png (5289X2083)
-Image loaded successfully: resources/logo.png (500X500)
-Image loaded successfully: resources/headmaster_front_wall.png (614X501)
-Image loaded successfully: resources/headmaster_side_wall.png (4000X2813)
-Image loaded successfully: resources/ganpati.png (512X512)
-Image loaded successfully: resources/title.png (3434X1080)
-Image loaded successfully: resources/temple_front_wall.png (799X230)
-Image loaded successfully: resources/temple_back_and_side_walls.png (402X329)
-Image loaded successfully: resources/temple_top.png (451X553)
-Image loaded successfully: resources/ground.png (6000X4002)
-Image loaded successfully: resources/road.png (512X512)
-Image loaded successfully: resources/tree1.png (512X487)
-Image loaded successfully: resources/tree2.png (500X500)
-Image loaded successfully: resources/tree3.png (3072X3072)
-Image loaded successfully: resources/tree4.png (529X471)
-Image loaded successfully: resources/vitthal.png (8640X5181)
-Image loaded successfully: resources/temple_floor.png (626X417)
+Image loaded successfully: resources/room1.png (626X368)
+Image loaded successfully: resources/room2.png (626X450)
+Image loaded successfully: resources/room_floor.png (968X333)
+Image loaded successfully: resources/hometheater.png (271X454)
+Image loaded successfully: resources/ball.png (568X440)
+Image loaded successfully: resources/tv.png (499X311)
+Image loaded successfully: resources/sofa_back.png (1716X436)
+Image loaded successfully: resources/clock.png (500X500)
+Image loaded successfully: Resources/certificate.png (4766X3827)
 Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
 Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
+
+
+-14.56  50.00 53.91
+-11.34 50.48 0.00
+0.00 1.00 0.00
+
+
+
+-1.29  26.01 38.59
+-11.34 27.00 0.00
+0.00 1.00 0.00
+
+
+
+-20.03  34.39 9.01
+-0.50 28.48 0.00
+0.00 1.00 0.00
+
+
+
+-30.51  32.25 -20.22
+-26.70 26.38 0.00
+0.00 1.00 0.00
+
+
+
+-3.21  31.75 1.98
+14.50 34.28 0.00
+0.00 1.00 0.00
+
+
+
+35.79  26.65 35.46
+38.90 25.18 37.50
+0.00 1.00 0.00
+
 Program terminated successfully

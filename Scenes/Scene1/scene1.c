@@ -20,6 +20,8 @@ extern float cameraX, cameraY, cameraZ;
 extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
 extern float cameraUpX, cameraUpY, cameraUpZ; 
 
+extern int shot_count; 
+
 const char* faces[] = {
     "Resources/Cubemap/right.png",
 	"Resources/Cubemap/left.png",
@@ -439,7 +441,7 @@ void updateScene1()
 	static BOOL isUpdate4 = FALSE; 
 
 	unsigned int inverse_constant_for_speed1 = 500.0f; // incresing this constant decreases camera speed 
-	unsigned int inverse_constant_for_speed2 = 800.0f; 
+	unsigned int inverse_constant_for_speed2 = 1200.0f; 
 	unsigned int inverse_constant_for_speed3 = 400.0f; 
 	unsigned int inverse_constant_for_speed4 = 100.0f; 
 
@@ -503,7 +505,10 @@ void updateScene1()
 		cameraEyeZ = cameraEyeZ - 20.0/inverse_constant_for_speed4; 
 
 		if(cameraZ <= -16.0)
+		{
 			isUpdate4 = FALSE; 
+			shot_count = shot_count + 1; 
+		} 
 	}
 }
 

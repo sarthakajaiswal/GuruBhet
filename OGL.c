@@ -5,7 +5,7 @@ enum SceneNumber
     SLIDE1, SLIDE2, SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
 }; 
 
-enum SceneNumber currentSceneNumber = SCENE_TWO; 
+enum SceneNumber currentSceneNumber = SCENE_FOUR; 
 
 // global variable declarations 
 // variables related with full-screen  
@@ -521,6 +521,11 @@ int initialize(void)
 
     // initFog(); 
 
+    // initScene1(); 
+    // initScene2(); 
+    // initScene3(); 
+    // initScene4(); 
+
     switch(currentSceneNumber) 
     {
         case SCENE_TWO: 
@@ -660,7 +665,13 @@ void display(void)
     // if(shot_count == 3) 
     //     displayScene1(); 
 
-    // displayFade(); 
+    // if(shot_count == 4) 
+    //     displayScene2(); 
+
+    // if(main_timer_microsec > 95000 && main_timer_microsec < 95100)
+    //     isFading = TRUE; 
+
+    displayFade(); 
     
     // swap the buffers 
     SwapBuffers(ghdc); 
@@ -703,7 +714,9 @@ void update(void)
     }
 
     // if(shot_count == 3) 
-        // updateScene1(); 
+    //     updateScene1(); 
+    // if(shot_count == 4) 
+    //     updateScene2(); 
 
     updateFade(1.0f); 
 }
