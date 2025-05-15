@@ -178,7 +178,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
             {
                 if(!sound_played && isInitialized)  
                 {
-                    // PlayBackgroundMusic(); 
+                    PlayBackgroundMusic(); 
                     sound_played = TRUE; 
                 }
                 // render 
@@ -521,52 +521,52 @@ int initialize(void)
 
     // initFog(); 
 
-    // initScene1(); 
-    // initScene2(); 
-    // initScene3(); 
-    // initScene4(); 
+    initScene1(); 
+    initScene2(); 
+    initScene3(); 
+    initScene4(); 
 
-    switch(currentSceneNumber) 
-    {
-        case SCENE_TWO: 
-            if(!initScene2()) 
-            {
-                fprintf(gpFile, "initScene2() failed\n"); 
-                return (FALSE); 
-            }
-            if(!initScene1()) 
-            {
-                fprintf(gpFile, "initScene1() failed\n"); 
-                return (FALSE); 
-            }
-            break; 
-        case SCENE_ONE: 
-            if(!initScene1()) 
-            {
-                fprintf(gpFile, "initScene1() failed\n"); 
-                return (FALSE); 
-            }
-            break; 
+    // switch(currentSceneNumber) 
+    // {
+    //     case SCENE_TWO: 
+    //         if(!initScene2()) 
+    //         {
+    //             fprintf(gpFile, "initScene2() failed\n"); 
+    //             return (FALSE); 
+    //         }
+    //         if(!initScene1()) 
+    //         {
+    //             fprintf(gpFile, "initScene1() failed\n"); 
+    //             return (FALSE); 
+    //         }
+    //         break; 
+    //     case SCENE_ONE: 
+    //         if(!initScene1()) 
+    //         {
+    //             fprintf(gpFile, "initScene1() failed\n"); 
+    //             return (FALSE); 
+    //         }
+    //         break; 
             
-        case SCENE_THREE: 
-            if(!initScene3()) 
-            {
-                fprintf(gpFile, "initScene3() failed\n"); 
-                return (FALSE); 
-            }
-            break; 
+    //     case SCENE_THREE: 
+    //         if(!initScene3()) 
+    //         {
+    //             fprintf(gpFile, "initScene3() failed\n"); 
+    //             return (FALSE); 
+    //         }
+    //         break; 
         
-        case SCENE_FOUR: 
-            if(!initScene4()) 
-            {
-                fprintf(gpFile, "initScene4() failed\n"); 
-                return (FALSE); 
-            }
-            break; 
+    //     case SCENE_FOUR: 
+    //         if(!initScene4()) 
+    //         {
+    //             fprintf(gpFile, "initScene4() failed\n"); 
+    //             return (FALSE); 
+    //         }
+    //         break; 
 
-        default: 
-            break; 
-    }
+    //     default: 
+    //         break; 
+    // }
     initSlideScenes(); 
 
     // warmup resize 
@@ -629,47 +629,50 @@ void display(void)
     // apply camera rotation 
     // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
 
-    switch(currentSceneNumber) 
-    {
-        case SCENE_TWO: 
-            displayScene2(); 
-            break; 
-        case SCENE_ONE: 
-            displayScene1(); 
-            break; 
-        case SCENE_THREE: 
-            displayScene3(); 
-            break; 
-        case SCENE_FOUR: 
-            displayScene4(); 
-            break; 
-        default: 
-            break; 
-    }
+    // switch(currentSceneNumber) 
+    // {
+    //     case SCENE_TWO: 
+    //         displayScene2(); 
+    //         break; 
+    //     case SCENE_ONE: 
+    //         displayScene1(); 
+    //         break; 
+    //     case SCENE_THREE: 
+    //         displayScene3(); 
+    //         break; 
+    //     case SCENE_FOUR: 
+    //         displayScene4(); 
+    //         break; 
+    //     default: 
+    //         break; 
+    // }
     
-    // if(main_timer_microsec < 100) 
-    //     isFading = TRUE; 
+    if(main_timer_microsec < 100) 
+        isFading = TRUE; 
 
-    // if(shot_count == 1)
-    //     displaySlide1();    
+    if(shot_count == 1)
+        displaySlide1();    
 
-    // if(main_timer_microsec > 9000 && main_timer_microsec < 9100) 
-    //     isFading = TRUE; 
+    if(main_timer_microsec > 9000 && main_timer_microsec < 9100) 
+        isFading = TRUE; 
 
-    // if(shot_count == 2) 
-    //     displaySlide2(); 
+    if(shot_count == 2) 
+        displaySlide2(); 
 
-    // if(main_timer_microsec > 22500 && main_timer_microsec < 22550) 
-    //     isFading = TRUE; 
+    if(main_timer_microsec > 22500 && main_timer_microsec < 22550) 
+        isFading = TRUE; 
 
-    // if(shot_count == 3) 
-    //     displayScene1(); 
+    if(shot_count == 3) 
+        displayScene1(); 
 
-    // if(shot_count == 4) 
-    //     displayScene2(); 
+    if(shot_count == 4) 
+        displayScene2(); 
 
     // if(main_timer_microsec > 95000 && main_timer_microsec < 95100)
     //     isFading = TRUE; 
+
+    if(shot_count == 5) 
+        displayScene3(); 
 
     displayFade(); 
     
@@ -695,30 +698,35 @@ void update(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    switch(currentSceneNumber) 
-    {
-        case SCENE_ONE: 
-            updateScene1(); 
-            break; 
-        case SCENE_TWO: 
-            updateScene2(); 
-            break; 
-        case SCENE_THREE: 
-            updateScene3(); 
-            break; 
-        case SCENE_FOUR: 
-            updateScene4(); 
-            break; 
-        default: 
-            break; 
-    }
+    // switch(currentSceneNumber) 
+    // {
+    //     case SCENE_ONE: 
+    //         updateScene1(); 
+    //         break; 
+    //     case SCENE_TWO: 
+    //         updateScene2(); 
+    //         break; 
+    //     case SCENE_THREE: 
+    //         updateScene3(); 
+    //         break; 
+    //     case SCENE_FOUR: 
+    //         updateScene4(); 
+    //         break; 
+    //     default: 
+    //         break; 
+    // }
 
-    // if(shot_count == 3) 
-    //     updateScene1(); 
-    // if(shot_count == 4) 
-    //     updateScene2(); 
+    if(shot_count == 3) 
+        updateScene1(); 
+    if(shot_count == 4) 
+        updateScene2(); 
+    if(shot_count == 5) 
+        updateScene3(); 
 
-    updateFade(1.0f); 
+    if(shot_count == 5) 
+        updateFade(0.6f); 
+    else 
+        updateFade(1.0); 
 }
 
 void uninitialize(void) 

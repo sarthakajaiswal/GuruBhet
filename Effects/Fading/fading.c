@@ -19,7 +19,7 @@ void displayFade(void)
             glEnable(GL_BLEND); 
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
-            glTranslatef(cameraX, cameraY, cameraZ - 2.0f); 
+            glTranslatef(cameraX, cameraY, cameraZ - 0.5f); 
             glScalef(11.20f, 6.30f, 0.0f); 
             glColor4f(0.0f, 0.0f, 0.0f, fadeDensity); 
             glBegin(GL_QUADS); 

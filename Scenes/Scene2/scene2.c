@@ -32,6 +32,8 @@ GLUquadric* quadric = NULL;
 extern float cameraX, cameraY, cameraZ; 
 extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
 
+extern BOOL isFading; 
+
 /* 
 const char* faces[] = {
     "Resources/Cubemap/right.png",
@@ -423,6 +425,7 @@ void updateScene2(void)
 		if(cameraEyeZ >= -20.96f) 
 		{
 			isUpdate5 = FALSE; 
+			isFading = TRUE; 
 		} 
 	} 
 }
