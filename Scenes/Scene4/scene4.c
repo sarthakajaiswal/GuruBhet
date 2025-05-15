@@ -10,6 +10,9 @@ GLuint texture_tv;
 GLuint texture_sofa_back; 
 GLuint texture_clock; 
 GLuint texture_certificate; 
+GLuint texture_c_book; 
+GLuint texture_stool_wood; 
+GLuint texture_stool_foam; 
 
 // file-io related variables 
 extern FILE* gpFile; 
@@ -71,6 +74,21 @@ BOOL initScene4(void)
     if (!loadGLPngTexture(&texture_certificate, "Resources/certificate.png"))
 	{
 		fprintf(gpFile, "certificate.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_c_book, "Resources/c_book.png"))
+	{
+		fprintf(gpFile, "c_book.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_stool_wood, "Resources/stool_wood.png"))
+	{
+		fprintf(gpFile, "stool_wood.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_stool_foam, "Resources/stool_foam.png"))
+	{
+		fprintf(gpFile, "stool_foam.png Texture failed \n");
 		return FALSE;
 	}
     
@@ -242,24 +260,26 @@ void displayScene4(void)
     // table 
     drawTexturedCube(
         56.0, 0.40, 48.70, 3.80, 12.16, 4.96, 
-        1.0f, 0.0f, 0.0f, 
-        FACE_NONE, 
-        0, 0, 0, 0, 0, 0
+        1.0f, 1.0f, 1.0f, 
+        FACE_ALL, 
+        texture_stool_wood, texture_stool_wood, texture_stool_wood,
+        texture_stool_wood, texture_stool_wood, texture_stool_wood
     );
 
     // book on table 
     drawTexturedCube(
         55.40, 13.0, 48.10, 2.86, 0.32, 3.96, 
-        0.0f, 1.0f, 0.0f, 
-        FACE_NONE, 
-        0, 0, 0, 0, 0, 0
+        1.0f, 1.0f, 1.0f, 
+        FACE_TOP, 
+        0, 0, 0, 0, texture_c_book, 0
     );
 
     drawTexturedCube(
         55.90, 11.70, 48.50, 3.80, 0.92, 5.12, 
-        0.0f, 0.0f, 1.0f, 
-        FACE_NONE, 
-        0, 0, 0, 0, 0, 0
+        1.0f, 1.0f, 1.0f, 
+        FACE_ALL, 
+        texture_stool_foam, texture_stool_foam, texture_stool_foam, 
+        texture_stool_foam, texture_stool_foam, texture_stool_foam
     );
 
     drawPyramid(55.60, 4.20, -0.90, 3.92, 4.88, 5.88, 1.0f, 1.0f, 0.3f, 1.0f); 
@@ -380,14 +400,6 @@ void updateScene4(void)
         {
             isUpdate1 = FALSE; 
             isUpdate2 = TRUE; 
-
-            fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
         }
     }
 
@@ -404,14 +416,6 @@ void updateScene4(void)
         {
             isUpdate2 = FALSE; 
             isUpdate3 = TRUE; 
-
-            fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
         }
     }
     
@@ -429,14 +433,6 @@ void updateScene4(void)
         {
             isUpdate3 = FALSE; 
             isUpdate4 = TRUE; 
-
-            fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
         }
     }
 
@@ -454,14 +450,6 @@ void updateScene4(void)
         {
             isUpdate4 = FALSE; 
             isUpdate5 = TRUE; 
-
-            fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
         }
     }
 
@@ -479,14 +467,6 @@ void updateScene4(void)
         {
             isUpdate5 = FALSE; 
             isUpdate6 = TRUE; 
-
-            fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
         }
     }
     
@@ -504,15 +484,6 @@ void updateScene4(void)
         if(cameraEyeZ >= 37.50) 
         {
             isUpdate6 = FALSE; 
-            // isUpdate5 = TRUE; 
-
-            fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
         }
     }
 }  
@@ -526,6 +497,19 @@ void uninitializeScene4(void)
         quadric = NULL; 
     }
 
+    if(texture_stool_wood) 
+    {
+        glDeleteTextures(1, &texture_stool_wood); 
+        texture_stool_wood = 0; 
+    } if(texture_stool_foam) 
+    {
+        glDeleteTextures(1, &texture_stool_foam); 
+        texture_stool_foam = 0; 
+    } if(texture_c_book) 
+    {
+        glDeleteTextures(1, &texture_c_book); 
+        texture_c_book = 0; 
+    } 
     if(texture_certificate) 
     {
         glDeleteTextures(1, &texture_certificate); 
