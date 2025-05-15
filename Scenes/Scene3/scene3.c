@@ -195,31 +195,40 @@ void displayScene3(void)
 void updateScene3(void) 
 {
     // variable declarations 
+    static int waitTimer = 500; 
+
     static float inverse_constant_for_camera_speed = 1000; 
     static BOOL isCameraUpdating = TRUE; 
 
     // code 
-    if(boxOpenAngle < 120.0f)
-        boxOpenAngle += 1.0f; 
-    
-    if(boxRotateAngle <= 360.0f) 
+    if(waitTimer <= 0) 
     {
-        boxRotateAngle = boxRotateAngle + 1.0f;  
-    } 
+        if(boxOpenAngle < 120.0f)
+            boxOpenAngle += 1.0f; 
+        
+        if(boxRotateAngle <= 360.0f) 
+        {
+            boxRotateAngle = boxRotateAngle + 1.0f;  
+        } 
 
-    if(isCameraUpdating == TRUE) 
+        if(isCameraUpdating == TRUE) 
+        {
+            cameraX = cameraX + 6.0/inverse_constant_for_camera_speed; 
+            cameraY = cameraY - 7.0/inverse_constant_for_camera_speed; 
+            cameraZ = cameraZ - 8.0/inverse_constant_for_camera_speed; 
+
+            cameraEyeX = cameraEyeX - 2.0/inverse_constant_for_camera_speed; 
+            cameraEyeY = cameraEyeY - 5.0/inverse_constant_for_camera_speed; 
+            cameraEyeZ = cameraEyeZ - 4.0/inverse_constant_for_camera_speed; 
+        } 
+
+        if(cameraX >= 3.0f) 
+            isCameraUpdating = FALSE; 
+    } 
+    else 
     {
-        cameraX = cameraX + 6.0/inverse_constant_for_camera_speed; 
-        cameraY = cameraY - 7.0/inverse_constant_for_camera_speed; 
-        cameraZ = cameraZ - 8.0/inverse_constant_for_camera_speed; 
-
-        cameraEyeX = cameraEyeX - 2.0/inverse_constant_for_camera_speed; 
-        cameraEyeY = cameraEyeY - 5.0/inverse_constant_for_camera_speed; 
-        cameraEyeZ = cameraEyeZ - 4.0/inverse_constant_for_camera_speed; 
-    } 
-
-    if(cameraX >= 3.0f) 
-        isCameraUpdating = FALSE; 
+        waitTimer = waitTimer - 1; 
+    }
 }
 
 void uninitializeScene3(void) 
