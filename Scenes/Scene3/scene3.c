@@ -21,6 +21,8 @@ extern float cameraX, cameraY, cameraZ;
 extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
 extern float cameraUpX, cameraUpY, cameraUpZ; 
 
+extern BOOL isFading; 
+
 BOOL initScene3(void) 
 {
     // code 
@@ -195,13 +197,14 @@ void displayScene3(void)
 void updateScene3(void) 
 {
     // variable declarations 
-    static int waitTimer = 500; 
+    static int pre_waiting_timer = 500; 
+    static int post_waiting_timer = 100; 
 
     static float inverse_constant_for_camera_speed = 1000; 
-    static BOOL isCameraUpdating = TRUE; 
+    static BOOL isCameraUpdateDone = FALSE; 
 
     // code 
-    if(waitTimer <= 0) 
+    if(pre_waiting_timer <= 0) 
     {
         if(boxOpenAngle < 120.0f)
             boxOpenAngle += 1.0f; 
@@ -211,7 +214,7 @@ void updateScene3(void)
             boxRotateAngle = boxRotateAngle + 1.0f;  
         } 
 
-        if(isCameraUpdating == TRUE) 
+        if(isCameraUpdateDone == FALSE) 
         {
             cameraX = cameraX + 6.0/inverse_constant_for_camera_speed; 
             cameraY = cameraY - 7.0/inverse_constant_for_camera_speed; 
@@ -223,11 +226,14 @@ void updateScene3(void)
         } 
 
         if(cameraX >= 3.0f) 
-            isCameraUpdating = FALSE; 
+        {
+            isCameraUpdateDone = TRUE; 
+            isFading = TRUE; 
+        } 
     } 
     else 
     {
-        waitTimer = waitTimer - 1; 
+        pre_waiting_timer = pre_waiting_timer - 1; 
     }
 }
 

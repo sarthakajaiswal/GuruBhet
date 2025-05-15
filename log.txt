@@ -38,12 +38,10 @@ Image loaded successfully: Resources/certificate.png (4766X3827)
 Image loaded successfully: Resources/c_book.png (800X1056)
 Image loaded successfully: Resources/stool_wood.png (3433X5887)
 Image loaded successfully: Resources/stool_foam.png (5175X3195)
+Image loaded successfully: resources/ball.png (568X440)
 Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
 Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
-
-
-0.003006  -0.008998 27.996145
-0.000000 0.047000 -20.000000
-0.000000 1.000000 0.000000
-
+Image loaded successfully: resources/Slide3-Tantragnyan.png (1920X1080)
+Image loaded successfully: resources/Slide4-Sandarbha.png (1920X1080)
+Image loaded successfully: resources/Slide5-VisheshMadat.png (1920X1080)
 Program terminated successfully

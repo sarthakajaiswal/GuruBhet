@@ -27,6 +27,8 @@ extern float cameraX, cameraY, cameraZ;
 extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
 extern float cameraUpX, cameraUpY, cameraUpZ; 
 
+extern int shot_count; 
+
 BOOL initScene4(void) 
 {
     // code 
@@ -484,6 +486,7 @@ void updateScene4(void)
         if(cameraEyeZ >= 37.50) 
         {
             isUpdate6 = FALSE; 
+            shot_count++; 
         }
     }
 }  

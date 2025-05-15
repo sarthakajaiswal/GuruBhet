@@ -31,6 +31,7 @@
 #include "Scenes\scene2\scene2.h" 
 #include "Scenes\scene3\scene3.h" 
 #include "Scenes\scene4\scene4.h" 
+#include "Scenes\scene5\scene5.h" 
 
 // effects header files 
 #include "Effects\Fog\fog.h"

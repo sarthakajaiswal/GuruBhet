@@ -525,7 +525,7 @@ int initialize(void)
     initScene2(); 
     initScene3(); 
     initScene4(); 
-
+    initScene5(); 
     // switch(currentSceneNumber) 
     // {
     //     case SCENE_TWO: 
@@ -647,32 +647,40 @@ void display(void)
     //         break; 
     // }
     
-    if(main_timer_microsec < 100) 
-        isFading = TRUE; 
-
-    if(shot_count == 1)
-        displaySlide1();    
-
-    if(main_timer_microsec > 9000 && main_timer_microsec < 9100) 
-        isFading = TRUE; 
-
-    if(shot_count == 2) 
-        displaySlide2(); 
-
-    if(main_timer_microsec > 22500 && main_timer_microsec < 22550) 
-        isFading = TRUE; 
-
-    if(shot_count == 3) 
-        displayScene1(); 
-
-    if(shot_count == 4) 
-        displayScene2(); 
-
-    // if(main_timer_microsec > 95000 && main_timer_microsec < 95100)
+    // if(main_timer_microsec < 100) 
     //     isFading = TRUE; 
 
-    if(shot_count == 5) 
-        displayScene3(); 
+    // if(shot_count == 1)
+    //     displaySlide1();    
+
+    // if(main_timer_microsec > 9000 && main_timer_microsec < 9100) 
+    //     isFading = TRUE; 
+
+    // if(shot_count == 2) 
+    //     displaySlide2(); 
+
+    // if(main_timer_microsec > 22500 && main_timer_microsec < 22550) 
+    //     isFading = TRUE; 
+
+    // if(shot_count == 3) 
+    //     displayScene1(); 
+
+    // if(shot_count == 4) 
+    //     displayScene2(); 
+
+    // if(shot_count == 5) 
+    //     displayScene3(); 
+
+    // if(shot_count == 6) 
+    //     displayScene4();
+        
+    // if(shot_count == 7) 
+    //     displaySlide3(); 
+
+    // if(shot_count == 8) 
+    //     displaySlide4();  
+
+    displayScene5(); 
 
     displayFade(); 
     
@@ -722,6 +730,8 @@ void update(void)
         updateScene2(); 
     if(shot_count == 5) 
         updateScene3(); 
+    if(shot_count == 6) 
+        updateScene4(); 
 
     if(shot_count == 5) 
         updateFade(0.6f); 
@@ -735,10 +745,12 @@ void uninitialize(void)
     void toggleFullScreen(void); 
 
     // code 
+    uninitializeScene5(); 
     uninitializeScene4(); 
     uninitializeScene3(); 
     uninitializeScene2(); 
     uninitializeScene1(); 
+    uninitializeSlideScenes(); 
 
     // if user is exitting in fullscreen, restore fullscreen to nornal  
     if(gbFullScreen) 
