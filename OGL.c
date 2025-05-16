@@ -54,7 +54,7 @@ unsigned long long current_time_stamp_microsec;
 unsigned long long main_timer_microsec;      
 
 // scene shots related variables 
-int shot_count = 0; 
+int shot_count = 5; 
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -171,7 +171,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
             {
                 if(!sound_played && isInitialized)  
                 {
-                    PlayBackgroundMusic(); 
+                    // PlayBackgroundMusic(); 
                     sound_played = TRUE; 
                 }
                 // render 
@@ -514,12 +514,12 @@ int initialize(void)
 
     // initFog(); 
 
-    initScene1(); 
-    initScene2(); 
-    initScene3(); 
+    // initScene1(); 
+    // initScene2(); 
+    // initScene3(); 
     initScene4(); 
-    initScene5(); 
-    initSlideScenes(); 
+    // initScene5(); 
+    // initSlideScenes(); 
 
     // warmup resize 
     resize(WIN_WIDTH, WIN_HEIGHT); 

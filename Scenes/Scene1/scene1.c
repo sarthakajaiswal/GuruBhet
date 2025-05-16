@@ -344,6 +344,7 @@ void displayScene1()
 		cameraEyeZ = -20.0f; 
 
 		isThisFirstCall = FALSE; 
+		return; 
 	}
 
 	glEnable(GL_BLEND);
@@ -458,14 +459,6 @@ void updateScene1()
 		{
 			isUpdate1 = FALSE; 
 			isUpdate2 = TRUE; 
-
-			fprintf(gpFile, "\n\n%f  %f %f\n%f %f %f\n%f %f %f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
 		} 
 	}
 

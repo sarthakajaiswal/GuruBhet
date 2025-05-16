@@ -187,10 +187,7 @@ void displayScene4(void)
         {0.00, 24.0, 39.50, 17.36, 3.76, 0.84, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_sofa_back, texture_sofa_back, texture_sofa_back, texture_sofa_back, texture_sofa_back, texture_sofa_back}  // back 
     }; 
 
-    // code 
-    if(initialWaitTimerScene4 > 0) 
-        return; 
-
+    // code
     // room 
     drawTexturedCube(0.0f, 40.0f, 0.0f, 60.2f, 40.2f, 60.2f, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_room2, texture_room2, texture_room1, texture_room2, texture_room2, texture_room_floor); 
 
@@ -479,7 +476,7 @@ void displayScene4(void)
 void updateScene4(void) 
 {
     // variable declarations 
-    static BOOL isUpdate1 = TRUE; 
+    static BOOL isUpdate1 = FALSE; 
     static BOOL isUpdate2 = FALSE; 
     static BOOL isUpdate3 = FALSE; 
     static BOOL isUpdate4 = FALSE; 
@@ -493,8 +490,9 @@ void updateScene4(void)
     // code
     if(initialWaitTimerScene4 > 0) 
     {
+        if(initialWaitTimerScene4 == 1) 
+            isUpdate1 = TRUE; 
         initialWaitTimerScene4 = initialWaitTimerScene4 - 1; 
-        return; 
     }
 
     // initial -> position1
@@ -507,8 +505,7 @@ void updateScene4(void)
         cameraEyeX = cameraEyeX + 170.0/inverse_constant_for_camera_speed1; 
         cameraEyeY = cameraEyeY + 9.5/inverse_constant_for_camera_speed1; 
 
-        if(cameraX > 13.0) 
-            displayStructPhotoframe = TRUE; 
+        displayStructPhotoframe = TRUE; // display photoframe struct from start itself of update1 
 
         if(cameraEyeX >= -11.50) 
         {
@@ -525,6 +522,17 @@ void updateScene4(void)
         cameraZ = cameraZ - (float)15.00/inverse_constant_for_camera_speed3; 
 
         cameraEyeY = cameraEyeY - 23.0/inverse_constant_for_camera_speed3; 
+
+        // remove previous structures 
+        displayStructPhotoframe = FALSE; 
+
+        // display New Textures 
+        if(cameraY < 51.0f) 
+            displayStructTV = TRUE; 
+        if(cameraY < 48.0f) 
+            displayStructHometheater = TRUE; 
+        if(cameraY < 42.0f)
+            displayStructFootball = TRUE; 
 
         if(cameraEyeY <= 27.0) 
         {
@@ -543,6 +551,19 @@ void updateScene4(void)
         cameraEyeX = cameraEyeX + (float)11.0/inverse_constant_for_camera_speed3; 
         cameraEyeY = cameraEyeY + (float)1.5/inverse_constant_for_camera_speed3; 
 
+        // remove previous structures 
+        displayStructTV = FALSE; 
+        displayStructHometheater = FALSE; 
+        displayStructFootball = FALSE; 
+
+        // display new structures 
+        if(cameraZ < 18.0f) 
+            displayStructCube = TRUE; 
+        if(cameraZ < 15.0f) 
+            displayStructSphere = TRUE; 
+        if(cameraZ < 12.0f) 
+            displayStructPyramid = TRUE;  
+
         if(cameraEyeX >= -0.50) 
         {
             isUpdate3 = FALSE; 
@@ -559,6 +580,15 @@ void updateScene4(void)
 
         cameraEyeX = cameraEyeX - 25.0f/inverse_constant_for_camera_speed3; 
         cameraEyeY = cameraEyeY - 2.0/inverse_constant_for_camera_speed3; 
+
+        // remove previous structures 
+        displayStructCube = FALSE; 
+        displayStructSphere = FALSE; 
+        displayStructPyramid = FALSE; 
+
+        // display new structures 
+        if(cameraX < -28.f) 
+            displayStructSofa = TRUE; 
 
         if(cameraX <= -30.50) 
         {
@@ -577,6 +607,13 @@ void updateScene4(void)
         cameraEyeX = cameraEyeX + 41.20/inverse_constant_for_camera_speed3; 
         cameraEyeY = cameraEyeY + 7.90/inverse_constant_for_camera_speed3; 
 
+        // remove previous structures 
+        displayStructSofa = FALSE; 
+
+        // display new structures 
+        if(cameraZ > -6.0) 
+            displayStructClock = TRUE; 
+
         if(cameraX >= -3.21) 
         {
             isUpdate5 = FALSE; 
@@ -594,6 +631,13 @@ void updateScene4(void)
         cameraEyeX = cameraEyeX + 24.40/inverse_constant_for_camera_speed3; 
         cameraEyeY = cameraEyeY - 9.10/inverse_constant_for_camera_speed3; 
         cameraEyeZ = cameraEyeZ + 37.50/inverse_constant_for_camera_speed3; 
+
+        // remove previous structures 
+        displayStructClock = FALSE; 
+        
+        // display new structure 
+        if(cameraZ > 34.0f)
+            displayStructBook = TRUE; 
 
         if(cameraEyeZ >= 37.50) 
         {
