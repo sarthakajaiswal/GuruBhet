@@ -13,6 +13,17 @@ GLuint texture_certificate;
 GLuint texture_c_book; 
 GLuint texture_stool_wood; 
 GLuint texture_stool_foam; 
+GLuint texture_struct_tv; 
+GLuint texture_struct_sofa; 
+GLuint texture_struct_hometheater; 
+GLuint texture_struct_hometheater; 
+GLuint texture_struct_photoframe; 
+GLuint texture_struct_clock; 
+GLuint texture_struct_pyramid; 
+GLuint texture_struct_cube; 
+GLuint texture_struct_sphere; 
+GLuint texture_struct_book; 
+GLuint texture_struct_football; 
 
 // file-io related variables 
 extern FILE* gpFile; 
@@ -28,11 +39,23 @@ extern float cameraEyeX, cameraEyeY, cameraEyeZ;
 extern float cameraUpX, cameraUpY, cameraUpZ; 
 
 extern int shot_count; 
+extern BOOL isFading; 
+
+// structure info texture related toggle variables 
+BOOL displayStructPhotoframe = FALSE; 
+BOOL displayStructTV = FALSE; 
+BOOL displayStructHometheater = FALSE; 
+BOOL displayStructFootball = FALSE; 
+BOOL displayStructClock = FALSE; 
+BOOL displayStructCube = FALSE; 
+BOOL displayStructPyramid = FALSE; 
+BOOL displayStructSphere = FALSE; 
+BOOL displayStructSofa = FALSE; 
+BOOL displayStructBook = FALSE; 
 
 BOOL initScene4(void) 
 {
     // code 
-
     if (!loadGLPngTexture(&texture_room1, "resources/room1.png"))
 	{
 		fprintf(gpFile, "room1.png Texture failed \n");
@@ -93,6 +116,56 @@ BOOL initScene4(void)
 		fprintf(gpFile, "stool_foam.png Texture failed \n");
 		return FALSE;
 	}
+    if (!loadGLPngTexture(&texture_struct_tv, "Resources/struct_tv.png"))
+	{
+		fprintf(gpFile, "struct_tv.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_photoframe, "Resources/struct_photoframe.png"))
+	{
+		fprintf(gpFile, "struct_photoframe.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_hometheater, "Resources/struct_hometheater.png"))
+	{
+		fprintf(gpFile, "struct_hometheater.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_football, "Resources/struct_football.png"))
+	{
+		fprintf(gpFile, "struct_football.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_sphere, "Resources/struct_sphere.png"))
+	{
+		fprintf(gpFile, "struct_sphere.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_cube, "Resources/struct_cube.png"))
+	{
+		fprintf(gpFile, "struct_cube.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_pyramid, "Resources/struct_pyramid.png"))
+	{
+		fprintf(gpFile, "struct_pyramid.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_clock, "Resources/struct_clock.png"))
+	{
+		fprintf(gpFile, "struct_clock.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_book, "Resources/struct_book.png"))
+	{
+		fprintf(gpFile, "struct_book.png Texture failed \n");
+		return FALSE;
+	}
+    if (!loadGLPngTexture(&texture_struct_sofa, "Resources/struct_sofa.png"))
+	{
+		fprintf(gpFile, "struct_sofa.png Texture failed \n");
+		return FALSE;
+	}
     
     if(!quadric) 
         quadric = gluNewQuadric(); 
@@ -129,7 +202,7 @@ void displayScene4(void)
         texture_room1 
     );
 
-    billboard(-36.0f, 2.2f, -55.0f, 4.0, 4.0, texture_ball); 
+    billboard(-36.0f, 2.2f, -55.0f, 4.0, 4.0, 1.0f, texture_ball); 
 
     // tv 
     glPushMatrix(); 
@@ -303,11 +376,35 @@ void displayScene4(void)
         cameraZ = 9.0f; 
 
         cameraEyeX = -181.0f; 
+        // cameraEyeX = 0.0f; 
         cameraEyeY = 41.0f; 
         cameraEyeZ = 0.0f; 
 
         isThisFirstCall = FALSE; 
     }
+
+    //=========================================== 
+    // structure definition textures 
+    if(displayStructTV)
+        billboard(1.10, 37.60, -59.50, 8.60, 6.30, 0, texture_struct_tv); 
+    if(displayStructSofa)
+        billboard(0.0, 10.60, 42.50, 6.04, 5.40, 0.0f, texture_struct_sofa); 
+    if(displayStructHometheater)
+        billboard(-44.10, 17.30, -50.60, 7.0, 7.0, 0.0f, texture_struct_hometheater); 
+    if(displayStructPhotoframe)
+        billboard(-58.0, 49.90, 1.50, 3.80, 3.0, 3.16, texture_struct_photoframe); 
+    if(displayStructFootball)
+        billboard(-27.20, 10.90, -54.90, 6.20, 6.36, 0.0, texture_struct_football); 
+    if(displayStructCube)
+        billboard(56.40, 13.20, -34.20, 0.0, 5.04, 6.72, texture_struct_cube); 
+    if(displayStructSphere)
+        billboard(56.70, 13.80, -15.60, 0.0, 7.12, 7.40, texture_struct_sphere); 
+    if(displayStructPyramid)
+        billboard(58.40, 12.20, 4.20, 0.0, 8.12, 7.40, texture_struct_pyramid); 
+    if(displayStructClock)
+        billboard(57.60, 38.0, 8.60, 0.0, 8.52, 9.32, texture_struct_clock); 
+    if(displayStructBook)
+        billboard(51.60, 21.20, 49.30, 5.48, 5.50, 0.0, texture_struct_book); 
 } 
 
 /*
@@ -383,11 +480,19 @@ void updateScene4(void)
     static BOOL isUpdate5 = FALSE; 
     static BOOL isUpdate6 = FALSE; 
 
-    static float inverse_constant_for_camera_speed1 = 1000; 
-    static float inverse_constant_for_camera_speed2 = 1000; 
-    static float inverse_constant_for_camera_speed3 = 1000; 
+    static float inverse_constant_for_camera_speed1 = 2000; 
+    static float inverse_constant_for_camera_speed2 = 2000; 
+    static float inverse_constant_for_camera_speed3 = 2000; 
+
+    static int prewaitTimer = 100; 
  
     // code
+    if(prewaitTimer > 0) 
+    {
+        prewaitTimer = prewaitTimer - 1; 
+        return; 
+    }
+
     // initial -> position1
     if(isUpdate1 == TRUE) 
     {
@@ -486,7 +591,7 @@ void updateScene4(void)
         if(cameraEyeZ >= 37.50) 
         {
             isUpdate6 = FALSE; 
-            shot_count++; 
+            isFading = TRUE;
         }
     }
 }  
@@ -500,6 +605,56 @@ void uninitializeScene4(void)
         quadric = NULL; 
     }
 
+    if(texture_struct_book) 
+    {
+        glDeleteTextures(1, &texture_struct_book); 
+        texture_struct_book = 0; 
+    }
+    if(texture_struct_clock) 
+    {
+        glDeleteTextures(1, &texture_struct_clock); 
+        texture_struct_clock = 0; 
+    }
+    if(texture_struct_sphere) 
+    {
+        glDeleteTextures(1, &texture_struct_sphere); 
+        texture_struct_sphere = 0; 
+    }
+    if(texture_struct_cube) 
+    {
+        glDeleteTextures(1, &texture_struct_cube); 
+        texture_struct_cube = 0; 
+    }
+    if(texture_struct_pyramid) 
+    {
+        glDeleteTextures(1, &texture_struct_pyramid); 
+        texture_struct_pyramid = 0; 
+    }
+    if(texture_struct_football) 
+    {
+        glDeleteTextures(1, &texture_struct_football); 
+        texture_struct_football = 0; 
+    }
+    if(texture_struct_hometheater) 
+    {
+        glDeleteTextures(1, &texture_struct_hometheater); 
+        texture_struct_hometheater = 0; 
+    }
+    if(texture_struct_sofa) 
+    {
+        glDeleteTextures(1, &texture_struct_sofa); 
+        texture_struct_sofa = 0; 
+    }
+    if(texture_struct_sofa) 
+    {
+        glDeleteTextures(1, &texture_struct_sofa); 
+        texture_struct_sofa = 0; 
+    }
+    if(texture_struct_tv) 
+    {
+        glDeleteTextures(1, &texture_struct_tv); 
+        texture_struct_tv = 0; 
+    }
     if(texture_stool_wood) 
     {
         glDeleteTextures(1, &texture_stool_wood); 
