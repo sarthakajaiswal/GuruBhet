@@ -6,6 +6,9 @@ GLuint texture_slide2;
 GLuint texture_slide3; 
 GLuint texture_slide4; 
 GLuint texture_slide5; 
+GLuint texture_slide6; 
+GLuint texture_slide7; 
+GLuint texture_slide8; 
 
 // file-io related variable declarations 
 extern FILE* gpFile; 
@@ -13,6 +16,10 @@ extern FILE* gpFile;
 // translation related variables 
 extern float tx, ty, tz; 
 extern float sx, sy, sz; 
+
+extern float cameraX, cameraY, cameraZ; 
+extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
+extern float cameraUpX, cameraUpY, cameraUpZ; 
 
 extern BOOL isFading; 
 
@@ -42,7 +49,25 @@ BOOL initSlideScenes(void)
 	{
 		fprintf(gpFile, "Slide5-VisheshMadat.png Texture failed \n");
 		return FALSE;
-        
+
+	}
+    if (!loadGLPngTexture(&texture_slide6, "resources/Slide6-VisheshAabhar.png"))
+	{
+		fprintf(gpFile, "Slide6-VisheshAabhar.png Texture failed \n");
+		return FALSE;
+
+	}
+    if (!loadGLPngTexture(&texture_slide7, "resources/Slide7-PrernaSthan.png"))
+	{
+		fprintf(gpFile, "Slide7-PrernaSthan.png Texture failed \n");
+		return FALSE;
+
+	}
+    if (!loadGLPngTexture(&texture_slide8, "resources/Slide8-GuruCharniSamarpit.png"))
+	{
+		fprintf(gpFile, "Slide8-GuruCharniSamarpit.png Texture failed \n");
+		return FALSE;
+
 	}
 
     return (TRUE); 
@@ -51,6 +76,21 @@ BOOL initSlideScenes(void)
 void uninitializeSlideScenes(void) 
 {
     // code 
+    if(texture_slide8) 
+    {
+        glDeleteTextures(1, &texture_slide8); 
+        texture_slide8 = 0; 
+    }
+    if(texture_slide7) 
+    {
+        glDeleteTextures(1, &texture_slide7); 
+        texture_slide7 = 0; 
+    }
+    if(texture_slide6) 
+    {
+        glDeleteTextures(1, &texture_slide6); 
+        texture_slide6 = 0; 
+    }
     if(texture_slide5) 
     {
         glDeleteTextures(1, &texture_slide5); 
@@ -78,52 +118,205 @@ void uninitializeSlideScenes(void)
     } 
 } 
 
+void initializeCameraForSlide(void)
+{
+    cameraX = 0.0f; 
+    cameraY = 0.0f; 
+    cameraZ = 5.0f; 
+    cameraEyeX = 0.0f; 
+    cameraEyeY = 0.0f; 
+    cameraEyeZ = 0.0f; 
+    cameraUpX = 0.0f; 
+    cameraUpY = 1.0f; 
+    cameraUpZ = 0.0f; 
+}
+
 void displaySlide1(void)
 {
+    // variable declarations 
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
     // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide1); 
+
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE; 
 } 
 
 void displaySlide2(void) 
 {
+    // variable declarations 
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
+    
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide2); 
+
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE; 
 } 
 
 void displaySlide3(void) 
 {
     // variable declarations 
-    static int waitTimer = 100; 
-
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
+    
     // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide3); 
 
-    waitTimer = waitTimer - 1; 
-    if(waitTimer == 0) 
-        isFading = TRUE; 
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE;
 } 
 
 void displaySlide4(void) 
 {
     // variable declarations 
-    static int waitTimer = 100; 
-
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
+    
     // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide4); 
 
-    waitTimer = waitTimer - 1; 
-    if(waitTimer == 0) 
-        isFading = TRUE; 
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE;
 } 
 
 void displaySlide5(void) 
 {
     // variable declarations 
-    static int waitTimer = 100; 
-
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
+    
     // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide5); 
 
-    waitTimer = waitTimer - 1; 
-    if(waitTimer == 0) 
-        isFading = TRUE; 
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE;
+} 
+
+void displaySlide6(void) 
+{
+    // variable declarations 
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
+    
+    // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
+    textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide6); 
+
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE;
+} 
+
+void displaySlide7(void) 
+{
+    // variable declarations 
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
+    
+    // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
+    textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide7); 
+
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE;
+} 
+
+void displaySlide8(void) 
+{
+    // variable declarations 
+    static int waitTimerMilisec = 500; 
+    static BOOL isThisFirstCall = TRUE; 
+    static BOOL hasAlreadySlept = FALSE; 
+    
+    // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
+    textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide8); 
+
+    if(hasAlreadySlept == FALSE) 
+    {
+        Sleep(waitTimerMilisec);  
+        hasAlreadySlept = TRUE; 
+    } 
+    else 
+        isFading = TRUE;
 } 

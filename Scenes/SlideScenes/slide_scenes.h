@@ -23,5 +23,8 @@ extern void uninitializeSlideScenes(void);
 extern void displaySlide1(void); 
 extern void displaySlide2(void); 
 
+// helper routines 
+static void initializeCameraForSlide(void); 
+
 #endif /* _SLIDE_SCENES_H */
 
