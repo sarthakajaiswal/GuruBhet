@@ -34,7 +34,7 @@ extern BOOL loadGLPngTexture(GLuint* texture, char* file);
 
 extern void billboard(
     float x, float y, float z, 
-    float width, float height, 
+    float width, float height, float depth, 
     GLuint texture 
 ); 
 

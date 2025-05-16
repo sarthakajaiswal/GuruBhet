@@ -33,13 +33,13 @@ BOOL loadGLPngTexture(GLuint* texture, char* file)
     return (TRUE); 
 }
 
-void billboard(float x, float y, float z, float width, float height, GLuint texture) 
+void billboard(float x, float y, float z, float width, float height, float depth, GLuint texture) 
 {
     // code 
     glPushMatrix(); 
 		glBindTexture(GL_TEXTURE_2D, texture); 
 		glTranslatef(x, y, z); 
-		glScalef(width, height, 1.0f);  
+		glScalef(width, height, depth);  
 		
 		glColor3f(1.0f, 1.0f, 1.0f); 
 		glBegin(GL_QUADS);
@@ -58,7 +58,7 @@ void billboard(float x, float y, float z, float width, float height, GLuint text
 	glPushMatrix(); 
 		glBindTexture(GL_TEXTURE_2D, texture); 
 		glTranslatef(x, y, z); 
-		glScalef(width, height, 1.0f);  
+		glScalef(width, height, depth);  
 		glRotatef(90.0f, 0.0f, 1.0f, 0.0f); 
 		glColor3f(1.0f, 1.0f, 1.0f); 
 		
