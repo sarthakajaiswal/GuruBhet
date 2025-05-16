@@ -252,7 +252,7 @@ void displayScene2()
 	{
 		billboard(
 			trees[i].tx, trees[i].ty, trees[i].tz,
-			trees[i].width, trees[i].height, 
+			trees[i].width, trees[i].height, 1.0f,  
 			trees[i].texture 
 		);
 	}  

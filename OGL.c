@@ -1,12 +1,5 @@
 #include "OGL.h" 
 
-enum SceneNumber
-{
-    SLIDE1, SLIDE2, SCENE_ZERO, SCENE_ONE, SCENE_TWO, SCENE_THREE, SCENE_FOUR
-}; 
-
-enum SceneNumber currentSceneNumber = SCENE_FOUR; 
-
 // global variable declarations 
 // variables related with full-screen  
 BOOL gbFullScreen = FALSE; 
@@ -230,19 +223,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 
                 // camera movement with arrow keys 
                 case VK_UP: 
-                    cameraZ -= 0.1f; 
+                    cameraZ -= 0.5f; 
                     break; 
 
                 case VK_DOWN: 
-                    cameraZ += 0.1f; 
+                    cameraZ += 0.5f; 
                     break; 
 
                 case VK_LEFT: 
-                    cameraAngle -= 0.1f; 
+                    cameraAngle -= 0.5f; 
                     break; 
 
                 case VK_RIGHT: 
-                    cameraAngle += 0.1f; 
+                    cameraAngle += 0.5f; 
                     break; 
 
                 default: 
@@ -270,46 +263,46 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                 // camera position controls 
                 case 'w': 
                 case 'W': 
-                    cameraY += 0.1f; 
+                    cameraY += 0.5f; 
                     break; 
 
                 case 's': 
                 case 'S': 
-                    cameraY -= 0.1f; 
+                    cameraY -= 0.5f; 
                     break; 
 
                 case 'a': 
                 case 'A': 
-                    cameraX -= 0.1f; 
+                    cameraX -= 0.5f; 
                     break; 
 
                 case 'd': 
                 case 'D': 
-                    cameraX += 0.1f; 
+                    cameraX += 0.5f; 
                     break; 
 
                 case '6': 
-                    cameraEyeX += 0.1f; 
+                    cameraEyeX += 0.5f; 
                     break; 
 
                 case '4': 
-                    cameraEyeX -= 0.1f; 
+                    cameraEyeX -= 0.5f; 
                     break; 
 
                 case '8': 
-                    cameraEyeY += 0.1f; 
+                    cameraEyeY += 0.5f; 
                     break; 
 
                 case '2': 
-                    cameraEyeY -= 0.1f; 
+                    cameraEyeY -= 0.5f; 
                     break; 
 
                 case '7': 
-                    cameraEyeZ -= 0.1f; 
+                    cameraEyeZ -= 0.5f; 
                     break; 
 
                 case '9': 
-                    cameraEyeZ += 0.1f; 
+                    cameraEyeZ += 0.5f; 
                     break;  
 
                 // -------- size -------- 
@@ -526,47 +519,6 @@ int initialize(void)
     initScene3(); 
     initScene4(); 
     initScene5(); 
-    // switch(currentSceneNumber) 
-    // {
-    //     case SCENE_TWO: 
-    //         if(!initScene2()) 
-    //         {
-    //             fprintf(gpFile, "initScene2() failed\n"); 
-    //             return (FALSE); 
-    //         }
-    //         if(!initScene1()) 
-    //         {
-    //             fprintf(gpFile, "initScene1() failed\n"); 
-    //             return (FALSE); 
-    //         }
-    //         break; 
-    //     case SCENE_ONE: 
-    //         if(!initScene1()) 
-    //         {
-    //             fprintf(gpFile, "initScene1() failed\n"); 
-    //             return (FALSE); 
-    //         }
-    //         break; 
-            
-    //     case SCENE_THREE: 
-    //         if(!initScene3()) 
-    //         {
-    //             fprintf(gpFile, "initScene3() failed\n"); 
-    //             return (FALSE); 
-    //         }
-    //         break; 
-        
-    //     case SCENE_FOUR: 
-    //         if(!initScene4()) 
-    //         {
-    //             fprintf(gpFile, "initScene4() failed\n"); 
-    //             return (FALSE); 
-    //         }
-    //         break; 
-
-    //     default: 
-    //         break; 
-    // }
     initSlideScenes(); 
 
     // warmup resize 
@@ -625,62 +577,51 @@ void display(void)
         cameraEyeX, cameraEyeY, cameraEyeZ, 
         cameraUpX, cameraUpY, cameraUpZ
     ); 
-
-    // apply camera rotation 
-    // glRotatef(cameraAngle, 0.0f, 1.0f, 0.0f); 
-
-    // switch(currentSceneNumber) 
-    // {
-    //     case SCENE_TWO: 
-    //         displayScene2(); 
-    //         break; 
-    //     case SCENE_ONE: 
-    //         displayScene1(); 
-    //         break; 
-    //     case SCENE_THREE: 
-    //         displayScene3(); 
-    //         break; 
-    //     case SCENE_FOUR: 
-    //         displayScene4(); 
-    //         break; 
-    //     default: 
-    //         break; 
-    // }
     
-    // if(main_timer_microsec < 100) 
-    //     isFading = TRUE; 
+    if(main_timer_microsec < 100) 
+        isFading = TRUE; 
 
-    // if(shot_count == 1)
-    //     displaySlide1();    
+    if(shot_count == 1)
+        displaySlide1();    
 
-    // if(main_timer_microsec > 9000 && main_timer_microsec < 9100) 
-    //     isFading = TRUE; 
+    if(shot_count == 2) 
+        displaySlide2(); 
 
-    // if(shot_count == 2) 
-    //     displaySlide2(); 
+    if(shot_count == 3) 
+        displayScene1(); 
 
-    // if(main_timer_microsec > 22500 && main_timer_microsec < 22550) 
-    //     isFading = TRUE; 
+    if(shot_count == 4) 
+        displayScene2(); 
 
-    // if(shot_count == 3) 
-    //     displayScene1(); 
+    if(shot_count == 5) 
+        displayScene3(); 
 
-    // if(shot_count == 4) 
-    //     displayScene2(); 
-
-    // if(shot_count == 5) 
-    //     displayScene3(); 
-
-    // if(shot_count == 6) 
-    //     displayScene4();
+    if(shot_count == 6) 
+        displayScene4();
         
-    // if(shot_count == 7) 
-    //     displaySlide3(); 
+    if(shot_count == 7) 
+        displaySlide3(); 
 
-    // if(shot_count == 8) 
-    //     displaySlide4();  
+    if(shot_count == 8) 
+        displaySlide4(); 
+        
+    if(shot_count == 9) 
+        displaySlide5(); 
 
-    displayScene5(); 
+    if(shot_count == 10) 
+        displaySlide6(); 
+
+    if(shot_count == 11) 
+        displaySlide7(); 
+
+    if(shot_count == 12) 
+        displaySlide8(); 
+
+    if(shot_count == 13) 
+        displayScene5(); 
+
+    if(shot_count == 14) 
+        displaySlide9(); 
 
     displayFade(); 
     
@@ -706,24 +647,6 @@ void update(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    // switch(currentSceneNumber) 
-    // {
-    //     case SCENE_ONE: 
-    //         updateScene1(); 
-    //         break; 
-    //     case SCENE_TWO: 
-    //         updateScene2(); 
-    //         break; 
-    //     case SCENE_THREE: 
-    //         updateScene3(); 
-    //         break; 
-    //     case SCENE_FOUR: 
-    //         updateScene4(); 
-    //         break; 
-    //     default: 
-    //         break; 
-    // }
-
     if(shot_count == 3) 
         updateScene1(); 
     if(shot_count == 4) 
@@ -732,11 +655,10 @@ void update(void)
         updateScene3(); 
     if(shot_count == 6) 
         updateScene4(); 
-
-    if(shot_count == 5) 
-        updateFade(0.6f); 
-    else 
-        updateFade(1.0); 
+    if(shot_count == 13) 
+        updateScene5(); 
+        
+    updateFade(2);  
 }
 
 void uninitialize(void) 

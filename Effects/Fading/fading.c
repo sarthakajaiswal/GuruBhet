@@ -53,10 +53,6 @@ void updateFade(float speed)
                 isFadingOut = FALSE; 
 
                 shot_count = shot_count + 1; 
-
-                // fprintf(gpFile, "\n\n%d) timer = %lld\n", times_called, main_timer_microsec); 
-                // fclose(gpFile); 
-                // gpFile = fopen("log.txt", "a"); 
             }
         }
         else // fading in 

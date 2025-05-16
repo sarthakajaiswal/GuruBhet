@@ -41,6 +41,9 @@ extern float cameraUpX, cameraUpY, cameraUpZ;
 extern int shot_count; 
 extern BOOL isFading; 
 
+// initial waiting time 
+int initialWaitTimerScene4 = 1000; 
+
 // structure info texture related toggle variables 
 BOOL displayStructPhotoframe = FALSE; 
 BOOL displayStructTV = FALSE; 
@@ -185,6 +188,9 @@ void displayScene4(void)
     }; 
 
     // code 
+    if(initialWaitTimerScene4 > 0) 
+        return; 
+
     // room 
     drawTexturedCube(0.0f, 40.0f, 0.0f, 60.2f, 40.2f, 60.2f, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_room2, texture_room2, texture_room1, texture_room2, texture_room2, texture_room_floor); 
 
@@ -483,13 +489,11 @@ void updateScene4(void)
     static float inverse_constant_for_camera_speed1 = 2000; 
     static float inverse_constant_for_camera_speed2 = 2000; 
     static float inverse_constant_for_camera_speed3 = 2000; 
-
-    static int prewaitTimer = 100; 
  
     // code
-    if(prewaitTimer > 0) 
+    if(initialWaitTimerScene4 > 0) 
     {
-        prewaitTimer = prewaitTimer - 1; 
+        initialWaitTimerScene4 = initialWaitTimerScene4 - 1; 
         return; 
     }
 
@@ -502,6 +506,9 @@ void updateScene4(void)
 
         cameraEyeX = cameraEyeX + 170.0/inverse_constant_for_camera_speed1; 
         cameraEyeY = cameraEyeY + 9.5/inverse_constant_for_camera_speed1; 
+
+        if(cameraX > 13.0) 
+            displayStructPhotoframe = TRUE; 
 
         if(cameraEyeX >= -11.50) 
         {

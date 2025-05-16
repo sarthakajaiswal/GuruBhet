@@ -9,6 +9,7 @@ GLuint texture_slide5;
 GLuint texture_slide6; 
 GLuint texture_slide7; 
 GLuint texture_slide8; 
+GLuint texture_slide9; 
 
 // file-io related variable declarations 
 extern FILE* gpFile; 
@@ -69,6 +70,12 @@ BOOL initSlideScenes(void)
 		return FALSE;
 
 	}
+    if (!loadGLPngTexture(&texture_slide9, "resources/Slide9-ThankYou.png"))
+	{
+		fprintf(gpFile, "Slide9-ThankYou.png Texture failed \n");
+		return FALSE;
+
+	}
 
     return (TRUE); 
 } 
@@ -76,6 +83,11 @@ BOOL initSlideScenes(void)
 void uninitializeSlideScenes(void) 
 {
     // code 
+    if(texture_slide9) 
+    {
+        glDeleteTextures(1, &texture_slide9); 
+        texture_slide9 = 0; 
+    }
     if(texture_slide8) 
     {
         glDeleteTextures(1, &texture_slide8); 
@@ -134,9 +146,8 @@ void initializeCameraForSlide(void)
 void displaySlide1(void)
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
-    static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
+    static int waitTimerMilisec = 800; 
+    static BOOL isThisFirstCall = TRUE;  
     // code 
     if(isThisFirstCall == TRUE) 
     {
@@ -145,11 +156,8 @@ void displaySlide1(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide1); 
 
-    if(hasAlreadySlept == FALSE) 
-    {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE; 
 } 
@@ -157,9 +165,8 @@ void displaySlide1(void)
 void displaySlide2(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
-    static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
+    static int waitTimerMilisec = 800; 
+    static BOOL isThisFirstCall = TRUE;  
     
     if(isThisFirstCall == TRUE) 
     {
@@ -168,11 +175,8 @@ void displaySlide2(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide2); 
 
-    if(hasAlreadySlept == FALSE) 
-    {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE; 
 } 
@@ -180,9 +184,8 @@ void displaySlide2(void)
 void displaySlide3(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
+    static int waitTimerMilisec = 700; 
     static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
     
     // code 
     if(isThisFirstCall == TRUE) 
@@ -192,11 +195,8 @@ void displaySlide3(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide3); 
 
-    if(hasAlreadySlept == FALSE) 
-    {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE;
 } 
@@ -204,9 +204,8 @@ void displaySlide3(void)
 void displaySlide4(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
+    static int waitTimerMilisec = 700; 
     static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
     
     // code 
     if(isThisFirstCall == TRUE) 
@@ -216,11 +215,8 @@ void displaySlide4(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide4); 
 
-    if(hasAlreadySlept == FALSE) 
-    {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE;
 } 
@@ -228,9 +224,8 @@ void displaySlide4(void)
 void displaySlide5(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
+    static int waitTimerMilisec = 700; 
     static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
     
     // code 
     if(isThisFirstCall == TRUE) 
@@ -240,11 +235,8 @@ void displaySlide5(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide5); 
 
-    if(hasAlreadySlept == FALSE) 
-    {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE;
 } 
@@ -252,9 +244,8 @@ void displaySlide5(void)
 void displaySlide6(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
+    static int waitTimerMilisec = 700; 
     static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
     
     // code 
     if(isThisFirstCall == TRUE) 
@@ -264,11 +255,8 @@ void displaySlide6(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide6); 
 
-    if(hasAlreadySlept == FALSE) 
-    {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE;
 } 
@@ -276,9 +264,8 @@ void displaySlide6(void)
 void displaySlide7(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
+    static int waitTimerMilisec = 700; 
     static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
     
     // code 
     if(isThisFirstCall == TRUE) 
@@ -288,11 +275,8 @@ void displaySlide7(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide7); 
 
-    if(hasAlreadySlept == FALSE) 
-    {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE;
 } 
@@ -300,9 +284,8 @@ void displaySlide7(void)
 void displaySlide8(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 500; 
+    static int waitTimerMilisec = 700; 
     static BOOL isThisFirstCall = TRUE; 
-    static BOOL hasAlreadySlept = FALSE; 
     
     // code 
     if(isThisFirstCall == TRUE) 
@@ -312,11 +295,28 @@ void displaySlide8(void)
     }
     textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide8); 
 
-    if(hasAlreadySlept == FALSE) 
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
+    else 
+        isFading = TRUE;
+} 
+
+void displaySlide9(void) 
+{
+    // variable declarations 
+    static int waitTimerMilisec = 700; 
+    static BOOL isThisFirstCall = TRUE; 
+    
+    // code 
+    if(isThisFirstCall == TRUE) 
     {
-        Sleep(waitTimerMilisec);  
-        hasAlreadySlept = TRUE; 
-    } 
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
+    textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide9); 
+
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
     else 
         isFading = TRUE;
 } 

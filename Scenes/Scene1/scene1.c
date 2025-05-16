@@ -391,7 +391,7 @@ void displayScene1()
 	// temple top
 	billboard(
 		0.0f, 7.10f, -12.5f, 
-		2.10f, 2.60f,  
+		2.10f, 2.60f, 1.0f,  
 		texture_temple_top
 	); 
 
@@ -402,7 +402,7 @@ void displayScene1()
 	{
 		billboard(
 			trees[i].tx, trees[i].ty, trees[i].tz,
-			trees[i].width, trees[i].height, 
+			trees[i].width, trees[i].height, 1.0f, 
 			trees[i].texture 
 		);
 	}  

@@ -185,7 +185,7 @@ void displayScene3(void)
     // giftbox with gift (sunglass texture) inside 
     glPushMatrix(); 
     {
-        glRotatef(boxRotateAngle+30, 0.0f, 1.0f, 0.0f);  
+        glRotatef(boxRotateAngle, 0.0f, 1.0f, 0.0f);  
         drawGiftBox(
             0.0f, 0.0f, 0.0f, 
             3.20f, 1.10f, 2.20f
