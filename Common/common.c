@@ -139,3 +139,52 @@ void textureOnQuad(float tx, float ty, float tz, float sx, float sy, float sz, G
 		glBindTexture(GL_TEXTURE_2D, 0); 
 	glPopMatrix(); 
 }  
+
+BOOL loadGLTexture(GLuint* texture, TCHAR imageResourceID[]) 
+{
+	// variable declarations 
+	HBITMAP hBitmap = NULL; 
+	BITMAP bmp; 
+	BOOL bResult = FALSE; 
+
+	// code 
+	// load the bitmap as image 	
+	hBitmap = (HBITMAP)LoadImage(			/* value is typecasted accordingly this function can load various types of images, here we are loading bitmap so return */ 
+					GetModuleHandle(NULL), 	/* hInstance, passing NULL to this function return handle to current instance */
+					imageResourceID, 
+					IMAGE_BITMAP, 			/* je image load krachi aahe tyacha type */
+					0, 0,  					/* width and height pf image width and height is given ONLY when the image is of icon or cursor */
+					LR_CREATEDIBSECTION 	/* LR -> load resource, DIB -> device independent bitmap | mazya image cha dib tayar krun load kr */
+				); 
+
+	if(hBitmap)
+	{
+		bResult = TRUE; 
+
+		// get bitmap structure from the loaded bitmap image 
+		GetObject(hBitmap, sizeof(BITMAP), &bmp); 
+
+		// generate OpenGL texture object 
+		glGenTextures(1, texture); 
+			
+		// bind to newly created empty texture object 
+		glBindTexture(
+			GL_TEXTURE_2D, 	/* bind kuth kru */
+			*texture		/* bind kunala kru */
+		); 
+
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4); 	
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, bmp.bmWidth, bmp.bmHeight, GL_BGR_EXT, GL_UNSIGNED_BYTE, bmp.bmBits); 
+		
+		glBindTexture(GL_TEXTURE_2D, 0); 
+		DeleteObject(hBitmap); 
+		hBitmap = NULL; 
+	}
+
+	// gen - bind - unbind triplet 
+
+	return (bResult); 
+}  
+

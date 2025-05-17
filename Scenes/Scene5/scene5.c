@@ -5,6 +5,7 @@ GLuint texture_sir1;
 GLuint texture_sir2; 
 GLuint texture_sir3; 
 GLuint texture_sir4; 
+GLuint texture_sea; 
 
 // translation related variables 
 float scene5RotateAngle = 0.0; 
@@ -16,6 +17,8 @@ extern BOOL isFading;
 // camera related variables 
 extern float cameraX, cameraY, cameraZ; 
 extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
+
+extern float sx, sy, sz, tx, ty, tz; 
 
 BOOL initScene5(void) 
 {
@@ -39,8 +42,58 @@ BOOL initScene5(void)
 		fprintf(gpFile, "Sir4.png Texture failed \n");
 		return FALSE;
 	}
+    if (!loadGLPngTexture(&texture_sea, "resources/water.png"))
+	{
+		fprintf(gpFile, "water Texture failed \n");
+		return FALSE;
+	}
+    else 
+    {
+        fprintf(gpFile, "marble loaded\n");
+    }
     return (TRUE); 
 } 
+
+void drawScene5CubeOriginal(void) 
+{
+    glPushMatrix(); 
+    glRotatef(-scene5RotateAngle, 0.0f, 1.0f, 0.0f); 
+    drawTexturedCube(0.0f, 12.0, 0.0f, 10.0, 10.0, 10.0, 1.0, 1.0, 1.0, FACE_ALL, texture_sir1, texture_sir2, texture_sir3, texture_sir4, texture_temple_floor, texture_temple_floor); 
+    glPopMatrix(); 
+}
+
+void drawScene5CubeReflection(void) 
+{
+    glPushMatrix(); 
+    glRotatef(-scene5RotateAngle, 0.0f, 11.0f, 0.0f); 
+    drawTexturedCube(0.0f, 12.0, 0.0f, 10.0, 10.0, 10.0, 1.0, 1.0, 1.0, FACE_ALL, texture_sir1, texture_sir2, texture_sir3, texture_sir4, texture_temple_floor, texture_temple_floor); 
+    glPopMatrix(); 
+}
+
+void drawFloor(void) 
+{
+    glPushMatrix(); 
+
+	glScalef(50.0f, 50.0f, 50.0f); 
+	glRotatef(90.0f, 1.0f, 0.0f, 0.0f); 
+
+	glBindTexture(GL_TEXTURE_2D, texture_sea); 
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(1.0f, 1.0f); 
+	glVertex3f(1.0f, 1.0f, 0.0f);  // right-top 
+	glTexCoord2f(0.0f, 1.0f); 
+	glVertex3f(-1.0f, 1.0f, 0.0f); // left-top 
+	glTexCoord2f(0.0f, 0.0f); 
+	glVertex3f(-1.0f, -1.0f, 0.0f);	// left-bottom 
+	glTexCoord2f(1.0f, 0.0f); 
+	glVertex3f(1.0f, -1.0f, 0.0f);	// right-bottom 
+	glEnd();
+	
+	glBindTexture(GL_TEXTURE_2D, 0); 
+
+	glPopMatrix(); 
+}
 
 void displayScene5(void) 
 {
@@ -50,25 +103,50 @@ void displayScene5(void)
     // code 
     if(isCameraInitialized == FALSE) 
     {
-        cameraX = 0.0f; 
-        cameraY = 0.0f; 
-        cameraZ = 25.0f;
+        cameraX = -5.0f; 
+        cameraY = 17.0f; 
+        cameraZ = 50.50f;
         cameraEyeX = 0.0f; 
-        cameraEyeY = 0.0f; 
+        cameraEyeY = 6.0f; 
         cameraEyeZ = 0.0f; 
 
         isCameraInitialized = TRUE; 
     }
+
+    drawScene5CubeOriginal(); 
+
+    glDisable(GL_DEPTH_TEST); 
+
+	glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); 
+	glEnable(GL_STENCIL_TEST); 
+	glStencilFunc(GL_ALWAYS, 1, 1); 
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);  
+	drawFloor(); 
+	glEnable(GL_DEPTH_TEST); 
+
+	glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); 
+	glStencilFunc(GL_EQUAL, 1, 1);  
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); 
+
     glPushMatrix(); 
-    glRotatef(scene5RotateAngle, 0.0f, 1.0f, 0.0f); 
-    drawTexturedCube(0.0f, 0.0f, 0.0f, 5.0, 5.0, 5.0, 1.0, 1.0, 1.0, FACE_ALL, texture_sir1, texture_sir2, texture_sir3, texture_sir4, texture_temple_floor, texture_temple_floor); 
+    {
+        glScalef(1.0f, -1.0f, 1.0f);
+        drawScene5CubeReflection();  
+    }
     glPopMatrix(); 
+
+    glDisable(GL_STENCIL_TEST); 
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
+	glColor4f(1.0f, 1.0f, 1.0f, 0.7f); 
+	drawFloor(); 
+	glDisable(GL_BLEND); 
 } 
 
 void updateScene5(void) 
 {
     // variable declarations 
-    scene5RotateAngle = scene5RotateAngle + 0.1f;
+    scene5RotateAngle = scene5RotateAngle + 0.4f;
     if(scene5RotateAngle > 400) 
         isFading = TRUE;  
 } 
@@ -98,62 +176,3 @@ void uninitializeScene5(void)
     }
 } 
 
-
-
-
-
-
-
-
-/*
-static void cubeFromFrontQuad(
-    float rightTopX, float rightTopY, float leftTopX, float leftTopY, 
-    float leftBottomX, float leftBottomY, float rightBottomX, float rightBottomY, 
-    float depth
-)
-{
-    // variable declarations 
-    float z = depth/2.0f; 
-
-    // code 
-    glBegin(GL_QUADS); 
-    // front
-    glVertex3f(rightTopX, rightTopY, z); 
-    glVertex3f(leftTopX, leftTopY, z); 
-    glVertex3f(leftBottomX, leftBottomY, z); 
-    glVertex3f(rightBottomX, rightBottomY, z); 
-
-    // right 
-    glVertex3f(rightTopX, rightTopY, -z); 
-    glVertex3f(rightTopX, rightTopY, z); 
-    glVertex3f(rightBottomX, rightBottomY, z); 
-    glVertex3f(rightBottomX, rightBottomY, -z); 
-    
-    // back 
-    glVertex3f(leftTopX, leftTopY, -z); 
-    glVertex3f(rightTopX, rightTopY, -z); 
-    glVertex3f(rightBottomX, rightBottomY, -z); 
-    glVertex3f(leftBottomX, leftBottomY, -z); 
-
-    // left 
-    glVertex3f(leftTopX, leftTopY, z); 
-    glVertex3f(leftTopX, leftTopY, -z); 
-    glVertex3f(leftBottomX, leftBottomY, -z); 
-    glVertex3f(leftBottomX, leftBottomY, z);  
-
-    // top 
-    glVertex3f(rightTopX, rightTopY, -z); 
-    glVertex3f(leftTopX, leftTopY, -z); 
-    glVertex3f(leftTopX, leftTopY, z); 
-    glVertex3f(rightTopX, rightTopY, z); 
-    
-    // bottom 
-    glVertex3f(rightBottomX, rightBottomY, z); 
-    glVertex3f(leftBottomX, leftBottomY, z); 
-    glVertex3f(leftBottomX, leftBottomY, -z); 
-    glVertex3f(rightBottomX, rightBottomY, -z); 
-
-    glEnd(); 
-} 
-
-*/

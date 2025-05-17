@@ -5,6 +5,7 @@ GLuint texture_gift_background;
 GLuint texture_giftbox; 
 GLuint texture_giftbox_topface; 
 GLuint texture_sunglass; 
+GLuint texture_giftbox_topface_inner; 
 
 // file-io related variables 
 extern FILE* gpFile; 
@@ -47,6 +48,12 @@ BOOL initScene3(void)
     if (!loadGLPngTexture(&texture_sunglass, "resources/sunglass.png"))
 	{
 		fprintf(gpFile, "sunglass.png Texture failed \n");
+		return FALSE;
+	}
+
+    if (!loadGLPngTexture(&texture_giftbox_topface_inner, "resources/giftbox_inner_flip.png"))
+	{
+		fprintf(gpFile, "giftbox_inner_flip.png Texture failed \n");
 		return FALSE;
 	}
 
@@ -114,7 +121,7 @@ void drawGiftBox(
                 texture_giftbox,  
                 0,  
                 texture_giftbox,  
-                texture_giftbox   
+                texture_giftbox_topface_inner  
             );
             glBindTexture(GL_TEXTURE_2D, 0);
         } 
@@ -197,10 +204,10 @@ void displayScene3(void)
 void updateScene3(void) 
 {
     // variable declarations 
-    static int pre_waiting_timer = 500; 
-    static int post_waiting_timer = 100; 
+    static int pre_waiting_timer = 1000; 
+    static int post_waiting_timer = 400; 
 
-    static float inverse_constant_for_camera_speed = 1000; 
+    static float inverse_constant_for_camera_speed = 500; 
     static BOOL isCameraUpdateDone = FALSE; 
 
     // code 
@@ -240,6 +247,11 @@ void updateScene3(void)
 void uninitializeScene3(void) 
 {
     // code 
+    if(texture_giftbox_topface_inner) 
+    {
+        glDeleteTextures(1, &texture_giftbox_topface_inner); 
+        texture_giftbox_topface_inner = 0; 
+    }
     if(texture_sunglass) 
     {
         glDeleteTextures(1, &texture_sunglass); 

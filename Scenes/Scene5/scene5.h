@@ -15,6 +15,7 @@
 // custom headers 
 #include "../../Common/Geometry/geometry.h" 
 #include "../../Common/common.h" 
+#include "../../OGL.h"
 
 // function declarations 
 extern BOOL initScene5(void); 

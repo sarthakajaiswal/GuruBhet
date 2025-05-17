@@ -26,7 +26,7 @@ const char* faces[] = {
     "Resources/Cubemap/right.png",
 	"Resources/Cubemap/left.png",
 	"Resources/Cubemap/top.png",
-	"Resources/Cubemap/bottom.png",
+	"Resources/Cubemap/bottom_dscene1.png",
 	"Resources/Cubemap/front.png",
 	"Resources/Cubemap/back.png"
 }; 
@@ -39,7 +39,6 @@ extern FILE* gpFile;
 extern float tx, ty, tz; 
 extern float sx, sy, sz; 
 
-/* 
 void displayCubemap(void)
 {
 	// code 
@@ -134,7 +133,6 @@ void displayCubemap(void)
 	}
 	glPopMatrix();
 }
-*/ 
 
 BOOL initScene1()
 {
@@ -327,7 +325,7 @@ void displayScene1()
 		{-4.80, 0.50, 10.70, 1.10, 1.50, texture_tree1}, 
 		{1.20, 0.80, 14.70, 1.4, 0.90, texture_tree1}, 
 		{-5.20, 2.10, 16.30, 2.80, 3.30, texture_tree3}, 
-		{2.00, 0.90, 17.60, 1.10, 1.50, texture_tree3}, 
+		{2.00, 0.90, 17.60, 2.10, 1.50, texture_tree3}, 
 		{2.10, 0.50, 20.20, 2.30, 2.70, texture_tree2}, 
 		{-1.50, 1.10, 25.90, 1.72, 2.04, texture_tree4}  
 	}; 
@@ -442,7 +440,7 @@ void updateScene1()
 	static BOOL isUpdate4 = FALSE; 
 
 	unsigned int inverse_constant_for_speed1 = 500.0f; // incresing this constant decreases camera speed 
-	unsigned int inverse_constant_for_speed2 = 1200.0f; 
+	unsigned int inverse_constant_for_speed2 = 1900.0f; 
 	unsigned int inverse_constant_for_speed3 = 400.0f; 
 	unsigned int inverse_constant_for_speed4 = 100.0f; 
 

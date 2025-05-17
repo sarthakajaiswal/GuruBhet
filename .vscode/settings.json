@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "fading.h": "c",
+        "common.h": "c",
+        "scene5.h": "c",
+        "ogl.h": "c"
+    }
+}

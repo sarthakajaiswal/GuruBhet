@@ -18,15 +18,18 @@ BOOL gbActiveWindow = FALSE;
 // exit key pressed related 
 BOOL gbEscapeKeyIsPressed = FALSE; 
 
+// game loop related variables
+BOOL bDone = FALSE; 
+
 // openGL related global variables 
 HDC ghdc = NULL; 
 HGLRC ghrc = NULL; 
 
 // global variables for FOG configuration 
 GLfloat fogColor[4] = {0.8f, 0.8f, 0.8f, 1.0f}; 
-GLfloat fogDensity = 0.07f; 
+GLfloat fogDensity = 0.025f; 
 GLfloat fogMode = GL_EXP2; 
-GLfloat fogStart = 0.0f; 
+GLfloat fogStart = 1.0f; 
 GLfloat fogEnd = 2000.0f; 
 BOOL gbFogEnabled = FALSE; 
 
@@ -54,7 +57,7 @@ unsigned long long current_time_stamp_microsec;
 unsigned long long main_timer_microsec;      
 
 // scene shots related variables 
-int shot_count = 5; 
+int shot_count = 0; 
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -64,6 +67,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     void uninitialize(void); 
     void display(void); 
     void update(void); 
+    void toggleFullScreen(void); 
 
     // local variable declarations 
     WNDCLASSEX wndclass; 
@@ -74,7 +78,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     int screenWidth, screenHeight, windowWidth, windowHeight; 
     float initialPositionOfY, initialPositionOfX; 
     int iResult = 0; 
-    BOOL bDone = FALSE; 
 
     gpFile = fopen("log.txt", "w"); 
     if(gpFile == NULL) 
@@ -149,6 +152,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     SetForegroundWindow(hwnd); 
     SetFocus(hwnd); 
 
+    toggleFullScreen(); 
+    gbFullScreen = TRUE; 
+
     isInitialized = TRUE; 
 
     // game loop 
@@ -171,7 +177,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
             {
                 if(!sound_played && isInitialized)  
                 {
-                    // PlayBackgroundMusic(); 
+                    PlayBackgroundMusic(); 
                     sound_played = TRUE; 
                 }
                 // render 
@@ -460,6 +466,7 @@ int initialize(void)
     pfd.cBlueBits = 8; 
     pfd.cAlphaBits = 8; 
     pfd.cDepthBits = 32; 
+    pfd.cStencilBits = 32; 
 
     // get dc 
     ghdc = GetDC(ghWnd); 
@@ -512,14 +519,14 @@ int initialize(void)
 
     glEnable(GL_TEXTURE_2D); 
 
-    // initFog(); 
+    initFog(); 
 
-    // initScene1(); 
-    // initScene2(); 
-    // initScene3(); 
+    initScene1(); 
+    initScene2(); 
+    initScene3(); 
     initScene4(); 
-    // initScene5(); 
-    // initSlideScenes(); 
+    initScene5(); 
+    initSlideScenes(); 
 
     // warmup resize 
     resize(WIN_WIDTH, WIN_HEIGHT); 
@@ -559,7 +566,7 @@ void resize(int width, int height)
 void display(void) 
 {
     // code 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
 
     char str[128]; 
     sprintf(str, "%llu", main_timer_microsec); 
@@ -588,10 +595,16 @@ void display(void)
         displaySlide2(); 
 
     if(shot_count == 3) 
+    {
+        gbFogEnabled = TRUE; 
         displayScene1(); 
+    } 
 
     if(shot_count == 4) 
+    {
+        gbFogEnabled = FALSE; 
         displayScene2(); 
+    } 
 
     if(shot_count == 5) 
         displayScene3(); 
@@ -622,6 +635,9 @@ void display(void)
 
     if(shot_count == 14) 
         displaySlide9(); 
+
+    if(shot_count == 15) 
+        bDone = TRUE; 
 
     displayFade(); 
     
@@ -657,8 +673,16 @@ void update(void)
         updateScene4(); 
     if(shot_count == 13) 
         updateScene5(); 
-        
-    updateFade(2);  
+    
+    switch(shot_count) 
+    {
+        case 1: 
+        case 6: 
+            updateFade(0.5); 
+
+        default: 
+            updateFade(2); 
+    }
 }
 
 void uninitialize(void) 

@@ -483,9 +483,9 @@ void updateScene4(void)
     static BOOL isUpdate5 = FALSE; 
     static BOOL isUpdate6 = FALSE; 
 
-    static float inverse_constant_for_camera_speed1 = 2000; 
-    static float inverse_constant_for_camera_speed2 = 2000; 
-    static float inverse_constant_for_camera_speed3 = 2000; 
+    static float inverse_constant_for_camera_speed1 = 950; 
+    static float inverse_constant_for_camera_speed2 = 900; 
+    static float inverse_constant_for_camera_speed3 = 1000; 
  
     // code
     if(initialWaitTimerScene4 > 0) 
@@ -557,11 +557,11 @@ void updateScene4(void)
         displayStructFootball = FALSE; 
 
         // display new structures 
-        if(cameraZ < 18.0f) 
+        if(cameraZ < 28.0f) 
             displayStructCube = TRUE; 
-        if(cameraZ < 15.0f) 
+        if(cameraZ < 24.0f) 
             displayStructSphere = TRUE; 
-        if(cameraZ < 12.0f) 
+        if(cameraZ < 20.0f) 
             displayStructPyramid = TRUE;  
 
         if(cameraEyeX >= -0.50) 
@@ -574,12 +574,12 @@ void updateScene4(void)
     // Position3 -> position4 
     if(isUpdate4 == TRUE) 
     {
-        cameraX = cameraX - 10.0/inverse_constant_for_camera_speed3; 
-        cameraY = cameraY - 2.04/inverse_constant_for_camera_speed3; 
-        cameraZ = cameraZ - 27.90/inverse_constant_for_camera_speed3; 
+        cameraX = cameraX - 10.0/inverse_constant_for_camera_speed1; 
+        cameraY = cameraY - 2.04/inverse_constant_for_camera_speed1; 
+        cameraZ = cameraZ - 27.90/inverse_constant_for_camera_speed1; 
 
-        cameraEyeX = cameraEyeX - 25.0f/inverse_constant_for_camera_speed3; 
-        cameraEyeY = cameraEyeY - 2.0/inverse_constant_for_camera_speed3; 
+        cameraEyeX = cameraEyeX - 25.0f/inverse_constant_for_camera_speed1; 
+        cameraEyeY = cameraEyeY - 2.0/inverse_constant_for_camera_speed1; 
 
         // remove previous structures 
         displayStructCube = FALSE; 
@@ -600,12 +600,12 @@ void updateScene4(void)
     // position4 -> position5 
     if(isUpdate5 == TRUE) 
     {
-        cameraX = cameraX + 27.30/inverse_constant_for_camera_speed3; 
-        cameraY = cameraY - 0.50/inverse_constant_for_camera_speed3; 
-        cameraZ = cameraZ + 22.20/inverse_constant_for_camera_speed3; 
+        cameraX = cameraX + 27.30/inverse_constant_for_camera_speed2; 
+        cameraY = cameraY - 0.50/inverse_constant_for_camera_speed2; 
+        cameraZ = cameraZ + 22.20/inverse_constant_for_camera_speed2; 
 
-        cameraEyeX = cameraEyeX + 41.20/inverse_constant_for_camera_speed3; 
-        cameraEyeY = cameraEyeY + 7.90/inverse_constant_for_camera_speed3; 
+        cameraEyeX = cameraEyeX + 41.20/inverse_constant_for_camera_speed2; 
+        cameraEyeY = cameraEyeY + 7.90/inverse_constant_for_camera_speed2; 
 
         // remove previous structures 
         displayStructSofa = FALSE; 

@@ -2,6 +2,7 @@
 #define _OGL_H  
 
 #define MYICON 101 
+#define IDBITMAP_MARBLE 102 
 
 // windows header files 
 #include <Windows.h> 
