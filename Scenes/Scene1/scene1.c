@@ -26,7 +26,7 @@ const char* faces[] = {
     "Resources/Cubemap/right.png",
 	"Resources/Cubemap/left.png",
 	"Resources/Cubemap/top.png",
-	"Resources/Cubemap/bottom_dscene1.png",
+	"Resources/Cubemap/bottom.png",
 	"Resources/Cubemap/front.png",
 	"Resources/Cubemap/back.png"
 }; 
@@ -44,7 +44,8 @@ void displayCubemap(void)
 	// code 
 	glPushMatrix();
 	{
-		glScalef((1 + 3.100 + 11.650) * 2.5, (1 + 2.770) * 2.5, (1 + 3.600 + 9.7) * 2.5);
+		// glScalef((1 + 3.100 + 11.650) * 2.5, (1 + 2.770) * 2.5, (1 + 3.600 + 9.7) * 2.5);
+		glScalef(1.0f, 1.0f, 1.0f); 
 		glColor3f(1.0f, 1.0f, 1.0f);
 
 		glEnable(GL_TEXTURE_CUBE_MAP);
@@ -202,7 +203,7 @@ BOOL initScene1()
 		return FALSE;
 	}
 
-	// cubemapTexture = loadCubemap(faces);
+	cubemapTexture = loadCubemap(faces);
 
 	return (TRUE);
 }
@@ -348,7 +349,7 @@ void displayScene1()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
-	// displayCubemap(); 
+	displayCubemap(); 
 	
 	// ground 
 	glBindTexture(GL_TEXTURE_2D, texture_ground); 

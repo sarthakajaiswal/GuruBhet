@@ -304,7 +304,7 @@ void displaySlide8(void)
 void displaySlide9(void) 
 {
     // variable declarations 
-    static int waitTimerMilisec = 1300; 
+    static int waitTimerMilisec = 1650; 
     static BOOL isThisFirstCall = TRUE; 
     
     // code 

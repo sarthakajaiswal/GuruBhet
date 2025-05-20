@@ -57,7 +57,7 @@ unsigned long long current_time_stamp_microsec;
 unsigned long long main_timer_microsec;      
 
 // scene shots related variables 
-int shot_count = 0; 
+int shot_count = 2; 
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -519,13 +519,13 @@ int initialize(void)
 
     glEnable(GL_TEXTURE_2D); 
 
-    initFog(); 
+    // initFog(); 
 
     initScene1(); 
-    initScene2(); 
-    initScene3(); 
-    initScene4(); 
-    initScene5(); 
+    // initScene2(); 
+    // initScene3(); 
+    // initScene4(); 
+    // initScene5(); 
     initSlideScenes(); 
 
     // warmup resize 
@@ -595,49 +595,43 @@ void display(void)
         displaySlide2(); 
 
     if(shot_count == 3) 
-    {
-        gbFogEnabled = TRUE; 
         displayScene1(); 
-    } 
 
-    if(shot_count == 4) 
-    {
-        gbFogEnabled = FALSE; 
-        displayScene2(); 
-    } 
+    // if(shot_count == 4) 
+    //     displayScene2(); 
 
-    if(shot_count == 5) 
-        displayScene3(); 
+    // if(shot_count == 5) 
+    //     displayScene3(); 
 
-    if(shot_count == 6) 
-        displayScene4();
+    // if(shot_count == 6) 
+    //     displayScene4();
         
-    if(shot_count == 7) 
-        displaySlide3(); 
+    // if(shot_count == 7) 
+    //     displaySlide3(); 
 
-    if(shot_count == 8) 
-        displaySlide4(); 
+    // if(shot_count == 8) 
+    //     displaySlide4(); 
         
-    if(shot_count == 9) 
-        displaySlide5(); 
+    // if(shot_count == 9) 
+    //     displaySlide5(); 
 
-    if(shot_count == 10) 
-        displaySlide6(); 
+    // if(shot_count == 10) 
+    //     displaySlide6(); 
 
-    if(shot_count == 11) 
-        displaySlide7(); 
+    // if(shot_count == 11) 
+    //     displaySlide7(); 
 
-    if(shot_count == 12) 
-        displaySlide8(); 
+    // if(shot_count == 12) 
+    //     displaySlide8(); 
 
-    if(shot_count == 13) 
-        displayScene5(); 
+    // if(shot_count == 13) 
+    //     displayScene5(); 
 
-    if(shot_count == 14) 
-        displaySlide9(); 
+    // if(shot_count == 14) 
+    //     displaySlide9(); 
 
-    if(shot_count == 15) 
-        bDone = TRUE; 
+    // if(shot_count == 15) 
+    //     bDone = TRUE; 
 
     displayFade(); 
     
@@ -663,16 +657,16 @@ void update(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    if(shot_count == 3) 
-        updateScene1(); 
-    if(shot_count == 4) 
-        updateScene2(); 
-    if(shot_count == 5) 
-        updateScene3(); 
-    if(shot_count == 6) 
-        updateScene4(); 
-    if(shot_count == 13) 
-        updateScene5(); 
+    // if(shot_count == 3) 
+    //     updateScene1(); 
+    // if(shot_count == 4) 
+    //     updateScene2(); 
+    // if(shot_count == 5) 
+    //     updateScene3(); 
+    // if(shot_count == 6) 
+    //     updateScene4(); 
+    // if(shot_count == 13) 
+    //     updateScene5(); 
     
     switch(shot_count) 
     {
