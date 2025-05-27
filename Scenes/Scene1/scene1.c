@@ -32,12 +32,37 @@ const char* faces[] = {
 }; 
 GLuint cubemapTexture; 
 
+// light variables 
+BOOL bLight = FALSE; 
+BOOL bSpotlight = TRUE; 
+
+GLfloat lightAmbiant[] = {0.1f, 0.1f, 0.1f, 1.0f}; // grey light source disnt nahi 
+GLfloat lightDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f}; // white most imp it is defination of light source dist ahe, color intensity is decided by gl_diffused
+GLfloat lightSpecular[] = {1.0f, 1.0f, 1.0f, 1.0f}; // white 
+GLfloat lightPosition[]= {100.0f, 100.0f, 100.0f, 1.0f}; // baherun stage vr baght ahot w is imp becoz in light w is imp
+GLfloat spotDirection[]={0.0f, -1.0f, 0.0f};
+
+GLfloat materialAmbiant[] = {0.0,0.0,0.0,1.0}; //black
+GLfloat materialDiffuse[] = {0.5,0.2,0.7,1.0}; 
+GLfloat materialSpecualr[] = {0.7,0.7,0.7,1.0};
+GLfloat materialShinyness[] = {128.0f}; 
+
+GLfloat spotLight = 10.0f; 
+GLfloat posX = 0.0f; 
+GLfloat posY = 5.0f; 
+GLfloat posZ = 0.0f; 
+
+GLfloat spotExponent = 1.0f; 
+
 // file-io related variables 
 extern FILE* gpFile; 
 
 // translation related variables 
 extern float tx, ty, tz; 
 extern float sx, sy, sz; 
+
+// sphere related variables 
+GLUquadric* scene1Quadric = NULL;
 
 void displayCubemap(void)
 {
@@ -203,9 +228,47 @@ BOOL initScene1()
 		return FALSE;
 	}
 
+	 // light related inialization
+	glLightfv(GL_LIGHT0,GL_AMBIENT,lightAmbiant); // light la property denar he function , enabling first light, tyla ambiant property de , tyla array value de
+	glLightfv(GL_LIGHT0,GL_DIFFUSE,lightDiffuse);
+	glLightfv(GL_LIGHT0,GL_SPECULAR,lightSpecular);
+	glLightfv(GL_LIGHT0,GL_POSITION,lightPosition);
+	glEnable(GL_LIGHT0);
+
+
+	// material properties
+	glMaterialfv(GL_FRONT,GL_AMBIENT,materialAmbiant);
+	glMaterialfv(GL_FRONT,GL_DIFFUSE,materialDiffuse);
+	glMaterialfv(GL_FRONT,GL_SPECULAR,materialSpecualr);
+	glMaterialfv(GL_FRONT,GL_SHININESS,materialShinyness);
+
+
+	scene1Quadric = gluNewQuadric(); 
 	cubemapTexture = loadCubemap(faces);
 
 	return (TRUE);
+}
+
+void drawSphere()
+{
+    int i=0,j=0;
+
+    glPushMatrix();
+    {
+        for(j=1;j<10;j++)
+        {
+            for(i=1;i<=10;i++)
+            {
+                glPushMatrix();
+                {
+                    glTranslatef(-2.35+(i*0.45),-1.45,0.0-(-0.65+j));
+                    gluSphere(scene1Quadric, 0.2f, 50, 50);
+                }
+                glPopMatrix();
+            }
+        }
+    }
+    glPopMatrix();
 }
 
 void templeBase(
@@ -305,9 +368,8 @@ void templeBase(
 		glVertex3f(-1.0f, -1.0f, -0.99f); // right bottom 
 		glEnd(); 
 		glBindTexture(GL_TEXTURE_2D, 0);  
-
-		glPopMatrix(); 
-	}
+	glPopMatrix(); 
+}
 
 void displayScene1()
 {
@@ -408,6 +470,8 @@ void displayScene1()
 	}  
 
 	glDisable(GL_BLEND);
+
+	drawSphere(); 
 }
 
 /*

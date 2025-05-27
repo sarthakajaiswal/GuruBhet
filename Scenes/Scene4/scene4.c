@@ -38,6 +38,8 @@ extern float cameraX, cameraY, cameraZ;
 extern float cameraEyeX, cameraEyeY, cameraEyeZ; 
 extern float cameraUpX, cameraUpY, cameraUpZ; 
 
+float specAngleY; 
+
 extern int shot_count; 
 extern BOOL isFading; 
 
@@ -171,14 +173,16 @@ BOOL initScene4(void)
 	}
     
     if(!quadric) 
-        quadric = gluNewQuadric(); 
+    quadric = gluNewQuadric(); 
 
-    return (TRUE); 
+return (TRUE); 
 } 
 
 void displayScene4(void) 
 {
     // variable declarations 
+    static BOOL isThisFirstCall = TRUE; 
+
     // cubes for sofa 
     struct Cube sofaCubes[] = {
         {0.0, 3.00, 38.50, 17.28, 3.0, 6.96, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_sofa_back, texture_sofa_back, texture_sofa_back, texture_sofa_back, texture_sofa_back, texture_sofa_back}, // base 
@@ -188,6 +192,54 @@ void displayScene4(void)
     }; 
 
     // code
+    if(isThisFirstCall) 
+    {
+        // cameraX = -47.0f; 
+        // cameraY = 51.0f; 
+        // cameraZ = 9.0f; 
+
+        
+        // cameraEyeX = -181.0f; 
+        // // cameraEyeX = 0.0f; 
+        // cameraEyeY = 41.0f; 
+        // cameraEyeZ = 0.0f; 
+        
+        cameraY = 1.0f; 
+        cameraX = 0.0f; 
+        cameraZ = 2.0f; 
+
+        cameraEyeX = 0.0f; 
+        cameraEyeY = 1.0f; 
+        cameraEyeZ = -10.0f; 
+
+        isThisFirstCall = FALSE; 
+    }
+    // goggle 
+    glEnable(GL_BLEND); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
+    specAngleY = tan((cameraEyeX) / (-cameraEyeZ)) * 50; 
+
+    glPushMatrix(); 
+    {
+        // glRotatef((-specAngleY)*3.142/180.0, 0, 1, 0); 
+
+        glTranslatef(cameraX, cameraY, cameraZ-6.0f);
+        glTranslatef(0.0f, 0.0f, 6.0f); 
+        glRotatef(tx*10, 0, 1, 0); 
+
+        glColor4f(1.0f, 0.0f, 0.0f, 0.4); 
+        glBegin(GL_QUADS); 
+        glVertex3f(1.0f, 1.0f, 0.0f); 
+        glVertex3f(-1.0f, 1.0f, 0.0f);	
+        glVertex3f(-1.0f, -1.0f, 0.0f); 
+        glVertex3f(1.0f, -1.0f, 0.0f); 
+        glEnd(); 
+    } 
+    glPopMatrix(); 
+
+    glDisable(GL_BLEND); 
+
     // room 
     drawTexturedCube(0.0f, 40.0f, 0.0f, 60.2f, 40.2f, 60.2f, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_room2, texture_room2, texture_room1, texture_room2, texture_room2, texture_room_floor); 
 
@@ -367,24 +419,6 @@ void displayScene4(void)
     glTranslatef(53.60, 3.80, -17.70); 
     gluSphere(quadric, 5.0, 16, 16); 
     glPopMatrix(); 
-
-    // ===================================== 
-
-    static BOOL isThisFirstCall = TRUE; 
-
-    if(isThisFirstCall) 
-    {
-        cameraX = -47.0f; 
-        cameraY = 51.0f; 
-        cameraZ = 9.0f; 
-
-        cameraEyeX = -181.0f; 
-        // cameraEyeX = 0.0f; 
-        cameraEyeY = 41.0f; 
-        cameraEyeZ = 0.0f; 
-
-        isThisFirstCall = FALSE; 
-    }
 
     //=========================================== 
     // structure definition textures 

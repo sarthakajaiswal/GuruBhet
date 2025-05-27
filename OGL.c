@@ -42,6 +42,8 @@ float cameraEyeX = 0.0f,    cameraEyeY = 0.0f,  cameraEyeZ = 0.0f;
 float cameraUpX = 0.0f,     cameraUpY = 1.0f,   cameraUpZ = 0.0f; 
 float cameraAngle = 0.0f; 
 
+extern float specAngleY; 
+
 BOOL toggleCamera = FALSE; 
 
 // translation try-out variables 
@@ -57,7 +59,12 @@ unsigned long long current_time_stamp_microsec;
 unsigned long long main_timer_microsec;      
 
 // scene shots related variables 
-int shot_count = 2; 
+int shot_count = 0; 
+
+// spot light related variables 
+extern BOOL bLight, bSpotlight; 
+extern GLfloat spotLight, posX, posY, posZ; 
+extern GLfloat spotExponent; 
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -266,24 +273,21 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                     }
                     break; 
 
+                
                 // camera position controls 
-                case 'w': 
                 case 'W': 
                     cameraY += 0.5f; 
                     break; 
 
-                case 's': 
-                case 'S': 
+                case 'w': 
                     cameraY -= 0.5f; 
                     break; 
 
-                case 'a': 
-                case 'A': 
+                case 'q': 
                     cameraX -= 0.5f; 
                     break; 
 
-                case 'd': 
-                case 'D': 
+                case 'Q': 
                     cameraX += 0.5f; 
                     break; 
 
@@ -363,26 +367,74 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                     break; 
 
                 // // ------- Print the values ------ 
-                case 'm': 
-                    fprintf(gpFile, "\n\n%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n\n", tx, ty, tz, sx, sy, sz); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
-                    break; 
+                // case 'm': 
+                //     fprintf(gpFile, "\n\n%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n\n", tx, ty, tz, sx, sy, sz); 
+                //     fclose(gpFile); 
+                //     gpFile = fopen("log.txt", "a"); 
+                //     break; 
 
-                case 'p': 
-                case 'P': 
-                    fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                            cameraX, cameraY, cameraZ, 
-                            cameraEyeX, cameraEyeY, cameraEyeZ, 
-                            cameraUpX, cameraUpY, cameraUpZ 
-                    ); 
-                    fclose(gpFile); 
-                    gpFile = fopen("log.txt", "a"); 
-                    break; 
+                // case 'p': 
+                // case 'P': 
+                    // fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
+                    //         cameraX, cameraY, cameraZ, 
+                    //         cameraEyeX, cameraEyeY, cameraEyeZ, 
+                    //         cameraUpX, cameraUpY, cameraUpZ 
+                    // ); 
+                    // fclose(gpFile); 
+                    // gpFile = fopen("log.txt", "a"); 
 
-                case '1': 
-                    toggleCamera = !toggleCamera; 
-                    break; 
+                    // fprintf(gpFile, "\n\ncameraEyeX = %f cameraEyeZ = %f\nspecangleY = %f\n\n", cameraEyeX, cameraEyeZ, specAngleY);  
+                    // fclose(gpFile);
+                    // gpFile = fopen("log.txt", "a");  
+                    
+                    // break; 
+
+                // case '1': 
+                //     toggleCamera = !toggleCamera; 
+                //     break; 
+
+                case 'd':
+                    posZ-=0.1f;
+                    break;
+                case 'D':
+                    posZ +=0.1f;
+                    break;
+                case 'a':
+                    posX-=0.1f;
+                    break;
+                case 'A':
+                    posX+=0.1f;
+                    break;
+                case 'S':
+                    posY += 0.1f;
+                    break;
+                case 's':
+                    posY -= 0.1f;
+                    break;
+
+                case 'H':
+                    spotLight+=0.1f;
+                    break;
+                case 'h':
+                    spotLight-=0.1f;
+                    break;
+
+                case 'G':
+                    spotExponent+=1.0f;
+                    if(spotExponent > 128.0f)
+                        spotExponent = 128.0f;
+                    break;
+                case 'g':
+                    spotExponent-=1.0f;
+                    if(spotExponent < 0.0f)
+                        spotExponent = 0.0f;
+                    break;
+
+                // Toggle spotlight 
+                case 'T':
+                case 't':
+                    bSpotlight = !bSpotlight;
+                    break;
 
                 default: 
                     break; 
@@ -526,7 +578,7 @@ int initialize(void)
     // initScene3(); 
     // initScene4(); 
     // initScene5(); 
-    initSlideScenes(); 
+    // initSlideScenes(); 
 
     // warmup resize 
     resize(WIN_WIDTH, WIN_HEIGHT); 
@@ -535,8 +587,6 @@ int initialize(void)
     FileTimeToSystemTime(&ft, &stStartTime); 
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
-
-    // PlayBackgroundMusic();  
 
     start_time_stamp_microsec = (stStartTime.wMinute * 60000) + (stStartTime.wSecond * 1000) + stStartTime.wMilliseconds; 
     current_time_stamp_microsec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
@@ -569,7 +619,7 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
 
     char str[128]; 
-    sprintf(str, "%llu", main_timer_microsec); 
+    sprintf(str, "cameraEyeX = %f cameraEyeZ = %f specangleY = %f", cameraEyeX, cameraEyeZ, specAngleY); 
     SetWindowText(ghWnd, str); 
 
     current_time_stamp_microsec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
@@ -588,13 +638,13 @@ void display(void)
     if(main_timer_microsec < 100) 
         isFading = TRUE; 
 
-    if(shot_count == 1)
-        displaySlide1();    
+    // if(shot_count == 1)
+    //     displaySlide1();    
 
-    if(shot_count == 2) 
-        displaySlide2(); 
+    // if(shot_count == 2) 
+    //     displaySlide2(); 
 
-    if(shot_count == 3) 
+    // if(shot_count == 3) 
         displayScene1(); 
 
     // if(shot_count == 4) 
@@ -633,7 +683,7 @@ void display(void)
     // if(shot_count == 15) 
     //     bDone = TRUE; 
 
-    displayFade(); 
+    // displayFade(); 
     
     // swap the buffers 
     SwapBuffers(ghdc); 
@@ -657,8 +707,8 @@ void update(void)
     GetSystemTimePreciseAsFileTime(&ft); 
     FileTimeToSystemTime(&ft, &stCurrentTime); 
 
-    // if(shot_count == 3) 
-    //     updateScene1(); 
+    if(shot_count == 3) 
+        updateScene1(); 
     // if(shot_count == 4) 
     //     updateScene2(); 
     // if(shot_count == 5) 
