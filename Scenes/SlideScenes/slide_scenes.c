@@ -10,6 +10,7 @@ GLuint texture_slide6;
 GLuint texture_slide7; 
 GLuint texture_slide8; 
 GLuint texture_slide9; 
+GLuint texture_slide10; 
 
 // file-io related variable declarations 
 extern FILE* gpFile; 
@@ -46,35 +47,35 @@ BOOL initSlideScenes(void)
 		fprintf(gpFile, "Slide4-Sandarbha.png Texture failed \n");
 		return FALSE;
 	}
-    if (!loadGLPngTexture(&texture_slide5, "resources/Slide5-VisheshMadat.png"))
+    if (!loadGLPngTexture(&texture_slide5, "resources/Slide5-Music.png"))
 	{
-		fprintf(gpFile, "Slide5-VisheshMadat.png Texture failed \n");
+		fprintf(gpFile, "Slide5-Music.png Texture failed \n");
 		return FALSE;
-
 	}
-    if (!loadGLPngTexture(&texture_slide6, "resources/Slide6-VisheshAabhar.png"))
+    if (!loadGLPngTexture(&texture_slide6, "resources/Slide6-VisheshMadat.png"))
 	{
-		fprintf(gpFile, "Slide6-VisheshAabhar.png Texture failed \n");
+		fprintf(gpFile, "Slide6-VisheshMadat.png Texture failed \n");
 		return FALSE;
-
 	}
-    if (!loadGLPngTexture(&texture_slide7, "resources/Slide7-PrernaSthan.png"))
+    if (!loadGLPngTexture(&texture_slide7, "resources/Slide7-VisheshAabhar.png"))
 	{
-		fprintf(gpFile, "Slide7-PrernaSthan.png Texture failed \n");
+		fprintf(gpFile, "Slide7-VisheshAabhar.png Texture failed \n");
 		return FALSE;
-
 	}
-    if (!loadGLPngTexture(&texture_slide8, "resources/Slide8-GuruCharniSamarpit.png"))
+    if (!loadGLPngTexture(&texture_slide8, "resources/Slide8-PrernaSthan.png"))
 	{
-		fprintf(gpFile, "Slide8-GuruCharniSamarpit.png Texture failed \n");
+		fprintf(gpFile, "Slide8-PrernaSthan.png Texture failed \n");
 		return FALSE;
-
 	}
-    if (!loadGLPngTexture(&texture_slide9, "resources/Slide9-ThankYou.png"))
+    if (!loadGLPngTexture(&texture_slide9, "resources/Slide9-GuruCharniSamarpit.png"))
 	{
-		fprintf(gpFile, "Slide9-ThankYou.png Texture failed \n");
+		fprintf(gpFile, "Slide9-GuruCharniSamarpit.png Texture failed \n");
+		return FALSE; 
+	}
+    if (!loadGLPngTexture(&texture_slide10, "resources/Slide10-ThankYou.png"))
+	{
+		fprintf(gpFile, "Slide10-ThankYou.png Texture failed \n");
 		return FALSE;
-
 	}
 
     return (TRUE); 
@@ -83,6 +84,11 @@ BOOL initSlideScenes(void)
 void uninitializeSlideScenes(void) 
 {
     // code 
+    if(texture_slide10) 
+    {
+        glDeleteTextures(1, &texture_slide10); 
+        texture_slide10 = 0; 
+    }
     if(texture_slide9) 
     {
         glDeleteTextures(1, &texture_slide9); 
@@ -320,3 +326,24 @@ void displaySlide9(void)
     else 
         isFading = TRUE;
 } 
+
+void displaySlide10(void) 
+{
+    // variable declarations 
+    static int waitTimerMilisec = 2550; 
+    static BOOL isThisFirstCall = TRUE; 
+    
+    // code 
+    if(isThisFirstCall == TRUE) 
+    {
+        initializeCameraForSlide(); 
+        isThisFirstCall = FALSE; 
+    }
+    textureOnQuad(0.0f, 0.0f, 0.0f, 3.68f, 2.08f, 1.00f, texture_slide10); 
+
+    if(waitTimerMilisec > 0) 
+        waitTimerMilisec = waitTimerMilisec - 1; 
+    else 
+        isFading = TRUE;
+} 
+
