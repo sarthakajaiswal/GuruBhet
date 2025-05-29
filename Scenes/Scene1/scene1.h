@@ -16,6 +16,8 @@
 #include "../../Common/Geometry/geometry.h" 
 #include "../../Common/common.h" 
 
+#define IDBITMAP_MARBLE 102 
+
 // function declarations 
 extern BOOL initScene1(void); 
 extern void displayScene1(void); 

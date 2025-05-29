@@ -22,37 +22,15 @@ extern float cameraUpX, cameraUpY, cameraUpZ;
 
 extern int shot_count; 
 
-const char* faces[] = {
-    "Resources/Cubemap/right.png",
-	"Resources/Cubemap/left.png",
-	"Resources/Cubemap/top.png",
-	"Resources/Cubemap/bottom.png",
-	"Resources/Cubemap/front.png",
-	"Resources/Cubemap/back.png"
+const char* cubamapFacesScene1And2[] = {
+    "Resources/Cubemap/Scene1And2/right.png",
+	"Resources/Cubemap/Scene1And2/left.png",
+	"Resources/Cubemap/Scene1And2/top.png",
+	"Resources/Cubemap/Scene1And2/bottom.png",
+	"Resources/Cubemap/Scene1And2/front.png",
+	"Resources/Cubemap/Scene1And2/back.png"
 }; 
-GLuint cubemapTexture; 
-
-// light variables 
-BOOL bLight = FALSE; 
-BOOL bSpotlight = TRUE; 
-
-GLfloat lightAmbiant[] = {0.1f, 0.1f, 0.1f, 1.0f}; // grey light source disnt nahi 
-GLfloat lightDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f}; // white most imp it is defination of light source dist ahe, color intensity is decided by gl_diffused
-GLfloat lightSpecular[] = {1.0f, 1.0f, 1.0f, 1.0f}; // white 
-GLfloat lightPosition[]= {100.0f, 100.0f, 100.0f, 1.0f}; // baherun stage vr baght ahot w is imp becoz in light w is imp
-GLfloat spotDirection[]={0.0f, -1.0f, 0.0f};
-
-GLfloat materialAmbiant[] = {0.0,0.0,0.0,1.0}; //black
-GLfloat materialDiffuse[] = {0.5,0.2,0.7,1.0}; 
-GLfloat materialSpecualr[] = {0.7,0.7,0.7,1.0};
-GLfloat materialShinyness[] = {128.0f}; 
-
-GLfloat spotLight = 10.0f; 
-GLfloat posX = 0.0f; 
-GLfloat posY = 5.0f; 
-GLfloat posZ = 0.0f; 
-
-GLfloat spotExponent = 1.0f; 
+GLuint cubemapTextureScene1And2; 
 
 // file-io related variables 
 extern FILE* gpFile; 
@@ -63,102 +41,6 @@ extern float sx, sy, sz;
 
 // sphere related variables 
 GLUquadric* scene1Quadric = NULL;
-
-void displayCubemap(void)
-{
-	// code 
-	glPushMatrix();
-	{
-		// glScalef((1 + 3.100 + 11.650) * 2.5, (1 + 2.770) * 2.5, (1 + 3.600 + 9.7) * 2.5);
-		glScalef(1.0f, 1.0f, 1.0f); 
-		glColor3f(1.0f, 1.0f, 1.0f);
-
-		glEnable(GL_TEXTURE_CUBE_MAP);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-
-		// Render Front face
-		glBegin(GL_QUADS);
-		glNormal3f(0.0, 0.0, -1.0);
-		glTexCoord3f(-1.0f, -1.0f, 1.0f);
-		glVertex3f(-1.0f, -1.0f, 1.0f);
-		glTexCoord3f(1.0f, -1.0f, 1.0f);
-		glVertex3f(1.0f, -1.0f, 1.0f);
-		glTexCoord3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(1.0f, 1.0f, 1.0f);
-		glTexCoord3f(-1.0f, 1.0f, 1.0f);
-		glVertex3f(-1.0f, 1.0f, 1.0f);
-		glEnd();
-
-		// Render Back face
-		glBegin(GL_QUADS);
-		glNormal3f(0.0, 0.0, 1.0);
-		glTexCoord3f(1.0f, -1.0f, -1.0f);
-		glVertex3f(1.0f, -1.0f, -1.0f);
-		glTexCoord3f(-1.0f, -1.0f, -1.0f);
-		glVertex3f(-1.0f, -1.0f, -1.0f);
-		glTexCoord3f(-1.0f, 1.0f, -1.0f);
-		glVertex3f(-1.0f, 1.0f, -1.0f);
-		glTexCoord3f(1.0f, 1.0f, -1.0f);
-		glVertex3f(1.0f, 1.0f, -1.0f);
-		glEnd();
-
-		// Render Left face
-		glBegin(GL_QUADS);
-		glNormal3f(1.0, 0.0, 0.0);
-		glTexCoord3f(-1.0f, -1.0f, -1.0f);
-		glVertex3f(-1.0f, -1.0f, -1.0f);
-		glTexCoord3f(-1.0f, -1.0f, 1.0f);
-		glVertex3f(-1.0f, -1.0f, 1.0f);
-		glTexCoord3f(-1.0f, 1.0f, 1.0f);
-		glVertex3f(-1.0f, 1.0f, 1.0f);
-		glTexCoord3f(-1.0f, 1.0f, -1.0f);
-		glVertex3f(-1.0f, 1.0f, -1.0f);
-		glEnd();
-
-		// Render Right face
-		glBegin(GL_QUADS);
-		glNormal3f(-1.0, 0.0, 0.0);
-		glTexCoord3f(1.0f, -1.0f, 1.0f);
-		glVertex3f(1.0f, -1.0f, 1.0f);
-		glTexCoord3f(1.0f, -1.0f, -1.0f);
-		glVertex3f(1.0f, -1.0f, -1.0f);
-		glTexCoord3f(1.0f, 1.0f, -1.0f);
-		glVertex3f(1.0f, 1.0f, -1.0f);
-		glTexCoord3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(1.0f, 1.0f, 1.0f);
-		glEnd();
-
-		//// Render Top face
-		glNormal3f(0.0, -1.0, 0.0);
-		glBegin(GL_QUADS);
-		glTexCoord3f(-1.0f, 1.0f, 1.0f);
-		glVertex3f(-1.0f, 1.0f, 1.0f);
-		glTexCoord3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(1.0f, 1.0f, 1.0f);
-		glTexCoord3f(1.0f, 1.0f, -1.0f);
-		glVertex3f(1.0f, 1.0f, -1.0f);
-		glTexCoord3f(-1.0f, 1.0f, -1.0f);
-		glVertex3f(-1.0f, 1.0f, -1.0f);
-		glEnd();
-
-		//// Render Bottom face
-		glBegin(GL_QUADS);
-		glNormal3f(0.0, 1.0, 0.0);
-		glTexCoord3f(-1.0f, -1.0f, -1.0f);
-		glVertex3f(-1.0f, -1.0f, -1.0f);
-		glTexCoord3f(1.0f, -1.0f, -1.0f);
-		glVertex3f(1.0f, -1.0f, -1.0f);
-		glTexCoord3f(1.0f, -1.0f, 1.0f);
-		glVertex3f(1.0f, -1.0f, 1.0f);
-		glTexCoord3f(-1.0f, -1.0f, 1.0f);
-		glVertex3f(-1.0f, -1.0f, 1.0f);
-		glEnd();
-
-		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-		glDisable(GL_TEXTURE_CUBE_MAP);
-	}
-	glPopMatrix();
-}
 
 BOOL initScene1()
 {
@@ -228,47 +110,11 @@ BOOL initScene1()
 		return FALSE;
 	}
 
-	 // light related inialization
-	glLightfv(GL_LIGHT0,GL_AMBIENT,lightAmbiant); // light la property denar he function , enabling first light, tyla ambiant property de , tyla array value de
-	glLightfv(GL_LIGHT0,GL_DIFFUSE,lightDiffuse);
-	glLightfv(GL_LIGHT0,GL_SPECULAR,lightSpecular);
-	glLightfv(GL_LIGHT0,GL_POSITION,lightPosition);
-	glEnable(GL_LIGHT0);
-
-
-	// material properties
-	glMaterialfv(GL_FRONT,GL_AMBIENT,materialAmbiant);
-	glMaterialfv(GL_FRONT,GL_DIFFUSE,materialDiffuse);
-	glMaterialfv(GL_FRONT,GL_SPECULAR,materialSpecualr);
-	glMaterialfv(GL_FRONT,GL_SHININESS,materialShinyness);
-
+	cubemapTextureScene1And2 = loadCubeMap(cubamapFacesScene1And2);
 
 	scene1Quadric = gluNewQuadric(); 
-	cubemapTexture = loadCubemap(faces);
 
 	return (TRUE);
-}
-
-void drawSphere()
-{
-    int i=0,j=0;
-
-    glPushMatrix();
-    {
-        for(j=1;j<10;j++)
-        {
-            for(i=1;i<=10;i++)
-            {
-                glPushMatrix();
-                {
-                    glTranslatef(-2.35+(i*0.45),-1.45,0.0-(-0.65+j));
-                    gluSphere(scene1Quadric, 0.2f, 50, 50);
-                }
-                glPopMatrix();
-            }
-        }
-    }
-    glPopMatrix();
 }
 
 void templeBase(
@@ -392,8 +238,10 @@ void displayScene1()
 		{2.10, 0.50, 20.20, 2.30, 2.70, texture_tree2}, 
 		{-1.50, 1.10, 25.90, 1.72, 2.04, texture_tree4}  
 	}; 
-
+	
 	// code 
+	displayCubemap(cubemapTextureScene1And2, 30.0f, 30.0f, 30.0f); 
+
 	if(isThisFirstCall == TRUE) 
 	{
 		cameraX = -1.50f; 
@@ -407,11 +255,9 @@ void displayScene1()
 		isThisFirstCall = FALSE; 
 		return; 
 	}
-
+	
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	
-	displayCubemap(); 
 	
 	// ground 
 	glBindTexture(GL_TEXTURE_2D, texture_ground); 
@@ -427,7 +273,7 @@ void displayScene1()
     glVertex3f(40.0f, -0.5f, 40.0f); 
     glEnd(); 
     glBindTexture(GL_TEXTURE_2D, 0); 
-
+	
 	// road upto temple 
 	glBindTexture(GL_TEXTURE_2D, texture_road); 
 	glColor3f(1.0f, 1.0f, 1.0f); 
@@ -468,10 +314,8 @@ void displayScene1()
 			trees[i].texture 
 		);
 	}  
-
+	
 	glDisable(GL_BLEND);
-
-	drawSphere(); 
 }
 
 /*
@@ -512,6 +356,8 @@ void updateScene1()
 	// code 
 	if(isUpdate1 == TRUE) 
 	{
+		glEnable(GL_FOG); 
+
 		cameraX += 1.50/inverse_constant_for_speed1; 
 		cameraY -= 4.50/inverse_constant_for_speed1; 
 		cameraZ -= 2.0/inverse_constant_for_speed1; 
@@ -546,6 +392,9 @@ void updateScene1()
 		if(cameraEyeY < 4.0) 
 			cameraEyeY = cameraEyeY + 0.005f; 
 		cameraEyeZ = cameraEyeZ - 0.05f;
+
+		if(cameraZ < -7.5f)  
+			glDisable(GL_FOG); 
 
 		if(cameraZ < -9.0f) 
 		{
