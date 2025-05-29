@@ -34,18 +34,8 @@ extern float cameraEyeX, cameraEyeY, cameraEyeZ;
 
 extern BOOL isFading; 
 
-/* 
-const char* faces[] = {
-    "Resources/Cubemap/right.png",
-	"Resources/Cubemap/left.png",
-	"Resources/Cubemap/top.png",
-	"Resources/Cubemap/bottom.png",
-	"Resources/Cubemap/front.png",
-	"Resources/Cubemap/back.png"
-}; 
-
-GLuint cubemapTexture; 
-*/ 
+extern const char* cubamapFacesScene1And2[]; 
+extern GLuint cubemapTextureScene1And2; 
 
 // file-io related variables 
 extern FILE* gpFile; 
@@ -165,7 +155,7 @@ void displayScene2()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
-	// displayCubemap(); 
+	displayCubemap(cubemapTextureScene1And2, 30.0f, 30.0f, 30.0f); 
 	
 	// ground 
 	glBindTexture(GL_TEXTURE_2D, texture_ground); 
@@ -433,6 +423,11 @@ void updateScene2(void)
 void uninitializeScene2(void) 
 {
 	// code 
+	if(cubemapTextureScene1And2) 
+	{
+		glDeleteTextures(1, &cubemapTextureScene1And2); 
+		cubemapTextureScene1And2 = 0; 
+	}
 	if(texture_headmaster_side_wall)
 	{
 		glDeleteTextures(1, &texture_headmaster_side_wall); 
