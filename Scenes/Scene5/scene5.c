@@ -20,6 +20,17 @@ extern float cameraEyeX, cameraEyeY, cameraEyeZ;
 
 extern float sx, sy, sz, tx, ty, tz; 
 
+// cubemap related variables 
+const char* cubemapFacesScene5[] = {
+    "Resources/Cubemap/Scene5/right.png",
+	"Resources/Cubemap/Scene5/left.png",
+	"Resources/Cubemap/Scene5/top.png",
+	"Resources/Cubemap/Scene5/bottom.png",
+	"Resources/Cubemap/Scene5/front.png",
+	"Resources/Cubemap/Scene5/back.png"
+}; 
+GLuint scene5CubemapTexture; 
+
 BOOL initScene5(void) 
 {
     if (!loadGLPngTexture(&texture_sir1, "resources/Sir1.png"))
@@ -47,10 +58,8 @@ BOOL initScene5(void)
 		fprintf(gpFile, "water Texture failed \n");
 		return FALSE;
 	}
-    else 
-    {
-        fprintf(gpFile, "marble loaded\n");
-    }
+    
+    scene5CubemapTexture = loadCubeMap(cubemapFacesScene5); 
     return (TRUE); 
 } 
 
@@ -74,7 +83,7 @@ void drawFloor(void)
 {
     glPushMatrix(); 
 
-	glScalef(50.0f, 50.0f, 50.0f); 
+	glScalef(90.0f, 50.30f, 53.10); 
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f); 
 
 	glBindTexture(GL_TEXTURE_2D, texture_sea); 
@@ -103,15 +112,17 @@ void displayScene5(void)
     // code 
     if(isCameraInitialized == FALSE) 
     {
-        cameraX = -5.0f; 
-        cameraY = 17.0f; 
-        cameraZ = 50.50f;
+        cameraX = 38.50f; 
+        cameraY = 10.0f; 
+        cameraZ = 46.50f;
         cameraEyeX = 0.0f; 
-        cameraEyeY = 6.0f; 
+        cameraEyeY = 12.0f; 
         cameraEyeZ = 0.0f; 
 
         isCameraInitialized = TRUE; 
     }
+
+    displayCubemap(scene5CubemapTexture, 97.0f, 56.0f, 56.0f); 
 
     drawScene5CubeOriginal(); 
 
@@ -147,13 +158,18 @@ void updateScene5(void)
 {
     // variable declarations 
     scene5RotateAngle = scene5RotateAngle + 0.4f;
-    if(scene5RotateAngle > 400) 
-        isFading = TRUE;  
+    // if(scene5RotateAngle > 400) 
+    //     isFading = TRUE;  
 } 
 
 void uninitializeScene5(void) 
 {
     // code 
+    if(scene5CubemapTexture) 
+    {
+        glDeleteTextures(1, &scene5CubemapTexture); 
+        scene5CubemapTexture = 0; 
+    }
     if(texture_sir4) 
     {
         glDeleteTextures(1, &texture_sir4); 
