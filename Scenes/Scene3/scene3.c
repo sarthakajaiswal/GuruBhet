@@ -87,7 +87,7 @@ void drawGiftBox(
     glPushMatrix(); 
     {
         glTranslatef(x, y, z);  
-        glScalef(sizeX, sizeY, sizeZ); 
+        glScalef(sizeX, sizeY, sizeZ);  
     
         glPushMatrix(); 
         {
@@ -127,19 +127,11 @@ void drawGiftBox(
         } 
         glPopMatrix(); 
 
-        drawTexturedCube(0.04, 0.12, 1.08, 1.00, 0.84, 0.04, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);   // front 
-        drawTexturedCube(0.04, 0.12, -1.0, 1.00, 0.84, 0.04, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);   // back 
-        drawTexturedCube(-1.00, 0.12, 0.04, 0.04, 0.84, 1.08, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);  // left 
-        drawTexturedCube(1.00, 0.12, 0.04, 0.04, 0.84, 1.08, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);  // left 
-        drawTexturedCube(0.00, -0.67, 0.00, 0.96, 0.042, 1.03, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);   // bottom 
-
         // sunglass 
         glPushMatrix(); 
         {
+            glScalef(0.75, 4.50, 1.0); 
             glBindTexture(GL_TEXTURE_2D, texture_sunglass);
-            glScalef(0.75, 4.50, 0.84); 
-
-            glColor3f(1.0f, 1.0f, 1.0f); 
             glBegin(GL_QUADS); 
             glTexCoord2f(1.0f, 1.0f); 
             glVertex3f(1.0f, 0.0f, -1.0f); 	// right top 
@@ -153,6 +145,12 @@ void drawGiftBox(
             glBindTexture(GL_TEXTURE_2D, 0);
         } 
         glPopMatrix(); 
+
+        drawTexturedCube(0.04, 0.12, 1.08, 1.00, 0.84, 0.04, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);   // front 
+        drawTexturedCube(0.04, 0.12, -1.0, 1.00, 0.84, 0.04, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);   // back 
+        drawTexturedCube(-1.00, 0.12, 0.04, 0.04, 0.84, 1.08, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);  // left 
+        drawTexturedCube(1.00, 0.12, 0.04, 0.04, 0.84, 1.08, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);  // left 
+        drawTexturedCube(0.00, -0.67, 0.00, 0.96, 0.042, 1.03, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox, texture_giftbox);   // bottom 
     } 
     glPopMatrix(); 
 }
