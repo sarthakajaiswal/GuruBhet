@@ -348,10 +348,10 @@ void updateScene1()
 	static BOOL isUpdate3 = FALSE; 
 	static BOOL isUpdate4 = FALSE; 
 
-	unsigned int inverse_constant_for_speed1 = 365.0f; // incresing this constant decreases camera speed 
-	unsigned int inverse_constant_for_speed2 = 1500.0f; 
-	unsigned int inverse_constant_for_speed3 = 400.0f; 
-	unsigned int inverse_constant_for_speed4 = 100.0f; 
+	unsigned int inverse_constant_for_speed1 = 450.0f; // incresing this constant decreases camera speed 
+	unsigned int inverse_constant_for_speed2 = 1850.0f; 
+	unsigned int inverse_constant_for_speed3 = 500.0f; 
+	unsigned int inverse_constant_for_speed4 = 150.0f; 
 
 	// code 
 	if(isUpdate1 == TRUE) 

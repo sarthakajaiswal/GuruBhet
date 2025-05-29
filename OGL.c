@@ -29,7 +29,7 @@ HGLRC ghrc = NULL;
 GLfloat fogColor[4] = {0.8f, 0.8f, 0.8f, 1.0f}; 
 GLfloat fogDensity = 0.025f; 
 GLfloat fogMode = GL_EXP2; 
-GLfloat fogStart = 1.0f; 
+GLfloat fogStart = 1.7f; 
 GLfloat fogEnd = 2000.0f; 
 BOOL gbFogEnabled = FALSE; 
 
@@ -710,10 +710,6 @@ void display(void)
     // code 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); 
 
-    char str[128]; 
-    sprintf(str, "cameraEyeX = %f cameraEyeZ = %f specangleY = %f", cameraEyeX, cameraEyeZ, specAngleY); 
-    SetWindowText(ghWnd, str); 
-
     current_time_stamp_microsec = (stCurrentTime.wMinute * 60000) + (stCurrentTime.wSecond * 1000) + stCurrentTime.wMilliseconds; 
     main_timer_microsec = current_time_stamp_microsec - start_time_stamp_microsec;  
 
@@ -787,13 +783,13 @@ void display(void)
 void PlayBackgroundMusic(void)
 {
     char buffer[MAX_PATH] = {0};
-    GetModuleFileName(NULL, buffer, MAX_PATH);
+    GetModuleFileName(NULL, (LPWSTR)buffer, MAX_PATH);
     char *LastSlash = strrchr(buffer, '\\');
     if (LastSlash == NULL)
         LastSlash = strrchr(buffer, '/');
     buffer[LastSlash - buffer] = 0;
     strcat(buffer, "\\Resources\\audio.wav");
-    PlaySound(buffer, NULL, SND_ASYNC | SND_LOOP);
+    PlaySound((LPCWSTR)buffer, NULL, SND_ASYNC | SND_LOOP);
 }
 
 void update(void) 

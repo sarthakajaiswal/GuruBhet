@@ -540,10 +540,10 @@ void updateScene4(void)
     static BOOL isUpdate5 = FALSE; 
     static BOOL isUpdate6 = FALSE; 
 
-    static float inverse_constant_for_camera_speed1 = 1000; 
-    static float inverse_constant_for_camera_speed2 = 1000; 
-    static float inverse_constant_for_camera_speed3 = 1000; 
-    static float inverse_constant_for_camera_speed = 1000; 
+    static float inverse_constant_for_camera_speed1 = 1600; 
+    static float inverse_constant_for_camera_speed2 = 1600; 
+    static float inverse_constant_for_camera_speed3 = 1650; 
+    static float inverse_constant_for_camera_speed = 1600; 
 
  
     // code
@@ -630,11 +630,11 @@ void updateScene4(void)
         displayStructHometheater = FALSE; 
 
         // display new structures 
-        if(cameraZ < 28.0f) 
+        if(cameraZ < 17.0f) 
             displayStructCube = TRUE; 
-        if(cameraZ < 24.0f) 
+        if(cameraZ < 14.0f) 
             displayStructSphere = TRUE; 
-        if(cameraZ < 20.0f) 
+        if(cameraZ < 11.0f) 
             displayStructPyramid = TRUE;  
 
         if(cameraEyeX >= -0.50) 
