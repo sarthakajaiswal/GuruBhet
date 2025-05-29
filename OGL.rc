@@ -4,4 +4,5 @@
 
 MYICON ICON icon.ico 
 IDBITMAP_MARBLE BITMAP marble.bmp
+ID_MUSIC WAVE "Resources/audio.wav" 
  
