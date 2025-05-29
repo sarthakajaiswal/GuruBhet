@@ -240,22 +240,22 @@ void displayScene1()
 	}; 
 	
 	// code 
-	displayCubemap(cubemapTextureScene1And2, 30.0f, 30.0f, 30.0f); 
-
 	if(isThisFirstCall == TRUE) 
 	{
 		cameraX = -1.50f; 
 		cameraY = 4.50f;
 		cameraZ = 30.0f; 
-
+		
 		cameraEyeX = 0.0f; 
 		cameraEyeY = -22.0f; 
 		cameraEyeZ = -20.0f; 
-
+		
 		isThisFirstCall = FALSE; 
 		return; 
 	}
 	
+	displayCubemap(cubemapTextureScene1And2, 30.0f, 30.0f, 30.0f); 
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -348,8 +348,8 @@ void updateScene1()
 	static BOOL isUpdate3 = FALSE; 
 	static BOOL isUpdate4 = FALSE; 
 
-	unsigned int inverse_constant_for_speed1 = 500.0f; // incresing this constant decreases camera speed 
-	unsigned int inverse_constant_for_speed2 = 1900.0f; 
+	unsigned int inverse_constant_for_speed1 = 365.0f; // incresing this constant decreases camera speed 
+	unsigned int inverse_constant_for_speed2 = 1500.0f; 
 	unsigned int inverse_constant_for_speed3 = 400.0f; 
 	unsigned int inverse_constant_for_speed4 = 100.0f; 
 

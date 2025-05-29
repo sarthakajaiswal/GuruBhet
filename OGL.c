@@ -62,7 +62,7 @@ unsigned long long main_timer_microsec;
 ALuint audioBuffer, audioSource; 
 
 // scene shots related variables 
-int shot_count = 12; 
+int shot_count = 0; 
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 

@@ -12,6 +12,12 @@ Image loaded successfully: resources/tree3.png (3072X3072)
 Image loaded successfully: resources/tree4.png (529X471)
 Image loaded successfully: resources/vitthal.png (8640X5181)
 Image loaded successfully: resources/temple_floor.png (626X417)
+loaded - Resources/Cubemap/Scene1And2/right.png
+loaded - Resources/Cubemap/Scene1And2/left.png
+loaded - Resources/Cubemap/Scene1And2/top.png
+loaded - Resources/Cubemap/Scene1And2/bottom.png
+loaded - Resources/Cubemap/Scene1And2/front.png
+loaded - Resources/Cubemap/Scene1And2/back.png
 Image loaded successfully: resources/temple_floor.png (626X417)
 Image loaded successfully: resources/classroom_front_mstc.png (664X411)
 Image loaded successfully: resources/classroom_front_dsa.png (664X411)
@@ -47,11 +53,19 @@ Image loaded successfully: Resources/struct_pyramid.png (541X540)
 Image loaded successfully: Resources/struct_clock.png (538X539)
 Image loaded successfully: Resources/struct_book.png (528X534)
 Image loaded successfully: Resources/struct_sofa.png (540X540)
+Image loaded successfully: Resources/initializing.png (1920X1080)
+Image loaded successfully: Resources/initialized.png (1920X1080)
 Image loaded successfully: resources/Sir1.png (719X712)
 Image loaded successfully: resources/Sir2.png (3622X3577)
 Image loaded successfully: resources/Sir3.png (1121X1080)
 Image loaded successfully: resources/Sir4.png (4683X3993)
 Image loaded successfully: resources/water.png (7360X4912)
+loaded - Resources/Cubemap/Scene5/right.png
+loaded - Resources/Cubemap/Scene5/left.png
+loaded - Resources/Cubemap/Scene5/top.png
+loaded - Resources/Cubemap/Scene5/bottom.png
+loaded - Resources/Cubemap/Scene5/front.png
+loaded - Resources/Cubemap/Scene5/back.png
 Image loaded successfully: resources/slide1-SwarnDivas.png (3840X2160)
 Image loaded successfully: resources/slide2-GuruBhet.png (3840X2160)
 Image loaded successfully: resources/Slide3-Tantragnyan.png (1920X1080)

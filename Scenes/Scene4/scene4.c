@@ -22,6 +22,8 @@ GLuint texture_struct_pyramid;
 GLuint texture_struct_cube; 
 GLuint texture_struct_sphere; 
 GLuint texture_struct_book; 
+GLuint texture_initializing; 
+GLuint texture_initialized; 
 
 // file-io related variables 
 extern FILE* gpFile; 
@@ -53,6 +55,8 @@ BOOL displayStructPyramid = FALSE;
 BOOL displayStructSphere = FALSE; 
 BOOL displayStructSofa = FALSE; 
 BOOL displayStructBook = FALSE; 
+BOOL displayInitializingTexture = FALSE; 
+BOOL displayInitializedTexture = FALSE; 
 
 // GLU shapes related variables 
 GLUquadric *quadricScene4 = NULL; 
@@ -160,6 +164,16 @@ BOOL initScene4(void)
 		fprintf(gpFile, "struct_sofa.png Texture failed \n");
 		return (FALSE);
 	}
+    if (!loadGLPngTexture(&texture_initializing, "Resources/initializing.png"))
+	{
+		fprintf(gpFile, "initializing.png Texture failed \n");
+		return (FALSE);
+	}
+    if (!loadGLPngTexture(&texture_initialized, "Resources/initialized.png"))
+	{
+		fprintf(gpFile, "initialized.png Texture failed \n");
+		return (FALSE);
+	}
 
     quadricScene4 = (GLUquadric*)gluNewQuadric(); 
     if(quadricScene4 == NULL) 
@@ -224,6 +238,9 @@ void displayScene4(void)
         texture_room1 
     );
 
+    glEnable(GL_BLEND); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
     // tv 
     glPushMatrix(); 
     {
@@ -266,6 +283,8 @@ void displayScene4(void)
     } 
     glPopMatrix(); 
 
+    glDisable(GL_BLEND); 
+    
     // certificate  
     glPushMatrix(); 
     {
@@ -393,7 +412,7 @@ void displayScene4(void)
     if(displayStructHometheater)
         billboard(-44.10, 17.30, -50.60, 7.0, 7.0, 0.0f, texture_struct_hometheater); 
     if(displayStructPhotoframe)
-        billboard(-58.0, 49.90, 1.50, 3.80, 3.0, 3.16, texture_struct_photoframe); 
+        billboard(-58.0, 49.90, 16.50, 0.0f, 3.0, 3.16, texture_struct_photoframe); 
     if(displayStructCube)
         billboard(56.40, 13.20, -34.20, 0.0, 5.04, 6.72, texture_struct_cube); 
     if(displayStructSphere)
@@ -405,11 +424,40 @@ void displayScene4(void)
     if(displayStructBook)
         billboard(51.60, 21.20, 49.30, 5.48, 5.50, 0.0, texture_struct_book); 
 
-    // goggle 
     glEnable(GL_BLEND); 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    // initialized-uninitialized texture 
+    if(displayInitializedTexture || displayInitializingTexture) 
+    {
+        glPushMatrix(); 
+        {
+            glTranslatef(-41.10, 50.0, 7.90);
+            glScalef(17.0, 4.84, 8.28f);  
 
-    glColor4f(0.0f, 0.0f, 1.0f, 0.4f); 
+            if(displayInitializedTexture) 
+                glBindTexture(GL_TEXTURE_2D, texture_initialized); 
+            else 
+                glBindTexture(GL_TEXTURE_2D, texture_initializing); 
+
+            glBegin(GL_QUADS); 
+            glTexCoord2f(1.0f, 1.0f); 
+            glVertex3f(-1.0f, 1.0f, 1.0f);	// right top 
+            glTexCoord2f(0.0f, 1.0f); 
+            glVertex3f(-1.0f, 1.0f, -1.0f);// left top 
+            glTexCoord2f(0.0f, 0.0f); 
+            glVertex3f(-1.0f, -1.0f, -1.0f); // left bottom 
+            glTexCoord2f(1.0f, 0.0f); 
+            glVertex3f(-1.0f, -1.0f, 1.0f); // right bottom 
+            glEnd(); 
+            glBindTexture(GL_TEXTURE_2D, 0); 
+        } 
+        glPopMatrix(); 
+    }  
+
+    // goggle 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
+    glColor4f(0.0f, 0.0f, 1.0f, 0.3f); 
     glPushMatrix(); 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
     glTranslatef(cameraX, cameraY, cameraZ); 
@@ -502,8 +550,25 @@ void updateScene4(void)
     if(initialWaitTimerScene4 > 0) 
     {
         if(initialWaitTimerScene4 == 1) 
+        {
             isUpdate1 = TRUE; 
-        initialWaitTimerScene4 = initialWaitTimerScene4 - 1; 
+        }  
+        if(initialWaitTimerScene4 > 800) 
+        {
+            displayInitializingTexture = TRUE; 
+        }
+        if(initialWaitTimerScene4 < 800 && initialWaitTimerScene4 > 200) 
+        {
+            displayInitializingTexture = FALSE; 
+            displayInitializedTexture = TRUE; 
+        } 
+        if(initialWaitTimerScene4 < 200) 
+        {
+            displayInitializingTexture = FALSE; 
+            displayInitializedTexture = FALSE; 
+        }
+
+        initialWaitTimerScene4 = initialWaitTimerScene4 - 1;
     }
 
     // initial -> position1
@@ -664,6 +729,16 @@ void uninitializeScene4(void)
         quadricScene4 = NULL; 
     }
 
+    if(texture_initialized) 
+    {
+        glDeleteTextures(1, &texture_initialized); 
+        texture_initialized = 0; 
+    }
+    if(texture_initializing) 
+    {
+        glDeleteTextures(1, &texture_initializing); 
+        texture_initializing = 0; 
+    }
     if(texture_struct_book) 
     {
         glDeleteTextures(1, &texture_struct_book); 

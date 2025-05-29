@@ -100,6 +100,8 @@ unsigned int loadCubeMap(const char* faces[])
 				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 			}
 			stbi_image_free(data);
+
+			fprintf(gpFile, "loaded - %s\n", faces[i]); 
 		}
 		else {
 			printf("Cubemap texture failed to load at path: %s\n", faces[i]);

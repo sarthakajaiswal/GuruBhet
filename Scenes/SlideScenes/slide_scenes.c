@@ -152,7 +152,7 @@ void initializeCameraForSlide(void)
 void displaySlide1(void)
 {
     // variable declarations 
-    static int waitTimerMilisec = 2500; 
+    static int waitTimerMilisec = 2450; 
     static BOOL isThisFirstCall = TRUE;  
     // code 
     if(isThisFirstCall == TRUE) 
