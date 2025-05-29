@@ -56,15 +56,13 @@ SYSTEMTIME stCurrentTime;
 SYSTEMTIME stStartTime;  
 unsigned long long start_time_stamp_microsec; 
 unsigned long long current_time_stamp_microsec; 
-unsigned long long main_timer_microsec;      
+unsigned long long main_timer_microsec;  
+
+// audio related variables 
+ALuint audioBuffer, audioSource; 
 
 // scene shots related variables 
-int shot_count = 0; 
-
-// spot light related variables 
-extern BOOL bLight, bSpotlight; 
-extern GLfloat spotLight, posX, posY, posZ; 
-extern GLfloat spotExponent; 
+int shot_count = 12; 
 
 // entry-point function 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) 
@@ -184,7 +182,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
             {
                 if(!sound_played && isInitialized)  
                 {
-                    PlayBackgroundMusic(); 
+                    // PlayBackgroundMusic(); 
+                    alSourcePlay(audioSource); 
+                    if(alGetError() != AL_NO_ERROR) 
+                        bDone = TRUE; 
+
                     sound_played = TRUE; 
                 }
                 // render 
@@ -272,7 +274,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                         gbFullScreen = FALSE; 
                     }
                     break; 
-
                 
                 // camera position controls 
                 case 'W': 
@@ -318,11 +319,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                 // -------- size -------- 
 
                 case 'z': 
-                    sx += 0.04f; 
+                    sx += 1; 
                     break; 
 
                 case 'Z': 
-                    sx -= 0.04f; 
+                    sx -= 1; 
                     break; 
                 
                 case 'x': 
@@ -366,75 +367,38 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
                     tz -= 0.1f; 
                     break; 
 
-                // // ------- Print the values ------ 
-                // case 'm': 
-                //     fprintf(gpFile, "\n\n%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n\n", tx, ty, tz, sx, sy, sz); 
-                //     fclose(gpFile); 
-                //     gpFile = fopen("log.txt", "a"); 
-                //     break; 
+                // ------- Print the values ------ 
+                case 'm': 
+                    fprintf(gpFile, "\n\n%.2f, %.2f, %.2f, %.2f, %.2f, %.2f\n\n", tx, ty, tz, sx, sy, sz); 
+                    fclose(gpFile); 
+                    gpFile = fopen("log.txt", "a"); 
+                    break; 
 
-                // case 'p': 
-                // case 'P': 
-                    // fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
-                    //         cameraX, cameraY, cameraZ, 
-                    //         cameraEyeX, cameraEyeY, cameraEyeZ, 
-                    //         cameraUpX, cameraUpY, cameraUpZ 
-                    // ); 
-                    // fclose(gpFile); 
-                    // gpFile = fopen("log.txt", "a"); 
+                case 'p': 
+                case 'P': 
+                    fprintf(gpFile, "\n\n%.2f  %.2f %.2f\n%.2f %.2f %.2f\n%.2f %.2f %.2f\n\n", 
+                            cameraX, cameraY, cameraZ, 
+                            cameraEyeX, cameraEyeY, cameraEyeZ, 
+                            cameraUpX, cameraUpY, cameraUpZ 
+                    ); 
+                    fclose(gpFile); 
+                    gpFile = fopen("log.txt", "a"); 
 
-                    // fprintf(gpFile, "\n\ncameraEyeX = %f cameraEyeZ = %f\nspecangleY = %f\n\n", cameraEyeX, cameraEyeZ, specAngleY);  
-                    // fclose(gpFile);
-                    // gpFile = fopen("log.txt", "a");  
+                    fprintf(gpFile, "\n\ncameraEyeX = %f cameraEyeZ = %f\nspecangleY = %f\n\n", cameraEyeX, cameraEyeZ, specAngleY);  
+                    fclose(gpFile);
+                    gpFile = fopen("log.txt", "a");  
                     
-                    // break; 
+                    break; 
 
                 // case '1': 
                 //     toggleCamera = !toggleCamera; 
                 //     break; 
 
-                case 'd':
-                    posZ-=0.1f;
-                    break;
-                case 'D':
-                    posZ +=0.1f;
-                    break;
-                case 'a':
-                    posX-=0.1f;
-                    break;
-                case 'A':
-                    posX+=0.1f;
-                    break;
-                case 'S':
-                    posY += 0.1f;
-                    break;
-                case 's':
-                    posY -= 0.1f;
-                    break;
-
-                case 'H':
-                    spotLight+=0.1f;
-                    break;
-                case 'h':
-                    spotLight-=0.1f;
-                    break;
-
-                case 'G':
-                    spotExponent+=1.0f;
-                    if(spotExponent > 128.0f)
-                        spotExponent = 128.0f;
-                    break;
-                case 'g':
-                    spotExponent-=1.0f;
-                    if(spotExponent < 0.0f)
-                        spotExponent = 0.0f;
-                    break;
-
-                // Toggle spotlight 
-                case 'T':
-                case 't':
-                    bSpotlight = !bSpotlight;
-                    break;
+                // // Toggle spotlight 
+                // case 'T':
+                // case 't':
+                //     bSpotlight = !bSpotlight;
+                //     break;
 
                 default: 
                     break; 
@@ -499,6 +463,7 @@ int initialize(void)
     quadric = gluNewQuadric(); 
 	if(quadric == NULL) 
 		return (FALSE); 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // variable declarations 
     PIXELFORMATDESCRIPTOR pfd; 
@@ -571,14 +536,21 @@ int initialize(void)
 
     glEnable(GL_TEXTURE_2D); 
 
-    // initFog(); 
+    initFog(); 
 
     initScene1(); 
-    // initScene2(); 
-    // initScene3(); 
-    // initScene4(); 
-    // initScene5(); 
-    // initSlideScenes(); 
+    initScene2(); 
+    initScene3(); 
+    initScene4(); 
+    initScene5(); 
+    initSlideScenes(); 
+    initFade(); 
+
+    if(initializeAudio() == FALSE)
+    {
+        fprintf(gpFile, "Failed to initialize audio\n"); 
+        return (-6); 
+    } 
 
     // warmup resize 
     resize(WIN_WIDTH, WIN_HEIGHT); 
@@ -593,6 +565,126 @@ int initialize(void)
     main_timer_microsec = current_time_stamp_microsec - start_time_stamp_microsec;  
 
     return (0); 
+}
+
+BOOL initializeAudio(void)
+{
+    // Variable decalarations
+    ALCdevice *audioDevice;
+    ALCcontext *alContext;
+
+    HRSRC hResource = NULL;
+    HANDLE hAudioBuffer = NULL;
+
+    LPVOID audioBufferData = NULL;
+    DWORD sizeOfAudioDataInBytes = 0;
+
+    // Code
+    // Step 1 : Open Default audio device
+    // Null means default audio device is yet to be opened
+    audioDevice = alcOpenDevice(NULL);
+    // Checks error for ALC function call above
+    if(alcGetError(audioDevice) != ALC_NO_ERROR)
+    {
+        fprintf(gpFile, "InitializeAudio(): alcOpenDevice() Failed. \n");
+        return(FALSE);
+
+    }
+    // Step 2: Create OpenAL context
+    alContext = alcCreateContext(audioDevice, NULL);
+    if(alcGetError(audioDevice) != ALC_NO_ERROR)
+    {
+        fprintf(gpFile, "InitializeAudio(): alcCreateContext() Failed. \n");
+        return(FALSE);
+    }
+
+    // Step 3: This is similar to wglMakeCurrent() to make the above create context as a current context
+    alcMakeContextCurrent(alContext);
+    if(alcGetError(audioDevice) != ALC_NO_ERROR)
+    {
+        fprintf(gpFile, "InitializeAudio(): alcMakeContextCurrent() Failed. \n");
+        return(FALSE);
+    }
+
+    // Step 4: Create Audio buffer
+    alGenBuffers(1, &audioBuffer); 
+    if(alGetError() != AL_NO_ERROR)
+    {
+        fprintf(gpFile, "InitializeAudio(): alGenBuffers() Failed. \n");
+        return(FALSE);
+    }
+    // Step : 5 Load WAV resource data
+    // Load WAV Resource
+    // 5A : Find Resource, & get its handle
+    hResource = FindResource(NULL, MAKEINTRESOURCE(ID_MUSIC), TEXT("WAVE"));
+    if(hResource == NULL)
+    {
+        fprintf(gpFile, "InitializeAudio(): FindResource() Failed. \n");
+        return(FALSE);
+    }
+    // 5B : Use the resource handle to load it in memory
+    // And returns handle to it
+    hAudioBuffer = LoadResource(NULL, hResource);
+    if(hAudioBuffer == NULL)
+    {
+        fprintf(gpFile, "InitializeAudio(): LoadResource() Failed. \n");
+        return(FALSE);
+    }
+    
+    // 5C : Get startng byte-offset of this data in memory
+    audioBufferData = LockResource(hAudioBuffer);
+    if(audioBufferData == NULL)
+    {
+        fprintf(gpFile, "InitializeAudio(): LockResource() Failed. \n");
+        return(FALSE);
+    }
+
+    // 5D : Get the size of audio dAata
+    sizeOfAudioDataInBytes = SizeofResource(NULL, hResource);
+    if(sizeOfAudioDataInBytes == 0)
+    {
+        fprintf(gpFile, "InitializeAudio(): LockResource() Failed. \n");
+        return(FALSE);
+    }
+    fprintf(gpFile, "\nSize returned by SizeOfResource() = %d\n", sizeOfAudioDataInBytes);
+
+    // STEP 6
+    // Load WAVE data into audio buffer
+    // Size in bytes, frequency of audio data in hertz
+    sizeOfAudioDataInBytes = sizeOfAudioDataInBytes - (sizeOfAudioDataInBytes%4); 
+    alBufferData(audioBuffer, AL_FORMAT_STEREO16, audioBufferData, sizeOfAudioDataInBytes, 44100);
+    // alBufferData(audioBuffer, AL_FORMAT_MONO16, audioBufferData, sizeOfAudioDataInBytes, 44100);
+    if(alGetError() != AL_NO_ERROR)
+    {
+        fprintf(gpFile, "InitializeAudio(): alBufferData() Failed. \n");
+        return(FALSE);
+    }
+
+    // STEP 7
+    // Create Audio Source
+    alGenSources(1, &audioSource);
+    if(alGetError() != AL_NO_ERROR)
+    {
+        fprintf(gpFile, "InitializeAudio(): alGenSources() Failed. \n");
+        return(FALSE);
+    }
+
+
+    // Step 8
+    // Give the audio buffer to audio source
+    alSourcei(audioSource, AL_BUFFER, audioBuffer);
+    if(alGetError() != AL_NO_ERROR)
+    {
+        fprintf(gpFile, "InitializeAudio(): alSourcei() Failed. \n");
+        return(FALSE);
+    }
+
+    // These 2 are not needed now since win32 frees the memory
+    // Unload WAV resource
+    // UnlockResource(hResource);
+    // FreeResource(hAudioBuffer);
+
+    return TRUE;
 }
 
 void resize(int width, int height) 
@@ -638,52 +730,55 @@ void display(void)
     if(main_timer_microsec < 100) 
         isFading = TRUE; 
 
-    // if(shot_count == 1)
-    //     displaySlide1();    
+    if(shot_count == 1)
+        displaySlide1();    
 
-    // if(shot_count == 2) 
-    //     displaySlide2(); 
+    if(shot_count == 2) 
+        displaySlide2(); 
 
-    // if(shot_count == 3) 
+    if(shot_count == 3) 
         displayScene1(); 
-
-    // if(shot_count == 4) 
-    //     displayScene2(); 
-
-    // if(shot_count == 5) 
-    //     displayScene3(); 
-
-    // if(shot_count == 6) 
-    //     displayScene4();
         
-    // if(shot_count == 7) 
-    //     displaySlide3(); 
+    if(shot_count == 4) 
+        displayScene2(); 
 
-    // if(shot_count == 8) 
-    //     displaySlide4(); 
+    if(shot_count == 5) 
+        displayScene3(); 
+
+    if(shot_count == 6) 
+        displayScene4();
         
-    // if(shot_count == 9) 
-    //     displaySlide5(); 
+    if(shot_count == 7) 
+        displaySlide3(); 
 
-    // if(shot_count == 10) 
-    //     displaySlide6(); 
+    if(shot_count == 8) 
+        displaySlide4(); 
+        
+    if(shot_count == 9) 
+        displaySlide5(); 
 
-    // if(shot_count == 11) 
-    //     displaySlide7(); 
+    if(shot_count == 10) 
+        displaySlide6(); 
 
-    // if(shot_count == 12) 
-    //     displaySlide8(); 
+    if(shot_count == 11) 
+        displaySlide7(); 
 
-    // if(shot_count == 13) 
-    //     displayScene5(); 
+    if(shot_count == 12) 
+        displaySlide8(); 
+        
+    if(shot_count == 13) 
+        displaySlide9(); 
 
-    // if(shot_count == 14) 
-    //     displaySlide9(); 
+    if(shot_count == 14) 
+        displayScene5(); 
 
-    // if(shot_count == 15) 
-    //     bDone = TRUE; 
+    if(shot_count == 15) 
+        displaySlide10(); 
 
-    // displayFade(); 
+    if(shot_count == 16) 
+        bDone = TRUE; 
+
+    displayFade(); 
     
     // swap the buffers 
     SwapBuffers(ghdc); 
@@ -709,14 +804,14 @@ void update(void)
 
     if(shot_count == 3) 
         updateScene1(); 
-    // if(shot_count == 4) 
-    //     updateScene2(); 
-    // if(shot_count == 5) 
-    //     updateScene3(); 
-    // if(shot_count == 6) 
-    //     updateScene4(); 
-    // if(shot_count == 13) 
-    //     updateScene5(); 
+    if(shot_count == 4) 
+        updateScene2(); 
+    if(shot_count == 5) 
+        updateScene3(); 
+    if(shot_count == 6) 
+        updateScene4(); 
+    if(shot_count == 14) 
+        updateScene5(); 
     
     switch(shot_count) 
     {
@@ -735,6 +830,8 @@ void uninitialize(void)
     void toggleFullScreen(void); 
 
     // code 
+    uninitializeFade(); 
+    uninitializeAudio(); 
     uninitializeScene5(); 
     uninitializeScene4(); 
     uninitializeScene3(); 
@@ -782,4 +879,70 @@ void uninitialize(void)
         fclose(gpFile); 
         gpFile = NULL; 
     } 
+}
+
+void uninitializeAudio(void)
+{
+  // Variable declarations
+  ALCdevice *audioDevice;
+  ALCcontext *alContext;
+
+  ALint state;
+  //code
+  // Step 1 : Get current status of audio source whether playing or stopped
+  alGetSourcei(audioSource, AL_SOURCE_STATE, &state);
+  if(state == AL_PLAYING)
+  {
+    alSourceStop(audioSource);
+    if(alGetError() != AL_NO_ERROR)
+      fprintf(gpFile, "UninitializeAudio() : alSourceStop() failed.\n");
+  }
+
+  // Step 2: Detach audio buffer from audio source
+  alSourcei(audioSource, AL_BUFFER, 0);
+  if(alGetError() != AL_NO_ERROR)
+      fprintf(gpFile, "UninitializeAudio() : alSourcei() failed to detach audio buffer from audio source.\n");
+
+  // Step 3 : Delete the audio source
+  alDeleteSources(1, &audioSource);
+  if(alGetError() != AL_NO_ERROR)
+    fprintf(gpFile, "UninitializeAudio() : alDeleteSources() failed to delete audio source.\n");
+  else
+    audioSource = 0;
+
+  // Step 4 : Delete the audio buffer
+  alDeleteBuffers(1, &audioBuffer);
+  if(alGetError() != AL_NO_ERROR)
+    fprintf(gpFile, "UninitializeAudio() : alDeleteBuffers() failed to delete audio buffer.\n");
+  else
+    audioBuffer = 0;
+
+  // Step 5 :Get the current OpenAL context
+  alContext = alcGetCurrentContext();
+  if(alContext == NULL)
+    fprintf(gpFile, "UninitializeAudio() : alcGetCurrentContext() failed.\n");
+  else
+  {
+    audioDevice = alcGetContextsDevice(alContext);
+    if(audioDevice == NULL)
+      fprintf(gpFile, "UninitializeAudio() : alcGetCurrentContextsDevice() failed.\n");
+  }
+
+  // Step 7
+
+  if(alContext)
+  {
+    // 7A Unset the OpenAL Context as the current context
+    alcMakeContextCurrent(NULL);
+    // 7B Destroy the OpenAL context
+    alcDestroyContext(alContext);
+    alContext = NULL;
+  }
+  // Step 8 Close the OpenAL Device
+  if(audioDevice)
+  {
+    alcCloseDevice(audioDevice);
+    audioDevice = NULL;
+  }
+
 }
