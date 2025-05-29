@@ -5,7 +5,6 @@ GLuint texture_room1;
 GLuint texture_room2; 
 GLuint texture_room_floor; 
 GLuint texture_hometheater; 
-GLuint texture_ball; 
 GLuint texture_tv; 
 GLuint texture_sofa_back; 
 GLuint texture_clock; 
@@ -23,11 +22,9 @@ GLuint texture_struct_pyramid;
 GLuint texture_struct_cube; 
 GLuint texture_struct_sphere; 
 GLuint texture_struct_book; 
-GLuint texture_struct_football; 
 
 // file-io related variables 
 extern FILE* gpFile; 
-extern GLUquadric* quadric; 
 
 // translation related variables 
 extern float tx, ty, tz; 
@@ -49,8 +46,7 @@ int initialWaitTimerScene4 = 2000;
 // structure info texture related toggle variables 
 BOOL displayStructPhotoframe = FALSE; 
 BOOL displayStructTV = FALSE; 
-BOOL displayStructHometheater = FALSE; 
-BOOL displayStructFootball = FALSE; 
+BOOL displayStructHometheater = FALSE;
 BOOL displayStructClock = FALSE; 
 BOOL displayStructCube = FALSE; 
 BOOL displayStructPyramid = FALSE; 
@@ -58,124 +54,121 @@ BOOL displayStructSphere = FALSE;
 BOOL displayStructSofa = FALSE; 
 BOOL displayStructBook = FALSE; 
 
+// GLU shapes related variables 
+GLUquadric *quadricScene4 = NULL; 
+
 BOOL initScene4(void) 
 {
     // code 
     if (!loadGLPngTexture(&texture_room1, "resources/room1.png"))
 	{
 		fprintf(gpFile, "room1.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_room2, "resources/room2.png"))
 	{
 		fprintf(gpFile, "room2.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_room_floor, "resources/room_floor.png"))
 	{
 		fprintf(gpFile, "room_floor.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_hometheater, "resources/hometheater.png"))
 	{
 		fprintf(gpFile, "hometheater.png Texture failed \n");
-		return FALSE;
-	}
-    if (!loadGLPngTexture(&texture_ball, "resources/ball.png"))
-	{
-		fprintf(gpFile, "ball.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_tv, "resources/tv.png"))
 	{
 		fprintf(gpFile, "tv.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_sofa_back, "resources/sofa_back.png"))
 	{
 		fprintf(gpFile, "sofa_back.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_clock, "resources/clock.png"))
 	{
 		fprintf(gpFile, "clock.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_certificate, "Resources/certificate.png"))
 	{
 		fprintf(gpFile, "certificate.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_c_book, "Resources/c_book.png"))
 	{
 		fprintf(gpFile, "c_book.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_stool_wood, "Resources/stool_wood.png"))
 	{
 		fprintf(gpFile, "stool_wood.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_stool_foam, "Resources/stool_foam.png"))
 	{
 		fprintf(gpFile, "stool_foam.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_tv, "Resources/struct_tv.png"))
 	{
 		fprintf(gpFile, "struct_tv.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_photoframe, "Resources/struct_photoframe.png"))
 	{
 		fprintf(gpFile, "struct_photoframe.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_hometheater, "Resources/struct_hometheater.png"))
 	{
 		fprintf(gpFile, "struct_hometheater.png Texture failed \n");
-		return FALSE;
-	}
-    if (!loadGLPngTexture(&texture_struct_football, "Resources/struct_football.png"))
-	{
-		fprintf(gpFile, "struct_football.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_sphere, "Resources/struct_sphere.png"))
 	{
 		fprintf(gpFile, "struct_sphere.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_cube, "Resources/struct_cube.png"))
 	{
 		fprintf(gpFile, "struct_cube.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_pyramid, "Resources/struct_pyramid.png"))
 	{
 		fprintf(gpFile, "struct_pyramid.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_clock, "Resources/struct_clock.png"))
 	{
 		fprintf(gpFile, "struct_clock.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_book, "Resources/struct_book.png"))
 	{
 		fprintf(gpFile, "struct_book.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
     if (!loadGLPngTexture(&texture_struct_sofa, "Resources/struct_sofa.png"))
 	{
 		fprintf(gpFile, "struct_sofa.png Texture failed \n");
-		return FALSE;
+		return (FALSE);
 	}
-    
-    if(!quadric) 
-    quadric = gluNewQuadric(); 
 
-return (TRUE); 
+    quadricScene4 = (GLUquadric*)gluNewQuadric(); 
+    if(quadricScene4 == NULL) 
+    {
+        fprintf(gpFile, "gluNewQuadric() failed\n"); 
+        return (FALSE); 
+    }
+
+    return (TRUE); 
 } 
 
 void displayScene4(void) 
@@ -194,51 +187,25 @@ void displayScene4(void)
     // code
     if(isThisFirstCall) 
     {
-        // cameraX = -47.0f; 
-        // cameraY = 51.0f; 
-        // cameraZ = 9.0f; 
+        cameraX = -47.0f; 
+        cameraY = 51.0f; 
+        cameraZ = 9.0f; 
 
+        cameraEyeX = -181.0f; 
+        // cameraEyeX = 0.0f; 
+        cameraEyeY = 41.0f; 
+        cameraEyeZ = 0.0f; 
+
+        // cameraX = 0.0f; 
+        // cameraY = 2.0f; 
+        // cameraZ = 0.0f; 
+        // cameraEyeX = 0.0f; 
+        // cameraEyeY = 5.0f; 
+        // cameraEyeZ = -30.0f; 
         
-        // cameraEyeX = -181.0f; 
-        // // cameraEyeX = 0.0f; 
-        // cameraEyeY = 41.0f; 
-        // cameraEyeZ = 0.0f; 
-        
-        cameraY = 1.0f; 
-        cameraX = 0.0f; 
-        cameraZ = 2.0f; 
-
-        cameraEyeX = 0.0f; 
-        cameraEyeY = 1.0f; 
-        cameraEyeZ = -10.0f; 
-
         isThisFirstCall = FALSE; 
     }
-    // goggle 
-    glEnable(GL_BLEND); 
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
-
-    specAngleY = tan((cameraEyeX) / (-cameraEyeZ)) * 50; 
-
-    glPushMatrix(); 
-    {
-        // glRotatef((-specAngleY)*3.142/180.0, 0, 1, 0); 
-
-        glTranslatef(cameraX, cameraY, cameraZ-6.0f);
-        glTranslatef(0.0f, 0.0f, 6.0f); 
-        glRotatef(tx*10, 0, 1, 0); 
-
-        glColor4f(1.0f, 0.0f, 0.0f, 0.4); 
-        glBegin(GL_QUADS); 
-        glVertex3f(1.0f, 1.0f, 0.0f); 
-        glVertex3f(-1.0f, 1.0f, 0.0f);	
-        glVertex3f(-1.0f, -1.0f, 0.0f); 
-        glVertex3f(1.0f, -1.0f, 0.0f); 
-        glEnd(); 
-    } 
-    glPopMatrix(); 
-
-    glDisable(GL_BLEND); 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
 
     // room 
     drawTexturedCube(0.0f, 40.0f, 0.0f, 60.2f, 40.2f, 60.2f, 1.0f, 1.0f, 1.0f, FACE_ALL, texture_room2, texture_room2, texture_room1, texture_room2, texture_room2, texture_room_floor); 
@@ -256,8 +223,6 @@ void displayScene4(void)
         texture_room1, 
         texture_room1 
     );
-
-    billboard(-36.0f, 2.2f, -55.0f, 4.0, 4.0, 1.0f, texture_ball); 
 
     // tv 
     glPushMatrix(); 
@@ -380,13 +345,6 @@ void displayScene4(void)
     }  
     glPopMatrix(); 
 
-    drawTexturedCube(
-        55.30, 0.00, -33.30, 4.72, 6.40, 4.20,
-        1.0f, 1.0f, 1.0f, 
-        FACE_NONE, 
-        0, 0, 0, 0, 0, 0
-    );
-
     // table 
     drawTexturedCube(
         56.0, 0.40, 48.70, 3.80, 12.16, 4.96, 
@@ -412,12 +370,18 @@ void displayScene4(void)
         texture_stool_foam, texture_stool_foam, texture_stool_foam
     );
 
-    drawPyramid(55.60, 4.20, -0.90, 3.92, 4.88, 5.88, 1.0f, 1.0f, 0.3f, 1.0f); 
+    drawTexturedCube(
+        55.30, 0.00, -33.30, 4.72, 6.40, 4.20,
+        1.0f, 1.0f, 0.0f, 
+        FACE_NONE, 
+        0, 0, 0, 0, 0, 0
+    );
 
-    glColor3f(1.0f, 0.0f, 1.0f); 
+    drawPyramid(55.60, 4.20, -0.90, 3.92, 4.88, 5.88, 0.0f, 1.0f, 0.0f, 1.0f); 
     glPushMatrix(); 
+    glColor3f(0.0f, 0.0f, 1.0f); 
     glTranslatef(53.60, 3.80, -17.70); 
-    gluSphere(quadric, 5.0, 16, 16); 
+    gluSphere(quadricScene4, 5.0, 16, 16); 
     glPopMatrix(); 
 
     //=========================================== 
@@ -430,8 +394,6 @@ void displayScene4(void)
         billboard(-44.10, 17.30, -50.60, 7.0, 7.0, 0.0f, texture_struct_hometheater); 
     if(displayStructPhotoframe)
         billboard(-58.0, 49.90, 1.50, 3.80, 3.0, 3.16, texture_struct_photoframe); 
-    if(displayStructFootball)
-        billboard(-27.20, 10.90, -54.90, 6.20, 6.36, 0.0, texture_struct_football); 
     if(displayStructCube)
         billboard(56.40, 13.20, -34.20, 0.0, 5.04, 6.72, texture_struct_cube); 
     if(displayStructSphere)
@@ -442,6 +404,19 @@ void displayScene4(void)
         billboard(57.60, 38.0, 8.60, 0.0, 8.52, 9.32, texture_struct_clock); 
     if(displayStructBook)
         billboard(51.60, 21.20, 49.30, 5.48, 5.50, 0.0, texture_struct_book); 
+
+    // goggle 
+    glEnable(GL_BLEND); 
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+
+    glColor4f(0.0f, 0.0f, 1.0f, 0.4f); 
+    glPushMatrix(); 
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); 
+    glTranslatef(cameraX, cameraY, cameraZ); 
+    gluSphere(quadricScene4, 1.0f, 4, 2);  
+    glPopMatrix(); 
+
+    glDisable(GL_BLEND); 
 } 
 
 /*
@@ -517,9 +492,11 @@ void updateScene4(void)
     static BOOL isUpdate5 = FALSE; 
     static BOOL isUpdate6 = FALSE; 
 
-    static float inverse_constant_for_camera_speed1 = 1500; 
-    static float inverse_constant_for_camera_speed2 = 1500; 
-    static float inverse_constant_for_camera_speed3 = 1500; 
+    static float inverse_constant_for_camera_speed1 = 1000; 
+    static float inverse_constant_for_camera_speed2 = 1000; 
+    static float inverse_constant_for_camera_speed3 = 1000; 
+    static float inverse_constant_for_camera_speed = 1000; 
+
  
     // code
     if(initialWaitTimerScene4 > 0) 
@@ -565,8 +542,6 @@ void updateScene4(void)
             displayStructTV = TRUE; 
         if(cameraY < 48.0f) 
             displayStructHometheater = TRUE; 
-        if(cameraY < 42.0f)
-            displayStructFootball = TRUE; 
 
         if(cameraEyeY <= 27.0) 
         {
@@ -588,7 +563,6 @@ void updateScene4(void)
         // remove previous structures 
         displayStructTV = FALSE; 
         displayStructHometheater = FALSE; 
-        displayStructFootball = FALSE; 
 
         // display new structures 
         if(cameraZ < 28.0f) 
@@ -608,12 +582,12 @@ void updateScene4(void)
     // Position3 -> position4 
     if(isUpdate4 == TRUE) 
     {
-        cameraX = cameraX - 10.0/inverse_constant_for_camera_speed1; 
-        cameraY = cameraY - 2.04/inverse_constant_for_camera_speed1; 
-        cameraZ = cameraZ - 27.90/inverse_constant_for_camera_speed1; 
+        cameraX = cameraX - 10.0/inverse_constant_for_camera_speed; 
+        cameraY = cameraY - 2.04/inverse_constant_for_camera_speed; 
+        cameraZ = cameraZ - 27.90/inverse_constant_for_camera_speed; 
 
-        cameraEyeX = cameraEyeX - 25.0f/inverse_constant_for_camera_speed1; 
-        cameraEyeY = cameraEyeY - 2.0/inverse_constant_for_camera_speed1; 
+        cameraEyeX = cameraEyeX - 25.0f/inverse_constant_for_camera_speed; 
+        cameraEyeY = cameraEyeY - 2.0/inverse_constant_for_camera_speed; 
 
         // remove previous structures 
         displayStructCube = FALSE; 
@@ -684,10 +658,10 @@ void updateScene4(void)
 void uninitializeScene4(void) 
 {
     // code 
-    if(quadric) 
+    if(quadricScene4) 
     {
-        gluDeleteQuadric(quadric); 
-        quadric = NULL; 
+        gluDeleteQuadric(quadricScene4); 
+        quadricScene4 = NULL; 
     }
 
     if(texture_struct_book) 
@@ -714,11 +688,6 @@ void uninitializeScene4(void)
     {
         glDeleteTextures(1, &texture_struct_pyramid); 
         texture_struct_pyramid = 0; 
-    }
-    if(texture_struct_football) 
-    {
-        glDeleteTextures(1, &texture_struct_football); 
-        texture_struct_football = 0; 
     }
     if(texture_struct_hometheater) 
     {
@@ -772,11 +741,6 @@ void uninitializeScene4(void)
     {
         glDeleteTextures(1, &texture_tv); 
         texture_tv = 0; 
-    }
-    if(texture_ball) 
-    {
-        glDeleteTextures(1, &texture_ball); 
-        texture_ball = 0; 
     }
     if(texture_hometheater) 
     {
