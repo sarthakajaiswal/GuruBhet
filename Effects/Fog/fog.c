@@ -11,8 +11,6 @@ extern BOOL gbFogEnabled;
 // initialize fog 
 void initFog(void) 
 {
-    glEnable(GL_FOG); 
-
     glFogfv(GL_FOG_COLOR, fogColor); 
 
     // fog mode (GL_EXP, GL_EXP2, or GL_LINEAR)
