@@ -5,9 +5,23 @@ BOOL isFading = FALSE;
 static float fadeDensity = 0.0f; 
 static BOOL isFadingOut = TRUE; 
 
-extern unsigned long long main_timer_microsec; 
 extern int shot_count; 
 extern float cameraX, cameraY, cameraZ; 
+extern FILE* gpFile; 
+
+GLUquadric *fadeQuadric = NULL; 
+
+BOOL initFade(void)
+{
+    fadeQuadric = gluNewQuadric(); 
+    if(fadeQuadric == NULL) 
+    {
+        fprintf(gpFile, "gluNewQuadric() for fadeQuadric failed\n"); 
+        return (FALSE); 
+    }
+
+    return (TRUE); 
+}
 
 void displayFade(void) 
 {
@@ -19,24 +33,16 @@ void displayFade(void)
             glEnable(GL_BLEND); 
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 
-            glTranslatef(cameraX, cameraY, cameraZ - 0.5f); 
-            glScalef(11.20f, 6.30f, 0.0f); 
+            glTranslatef(cameraX, cameraY, cameraZ); 
             glColor4f(0.0f, 0.0f, 0.0f, fadeDensity); 
-            glBegin(GL_QUADS); 
-            glVertex3f(1.0f, 1.0f, 1.0f); 
-            glVertex3f(-1.0f, 1.0f, 1.0f);	
-            glVertex3f(-1.0f, -1.0f, 1.0f); 
-            glVertex3f(1.0f, -1.0f, 1.0f); 
-            glEnd(); 
             
+            gluSphere(fadeQuadric, 0.5f, 4, 2); 
+
             glDisable(GL_BLEND); 
         } 
         glPopMatrix(); 
     }
 }
-
-extern FILE* gpFile; 
-extern double main_timer; 
 
 void updateFade(float speed) 
 {
@@ -69,3 +75,12 @@ void updateFade(float speed)
         }
     }
 } 
+
+void uninitializeFade(void) 
+{
+    if(fadeQuadric) 
+    {
+        gluDeleteQuadric(fadeQuadric); 
+        fadeQuadric = NULL; 
+    }
+}

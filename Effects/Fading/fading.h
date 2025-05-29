@@ -11,7 +11,9 @@
 #include <gl/glu.h> 
 
 // function declarations 
+extern BOOL initFade(void); 
 extern void displayFade(void); 
 extern void updateFade(float); 
+extern void uninitializeFade(void);  
 
 #endif /* _FADE_H */  
