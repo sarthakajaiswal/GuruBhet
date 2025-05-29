@@ -25,6 +25,7 @@ void drawTexturedCube(
         glColor3f(r, g, b); 
 
         // front face  
+        glNormal3f(0.0f, 0.0f, 1.0f); 
         glBindTexture(GL_TEXTURE_2D, texture_front); 
         glBegin(GL_QUADS); 
         if(faces_to_be_textured & FACE_FRONT)
@@ -46,6 +47,7 @@ void drawTexturedCube(
         glBindTexture(GL_TEXTURE_2D, 0); 
         
         // right face 
+        glNormal3f(1.0f, 0.0f, 0.0f); 
         glBindTexture(GL_TEXTURE_2D, texture_right); 
         glBegin(GL_QUADS); 
         if(faces_to_be_textured & FACE_RIGHT) 
@@ -67,6 +69,7 @@ void drawTexturedCube(
         glBindTexture(GL_TEXTURE_2D, 0); 
         
         // back face 
+        glNormal3f(0.0f, 0.0f, -1.0f);
         glBindTexture(GL_TEXTURE_2D, texture_back); 
         glBegin(GL_QUADS); 
         if(faces_to_be_textured & FACE_BACK)
@@ -88,6 +91,7 @@ void drawTexturedCube(
         glBindTexture(GL_TEXTURE_2D, 0); 
         
         // left face 
+        glNormal3f(-1.0f, 0.0f, 0.0f);
         glBindTexture(GL_TEXTURE_2D, texture_left); 
         glBegin(GL_QUADS); 
         if(faces_to_be_textured & FACE_LEFT)
@@ -109,6 +113,7 @@ void drawTexturedCube(
         glBindTexture(GL_TEXTURE_2D, 0); 
 
         // top face 
+        glNormal3f(0.0f, 1.0f, 0.0f); 
         glBindTexture(GL_TEXTURE_2D, texture_top); 
         glBegin(GL_QUADS); 
         if(faces_to_be_textured & FACE_TOP)
@@ -130,6 +135,7 @@ void drawTexturedCube(
         glBindTexture(GL_TEXTURE_2D, 0); 
         
         // bottom face 
+        glNormal3f(0.0f, -1.0f, 0.0f);
         glBindTexture(GL_TEXTURE_2D, texture_bottom); 
         glBegin(GL_QUADS); 
         if(faces_to_be_textured & FACE_BOTTOM)
