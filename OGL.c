@@ -813,10 +813,26 @@ void update(void)
     {
         case 1: 
         case 6: 
-            updateFade(0.5); 
+            updateFade(3); 
+            break; 
+
+        case 2: 
+        case 3: 
+            updateFade(3); 
+            break; 
+
+        case 8: 
+        case 9: 
+        case 10: 
+        case 11: 
+        case 12: 
+        case 13:
+            updateFade(5);  
+            break; 
 
         default: 
-            updateFade(2); 
+            updateFade(3); 
+            break; 
     }
 }
 

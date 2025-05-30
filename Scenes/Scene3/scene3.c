@@ -205,10 +205,10 @@ void displayScene3(void)
 void updateScene3(void) 
 {
     // variable declarations 
-    static int pre_waiting_timer = 1000; 
-    static int post_waiting_timer = 400; 
+    static int pre_waiting_timer = 200; 
+    static int post_waiting_timer = 300; 
 
-    static float inverse_constant_for_camera_speed = 500; 
+    static float inverse_constant_for_camera_speed = 250; 
     static BOOL isCameraUpdateDone = FALSE; 
 
     // code 
@@ -219,7 +219,7 @@ void updateScene3(void)
         
         if(boxRotateAngle <= 360.0f) 
         {
-            boxRotateAngle = boxRotateAngle + 1.0f;  
+            boxRotateAngle = boxRotateAngle + 2.0f;  
         } 
 
         if(isCameraUpdateDone == FALSE) 

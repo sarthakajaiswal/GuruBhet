@@ -310,11 +310,11 @@ void updateScene2(void)
 	static BOOL isUpdate4 = FALSE; 
 	static BOOL isUpdate5 = FALSE; 
 
-	static float inverse_constant_for_camera_speed1 = 650; 
-	static float inverse_constant_for_camera_speed2 = 450; 
-	static float inverse_constant_for_camera_speed3 = 1100; 
-	static float inverse_constant_for_camera_speed4 = 550; 
-	static float inverse_constant_for_camera_speed5 = 850; 
+	static float inverse_constant_for_camera_speed1 = 300; 
+	static float inverse_constant_for_camera_speed2 = 280; 
+	static float inverse_constant_for_camera_speed3 = 900; 
+	static float inverse_constant_for_camera_speed4 = 285; 
+	static float inverse_constant_for_camera_speed5 = 305; 
 
 	static BOOL isCameraPosition3Loaded = FALSE; 
 	static BOOL isCameraPosition6Loaded = FALSE; 

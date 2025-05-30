@@ -348,10 +348,10 @@ void updateScene1()
 	static BOOL isUpdate3 = FALSE; 
 	static BOOL isUpdate4 = FALSE; 
 
-	unsigned int inverse_constant_for_speed1 = 450.0f; // incresing this constant decreases camera speed 
-	unsigned int inverse_constant_for_speed2 = 1850.0f; 
-	unsigned int inverse_constant_for_speed3 = 500.0f; 
-	unsigned int inverse_constant_for_speed4 = 150.0f; 
+	float inverse_constant_for_speed1 = 200.0f; // incresing this constant decreases camera speed 
+	float inverse_constant_for_speed2 = 900.0; 
+	float inverse_constant_for_speed3 = 250.0f; 
+	float inverse_constant_for_speed4 = 80.0f; 
 
 	// code 
 	if(isUpdate1 == TRUE) 
@@ -387,16 +387,16 @@ void updateScene1()
 	else if(isUpdate3 == TRUE)
 	{
 		if(cameraY < 1.5f) 
-			cameraY = cameraY + 0.005f; 
+			cameraY = cameraY + 0.009f; 
 		cameraZ = cameraZ - 4.0/inverse_constant_for_speed3; 
 		if(cameraEyeY < 4.0) 
 			cameraEyeY = cameraEyeY + 0.005f; 
 		cameraEyeZ = cameraEyeZ - 0.05f;
 
-		if(cameraZ < -7.5f)  
+		if(cameraZ <= -7.5f)  
 			glDisable(GL_FOG); 
 
-		if(cameraZ < -9.0f) 
+		if(cameraZ <= -9.0f) 
 		{
 			isUpdate3 = FALSE; 
 			isUpdate4 = TRUE; 

@@ -43,7 +43,7 @@ extern int shot_count;
 extern BOOL isFading; 
 
 // initial waiting time 
-int initialWaitTimerScene4 = 2000; 
+int initialWaitTimerScene4 = 400; 
 
 // structure info texture related toggle variables 
 BOOL displayStructPhotoframe = FALSE; 
@@ -540,10 +540,10 @@ void updateScene4(void)
     static BOOL isUpdate5 = FALSE; 
     static BOOL isUpdate6 = FALSE; 
 
-    static float inverse_constant_for_camera_speed1 = 1600; 
-    static float inverse_constant_for_camera_speed2 = 1600; 
-    static float inverse_constant_for_camera_speed3 = 1650; 
-    static float inverse_constant_for_camera_speed = 1600; 
+    static float inverse_constant_for_camera_speed1 = 950; 
+    static float inverse_constant_for_camera_speed2 = 950; 
+    static float inverse_constant_for_camera_speed3 = 950; 
+    static float inverse_constant_for_camera_speed = 1000; 
 
  
     // code
@@ -553,16 +553,16 @@ void updateScene4(void)
         {
             isUpdate1 = TRUE; 
         }  
-        if(initialWaitTimerScene4 > 800) 
+        if(initialWaitTimerScene4 > 200) 
         {
             displayInitializingTexture = TRUE; 
         }
-        if(initialWaitTimerScene4 < 800 && initialWaitTimerScene4 > 200) 
+        if(initialWaitTimerScene4 < 200 && initialWaitTimerScene4 > 100) 
         {
             displayInitializingTexture = FALSE; 
             displayInitializedTexture = TRUE; 
         } 
-        if(initialWaitTimerScene4 < 200) 
+        if(initialWaitTimerScene4 < 100) 
         {
             displayInitializingTexture = FALSE; 
             displayInitializedTexture = FALSE; 

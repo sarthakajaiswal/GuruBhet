@@ -157,8 +157,8 @@ void displayScene5(void)
 void updateScene5(void) 
 {
     // variable declarations 
-    scene5RotateAngle = scene5RotateAngle + 0.4f;
-    if(scene5RotateAngle > 750) 
+    scene5RotateAngle = scene5RotateAngle + 0.7f;
+    if(scene5RotateAngle > 500) 
         isFading = TRUE;  
 } 
 
